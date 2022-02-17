@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent} from '@material-ui/core';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { UserContext } from '../UserAuthContext';
 
 export default function LoginScreen() {
+  const { isAuthenticated, setIsAuthenticated, accountId,  setAccountId } = useContext(UserContext);
+
   // clears history to prevent users from backing up to a restricted page
-  const nav = useNavigate();
-  useEffect(() => { nav('/login', { replace: true }); }, []);
+  const navigate = useNavigate();
+  useEffect(() => { navigate('/login', { replace: true }); }, [isAuthenticated]);
 
   // boolean for displaying missing-field error
   const [alertBool, setAlertBool] = useState(false);
@@ -29,6 +31,7 @@ export default function LoginScreen() {
       .then(res => res.json())
       .then(data => {
         // TODO: authenticate
+        // TODO: if authenticated, set UserContext accountId and isAuthenticated
       });
   };
 

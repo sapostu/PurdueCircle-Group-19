@@ -1,22 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Routes, Route, BrowserRouter} from 'react-router-dom';
 
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import LoginScreen from './Components/LoginScreen';
+
+
 
 ReactDOM.render(
   <React.StrictMode>
-      <BrowserRouter>
-        <Routes>
-          <Route path="*" element={<LoginScreen />}/>
-          <Route path="/login" element={<LoginScreen />}/>
-          <Route path="/signup" element={<h1>signup placeholder</h1>}/>
-          
-        </Routes>
-      </BrowserRouter>
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

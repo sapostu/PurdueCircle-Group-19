@@ -6,6 +6,7 @@ import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import { useState } from 'react';
 
 import LoginScreen from './Components/LoginScreen';
+import Signup from './Components/Signup';
 
 import {UserContext} from './UserAuthContext';
 
@@ -21,7 +22,7 @@ function App() {
         <Routes>
           <Route path="*" element={<LoginScreen />}/>
           <Route path="/login" element={<LoginScreen />}/>
-          <Route path="/signup" element={<h1>signup placeholder</h1>}/>
+          <Route path="/signup" element={<Signup />}/>
 
           <Route path="/profile/:account_id" element={
           isAuthenticated ? <h1>account profile placeholder</h1> : <LoginScreen/>}

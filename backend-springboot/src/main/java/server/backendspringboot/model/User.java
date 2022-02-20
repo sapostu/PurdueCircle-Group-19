@@ -1,4 +1,4 @@
-package server.backendspringboot.User;
+package server.backendspringboot.model;
 
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;

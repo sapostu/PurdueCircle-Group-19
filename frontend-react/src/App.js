@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 import LoginScreen from './Components/LoginScreen';
 import Signup from './Components/Signup';
-import Profile from './Components/Profile'
+import Profile from './Components/Profile';
 
 import {UserContext} from './UserAuthContext';
 

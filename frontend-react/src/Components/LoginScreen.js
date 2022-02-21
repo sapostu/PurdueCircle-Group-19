@@ -1,85 +1,98 @@
-import { useState, useEffect, useContext } from 'react';
+import React, { Component } from 'react';
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent} from '@material-ui/core';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { UserContext } from '../UserAuthContext';
 
-export default function LoginScreen() {
-  const { isAuthenticated, setIsAuthenticated, accountId,  setAccountId } = useContext(UserContext);
+class LoginScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            alertBool: false,  // determines if 'missing fields' alert is shown
+            usernameEmail: "", // tracks first field (either username or email)
+            password: "", // tracks second field
+            toProfile: false // setting true navigates to profile page
+        };
 
-  // clears history to prevent users from backing up to a restricted page
-  const navigate = useNavigate();
-  useEffect(() => { navigate('/login', { replace: true }); }, [isAuthenticated]);
-
-  // boolean for displaying missing-field error
-  const [alertBool, setAlertBool] = useState(false);
-
-  // tracks input fields
-  const [unameEmail, setUnameEmail] = useState("");
-  const [pwd, setPwd] = useState("");
-
-  // function to handle pressing the 'log in' button
-  function handleLogin() {
-    if (!unameEmail || !pwd) {
-      setAlertBool(true);
-      return;
+        this.handleLogin = this.handleLogin.bind(this);
     }
 
-    const url = ""; // TODO: change to actual endpoint url
+    // for tracking user authentication status
+    // use this.context to access
+    static contextType = UserContext;
 
-    // connect to server enpoint
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        // TODO: authenticate
-        // TODO: if authenticated, set UserContext accountId and isAuthenticated
-      });
-  };
+    /**
+     * Handles submitting login form
+     * Ensures fields are filled in, then authenticates
+     */
+    handleLogin = () => {
+        if (!this.state.usernameEmail || !this.state.pwd) {
+          this.setState({alertBool: true});
+          return;
+        }
 
-  return (
-    <>
-    {/* for alert */}
-    <Snackbar
-    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
-    open={alertBool}
-    onClose={e => setAlertBool(false)}
-    autoHideDuration={5000}>
-      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please fill in both fields."/>
-    </Snackbar>
+        // TODO: authenticate with axios
 
-    {/* actual login screen */}
-    <div style={{
-      display: "flex",
-      backgroundColor: "#f5f5f5",
-      position: "absolute",
-      top: 0, left: 0,
-      width: "100vw",
-      height: "100vh"
-      }}>
-      <Paper elevation={8} style={{
-        backgroundColor: "#f5f5f5",
-        margin: "auto",
-        padding: "20px"
-      }} id="login_cont">
-        <Box m={2}><TextField label="Email/Username"
-        variant="outlined" type="text"
-        required size="small"
-        onChange={e => setUnameEmail(e.target.value)}/></Box>
-        <Box m={2}><TextField label="Password"
-        variant="outlined" type="password"
-        required size="small"
-        onChange={e => setPwd(e.target.value)}
-        /></Box>
-        <Box m={2} textAlign='center'>
-          <Button variant="outlined" color="primary" size="medium"
-          onClick={handleLogin}>Log In</Button>
-        </Box>    
-        <Box m={2} textAlign='center'>
-          <Typography>
-            <Link to="/signup">Need an account? Sign Up</Link>
-          </Typography>
-        </Box>  
-      </Paper>
-    </div>
-    </>
-  );
+        // navigate to user's profile page if authenticated
+        this.setState({toProfile: true});
+    }
+
+    /**
+     * LoginScreen component
+     * Redirects to profile page when this.state.toProfile is set to true
+     * Includes pop-up alert (Snackbar) and physical parts of form
+     */
+    render() {
+        if (this.state.toProfile) {
+          return <Navigate to={`/${this.context.accountId}`}/>;
+        }
+        return (
+            <div>
+              {/* for alert */}
+              <Snackbar
+              anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+              open={this.state.alertBool}
+              onClose={e => this.setState({alertBool: false})}
+              autoHideDuration={5000}>
+                <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please fill in both fields."/>
+              </Snackbar>
+
+              {/* actual login screen */}
+              <div style={{
+                display: "flex",
+                backgroundColor: "#f5f5f5",
+                position: "absolute",
+                top: 0, left: 0,
+                width: "100vw",
+                height: "100vh"
+                }}>
+                <Paper elevation={8} style={{
+                  backgroundColor: "#f5f5f5",
+                  margin: "auto",
+                  padding: "20px"
+                }} id="login_cont">
+                  <Box m={2}><TextField label="Email/Username"
+                  variant="outlined" type="text"
+                  required size="small"
+                  onChange={e => this.setState({usernameEmail: e.target.value})}/></Box>
+                  <Box m={2}><TextField label="Password"
+                  variant="outlined" type="password"
+                  required size="small"
+                  onChange={e => this.setState({pwd: e.target.value})}
+                  /></Box>
+                  <Box m={2} textAlign='center'>
+                    <Button variant="outlined" color="primary" size="medium"
+                    onClick={this.handleLogin}>Log In</Button>
+                  </Box>    
+                  <Box m={2} textAlign='center'>
+                    <Typography>
+                      <Link to="/signup">Need an account? Sign Up</Link>
+                    </Typography>
+                  </Box>  
+                </Paper>
+              </div>
+            </div>
+        );
+    }
 }
+
+export default LoginScreen;

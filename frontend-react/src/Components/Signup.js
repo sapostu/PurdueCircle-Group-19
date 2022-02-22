@@ -1,3 +1,202 @@
+import React, { Component } from 'react';
+
+import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent, FormHelperText } from '@material-ui/core';
+
+class Signup extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      username: '',
+      email: '',
+      confirm_email: '',
+      password: '',
+      confirm_password: '',
+      error: false,
+      errorName: false,
+      errorEmail: false,
+      errorPassword: false,
+      errorMatchingEmail: false,
+      errorMatchingPassword: false
+
+    }
+
+    this.handleSignup = this.handleSignup.bind(this);
+    this.setMissingError = this.setMissingError.bind(this);
+    this.setNameError = this.setNameError.bind(this);
+    this.setPasswordError = this.setPasswordError.bind(this);
+    this.setMatchingEmailError = this.setMatchingEmailError.bind(this);
+    this.setMatchingPasswordError = this.setMatchingPasswordError.bind(this);
+
+    this.handleChange = this.handleChange.bind(this);
+
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name] : e.target.value
+    })
+  }
+  setMissingError(state) {
+      this.setState({error: false});
+  }
+
+  setNameError(state) {
+    this.setState({errorName: false});  }
+
+  setPasswordError(state) {
+    this.setState({errorPassword: false});  }
+
+  setMatchingEmailError(state) {
+    this.setState({errorMatchingEmail: false});  }
+
+  setMatchingPasswordError(state) {
+    this.setState({errorMatchingPassword: false});  }
+
+  handleSignup() {
+    if (!this.state.username || !this.state.email || !this.state.confirm_email || !this.state.password || !this.state.confirm_password) {
+      this.setState({error: true});
+      return;
+    }
+    if (this.state.email !== this.state.confirm_email) {
+      this.setState({errorMatchingEmail: true});
+      return;
+    }
+    if (this.state.password !== this.state.confirm_password) {
+      this.setState({errorMatchingPassword: true});
+      return;
+    }
+    if (this.state.username.length < 3 || this.state.username.length > 15) {
+      this.setState({errorName: true});
+      return;
+    }
+    if (this.state.password.length < 10 || this.state.password.length > 20) {
+      this.setState({errorPassword: true});
+      return;
+    }
+/*
+    // connect to server enpoint
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        // TODO: authenticate
+        // TODO: if authenticated, set UserContext accountId and isAuthenticated
+    });
+    */
+  }
+
+  render() {
+    return (
+      <div>
+         <>
+    {/* for alert */}
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.error}
+    onClose={this.setMissingError}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please fill in all fields."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.errorMatchingEmail}
+    onClose={this.setMatchingEmailError}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your emails match."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.errorMatchingPassword}
+    onClose={this.setMatchingPasswordError}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure  your passwords match."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.errorName}
+    onClose={this.setNameError}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your username is the proper length."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.errorPassword}
+    onClose={this.setPasswordError}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your password is the proper length."/>
+    </Snackbar>
+
+    {/* for signup */}
+    <div style={{
+      display: "flex",
+      backgroundColor: "#f5f5f5",
+      position: "absolute",
+      top: 0, left: 0,
+      width: "100vw",
+      height: "100vh"
+      }}>
+
+        <Paper elevation={8} style={{
+            backgroundColor: "#f5f5f5",
+            margin: "auto",
+            padding: "20px"
+        }} id="login_cont">
+            <Typography gutterBottom variant="h5" component="div">
+                Welcome to Purdue Circle!
+            </Typography>
+            <Typography gutterBottom variant="p" component="div">
+                Please enter the following information to register:
+            </Typography>
+            <Box m={2}><TextField label="Username"
+            variant="outlined" type="text"
+            required size="small"
+            name='username'
+            onChange={this.handleChange}/>
+            <FormHelperText>Your username should be between 3 and 15 characters</FormHelperText>
+            </Box>
+            <Box m={2}><TextField label="Email"
+            variant="outlined" type="text"
+            required size="small"
+            name='email'
+            onChange={this.handleChange}/>
+            </Box>    
+
+            <Box m={2}><TextField label="Confirm Email"
+            variant="outlined" type="text"
+            required size="small"
+            name='confirm_email'
+            onChange={this.handleChange}/>
+            <FormHelperText>We won't share your email with anyone</FormHelperText>
+            </Box>
+
+            <Box m={2}><TextField label="Password"
+            variant="outlined" type="password"
+            required size="small"
+            name='password'
+            onChange={this.handleChange}/>
+            </Box>
+            <Box m={2}><TextField label="Confirm Password"
+            variant="outlined" type="password"
+            required size="small"
+            name='confirm_password'
+            onChange={this.handleChange}/>
+            <FormHelperText>Your password should be between 10 and 20 characters</FormHelperText>
+            </Box>
+            <Box m={2} textAlign='center'>
+            <Button variant="outlined" color="primary" size="medium"
+            onClick={this.handleSignup}>Sign Up</Button>
+            </Box>
+        </Paper>
+      </div>
+    </>
+      </div>
+    );
+  }
+}
+
+export default Signup;
+
+/*
 import { useState } from 'react';
 
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent, FormHelperText, FormControl } from '@material-ui/core';
@@ -115,9 +314,10 @@ export default function Form() {
   };
   */
  
+  /*
   return (
       <>
-    {/* for alert */}
+    {/* for alert *//*}
     <Snackbar
     anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
     open={error}
@@ -154,7 +354,7 @@ export default function Form() {
       <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your password is the proper length."/>
     </Snackbar>
 
-    {/* for signup */}
+    {/* for signup *//*}
     <div style={{
       display: "flex",
       backgroundColor: "#f5f5f5",

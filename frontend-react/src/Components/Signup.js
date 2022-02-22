@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent, FormHelperText } from '@material-ui/core';
+import AccountService from '../Services/AccountService';
 
 class Signup extends Component {
   constructor(props) {
@@ -53,7 +54,9 @@ class Signup extends Component {
   setMatchingPasswordError(state) {
     this.setState({errorMatchingPassword: false});  }
 
-  handleSignup() {
+  handleSignup = (e) => {
+    e.preventDefault();
+
     if (!this.state.username || !this.state.email || !this.state.confirm_email || !this.state.password || !this.state.confirm_password) {
       this.setState({error: true});
       return;
@@ -74,6 +77,17 @@ class Signup extends Component {
       this.setState({errorPassword: true});
       return;
     }
+
+    let account = {username: this.state.username, email: this.state.email, crypt_password: this.state.password}
+    console.log('\n\n account =>' + JSON.stringify(account));
+
+    AccountService.createAccount(account).then( res => {
+      this.props.history.push('/signup');
+    });
+
+
+
+
 /*
     // connect to server enpoint
     fetch(url)

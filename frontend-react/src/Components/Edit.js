@@ -100,7 +100,6 @@ class Edit extends Component {
                             </Grid>
                         </Grid>
                         
-                        
                         <CardContent style={{ height: "12vh", 'object-fit': 'contain'}}>
                             <Typography gutterBottom variant="h5" component="div">
                                 <TextField id="filled-static" label="Edit Username" defaultValue={this.state.username} name='username' onChange={this.handleChange}></TextField> 
@@ -122,6 +121,7 @@ class Edit extends Component {
                         <CardActions style={{"padding-left": "0.5vw"}}>
                             <Button size="small" onClick={this.handleSubmit}>Submit</Button>
                             <Button size="small"><Link to="/profile_temp" style={{ color: "inherit", "text-decoration": "none" }}>Cancel</Link></Button> {/* TODO : edit the link to profile to link to the actual profile */}
+                            <Button size="small"><Link to="/delete" style={{ color: "inherit", "text-decoration": "none" }}>Delete</Link></Button>
                         </CardActions>
                     </Card>
                 </div>

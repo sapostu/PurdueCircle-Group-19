@@ -1,6 +1,6 @@
-import React, { Component, setState, useState } from 'react';
+import React, { Component } from 'react';
 
-import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent, FormHelperText, FormControl } from '@material-ui/core';
+import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent, FormHelperText } from '@material-ui/core';
 
 class Signup extends Component {
   constructor(props) {
@@ -58,11 +58,11 @@ class Signup extends Component {
       this.setState({error: true});
       return;
     }
-    if (this.state.email != this.state.confirm_email) {
+    if (this.state.email !== this.state.confirm_email) {
       this.setState({errorMatchingEmail: true});
       return;
     }
-    if (this.state.password != this.state.confirm_password) {
+    if (this.state.password !== this.state.confirm_password) {
       this.setState({errorMatchingPassword: true});
       return;
     }

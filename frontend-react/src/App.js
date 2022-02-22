@@ -7,7 +7,8 @@ import { useState } from 'react';
 
 import LoginScreen from './Components/LoginScreen';
 import Signup from './Components/Signup';
-import Profile from './Components/Profile'
+import Profile from './Components/Profile';
+import Edit from './Components/Edit';
 
 import {UserContext} from './UserAuthContext';
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" element={<LoginScreen />}/>
           <Route path="/signup" element={<Signup />}/>
           <Route path="/profile_temp" element={<Profile />}/>
+          <Route path="/edit" element={<Edit />}/>
 
           <Route path="/profile/:account_id" element={
           isAuthenticated ? <h1>account profile placeholder</h1> : <LoginScreen/>}

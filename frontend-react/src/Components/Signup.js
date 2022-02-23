@@ -18,6 +18,7 @@ class Signup extends Component {
       errorEmail: false,
       errorPassword: false,
       errorMatchingEmail: false,
+      errorEmailFormat: false,
       errorMatchingPassword: false
 
     }
@@ -27,6 +28,7 @@ class Signup extends Component {
     this.setNameError = this.setNameError.bind(this);
     this.setPasswordError = this.setPasswordError.bind(this);
     this.setMatchingEmailError = this.setMatchingEmailError.bind(this);
+    this.setEmailFormatError = this.setEmailFormatError.bind(this);
     this.setMatchingPasswordError = this.setMatchingPasswordError.bind(this);
 
     this.handleChange = this.handleChange.bind(this);
@@ -50,6 +52,9 @@ class Signup extends Component {
 
   setMatchingEmailError(state) {
     this.setState({errorMatchingEmail: false});  }
+  
+  setEmailFormatError(state) {
+    this.setState({errorMatchingEmail: false});  }
 
   setMatchingPasswordError(state) {
     this.setState({errorMatchingPassword: false});  }
@@ -63,6 +68,10 @@ class Signup extends Component {
     }
     if (this.state.email !== this.state.confirm_email) {
       this.setState({errorMatchingEmail: true});
+      return;
+    }
+    if (this.state.email.match(new RegExp("[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-z]+")) == null) {
+      this.setState({errorEmailFormat: true});
       return;
     }
     if (this.state.password !== this.state.confirm_password) {
@@ -117,6 +126,13 @@ class Signup extends Component {
     onClose={this.setMatchingEmailError}
     autoHideDuration={5000}>
       <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your emails match."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.errorEmailFormat}
+    onClose={this.setEmailFormatError}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure you enter an email in the proper format."/>
     </Snackbar>
     <Snackbar
     anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}

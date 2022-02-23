@@ -9,7 +9,7 @@ import java.util.List;
 @Table
 public class Post {
     @Id
-    @Column(columnDefinition = "LONG")
+    @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long postId;
 
@@ -25,6 +25,7 @@ public class Post {
     @Column(name = "type", columnDefinition = "VARCHAR(15)")
     private String type;
 
+    @Lob
     @Column(name = "bio", columnDefinition = "VARCHAR(281)")
     private String bio;
 
@@ -39,14 +40,14 @@ public class Post {
         this.bio = bio;
     }
 
-    public Post(long accountId, Date dateOfPost, String bio, String type, int isAnon) {
+    /*public Post(long accountId, Date dateOfPost, String bio, String type, int isAnon) {
         super();
         this.accountId = accountId;
         this.dateOfPost = dateOfPost;
         this.type = type;
         this.isAnon = isAnon;
         this.bio = bio;
-    }
+    } */
 
     public Post() {
 

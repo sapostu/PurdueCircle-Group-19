@@ -13,14 +13,16 @@ class Signup extends Component {
       confirm_email: '',
       password: '',
       confirm_password: '',
+      dob: '',
       error: false,
       errorName: false,
       errorEmail: false,
       errorPassword: false,
       errorMatchingEmail: false,
       errorEmailFormat: false,
-      errorMatchingPassword: false
-
+      errorMatchingPassword: false,
+      errorDOBFormat: false,
+      errorDOBAge: false
     }
 
     this.handleSignup = this.handleSignup.bind(this);
@@ -30,6 +32,8 @@ class Signup extends Component {
     this.setMatchingEmailError = this.setMatchingEmailError.bind(this);
     this.setEmailFormatError = this.setEmailFormatError.bind(this);
     this.setMatchingPasswordError = this.setMatchingPasswordError.bind(this);
+    this.setDOBFormatError = this.setDOBFormatError.bind(this);
+    this.setDOBAgeError = this.setDOBAgeError.bind(this);
 
     this.handleChange = this.handleChange.bind(this);
 
@@ -58,6 +62,12 @@ class Signup extends Component {
 
   setMatchingPasswordError(state) {
     this.setState({errorMatchingPassword: false});  }
+  
+  setDOBFormatError(state) {
+    this.setState({errorDOBFormat: false});  }
+  
+  setDOBAgeError(state) {
+    this.setState({errorDOBAge: false})  }
 
   handleSignup = (e) => {
     e.preventDefault();
@@ -86,6 +96,14 @@ class Signup extends Component {
       this.setState({errorPassword: true});
       return;
     }
+    if (this.state.dob.match(new RegExp("[0-9]{4}\-[0-9]{2}\-[0-9]{2}")) == null) {
+      this.setState({errorDOBFormat: true});
+      return;
+    }
+    if (this.#checkAge()) {
+      this.setState({errorDOBAge: true});
+      return;
+    }
 
     let account = {username: this.state.username, email: this.state.email, crypt_password: this.state.password}
     console.log('\n\n account =>' + JSON.stringify(account));
@@ -93,8 +111,6 @@ class Signup extends Component {
     AccountService.createAccount(account).then( res => {
       this.props.history.push('/signup');
     });
-
-
 
 
 /*
@@ -107,6 +123,8 @@ class Signup extends Component {
     });
     */
   }
+
+  
 
   render() {
     return (
@@ -139,7 +157,7 @@ class Signup extends Component {
     open={this.state.errorMatchingPassword}
     onClose={this.setMatchingPasswordError}
     autoHideDuration={5000}>
-      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure  your passwords match."/>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your passwords match."/>
     </Snackbar>
     <Snackbar
     anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
@@ -154,6 +172,20 @@ class Signup extends Component {
     onClose={this.setPasswordError}
     autoHideDuration={5000}>
       <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your password is the proper length."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.errorDOBFormat}
+    onClose={this.setDOBFormatError}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please enter your DOB in the format MM/DD/YYYY."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.errorDOBAge}
+    onClose={this.setDOBAge}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Sorry, you are not the right age to use PurdueCircle."/>
     </Snackbar>
 
     {/* for signup */}
@@ -212,6 +244,15 @@ class Signup extends Component {
             onChange={this.handleChange}/>
             <FormHelperText>Your password should be between 10 and 20 characters</FormHelperText>
             </Box>
+
+            <Box m = {2}><TextField label = "DOB (YYYY-MM-DD)"
+            variant="outlined" type="text"
+            required size="small"
+            name='dob'
+            onChange={this.handleChange}/>
+            <FormHelperText>You must be at least 13 years old to use PurdueCircle.</FormHelperText>
+            </Box>
+
             <Box m={2} textAlign='center'>
             <Button variant="outlined" color="primary" size="medium"
             onClick={this.handleSignup}>Sign Up</Button>
@@ -221,6 +262,27 @@ class Signup extends Component {
     </>
       </div>
     );
+  }
+
+  //private method to check the age
+  #checkAge() {
+    const dob = new Date(this.state.dob);
+    const today = new Date();
+  
+    if (isNaN(dob.getTime())) {
+      return true;
+    }
+  
+    const diffTime = today - dob;
+    const diffYears = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 365.25));
+
+    console.log("Difference in years: " + diffYears)
+  
+    if (diffYears < 13) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 

@@ -10,6 +10,7 @@ import Signup from './Components/Signup';
 import Profile from './Components/Profile';
 import Edit from './Components/Edit';
 import Delete from './Components/Delete';
+import CredRequestScreen from './Components/CredChange';
 
 import {UserContext} from './UserAuthContext';
 
@@ -29,10 +30,8 @@ function App() {
           <Route path="/profile_temp" element={<Profile />}/>
           <Route path="/edit" element={<Edit />}/>
           <Route path="/delete" element={<Delete />}/>
+          <Route path="/cred_request" element={<CredRequestScreen />}/>
 
-          <Route path="/profile/:account_id" element={
-          isAuthenticated ? <h1>account profile placeholder</h1> : <LoginScreen/>}
-          />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

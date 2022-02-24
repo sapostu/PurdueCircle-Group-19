@@ -27,7 +27,7 @@ class CreatePost extends Component {
         let post = {postId: this.state.postID}
         console.log('\n\n post =>' + JSON.stringify(post));
     
-        PostService.createPost(post).then( (res) => {
+        PostService.deletePost(post).then( (res) => {
             console.log(res)
             //this.setState({redir: true});
           if (res.data !== "") {

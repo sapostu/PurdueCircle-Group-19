@@ -39,7 +39,8 @@ class LoginScreen extends Component {
         console.log('\n\n account =>' + JSON.stringify(account));
     
         LoginService.loginAccount(account).then( (res) => {
-          if (res.data != null) {
+            console.log(res)
+          if (res.data !== "") {
             console.log(res.data.username);
             this.setState({username: res.data.username});
             this.setState({toProfile: true});

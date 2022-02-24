@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import EditService from '../Services/EditService';
 
 import { Typography, Button, Card, CardContent, CardActions, CardHeader, Grid, TextField, Snackbar, SnackbarContent } from '@material-ui/core';
@@ -45,8 +45,9 @@ class Edit extends Component {
         let account = {username: this.state.username, bio: this.state.bio}
         console.log('\n\n account =>' + JSON.stringify(account));
     
-        EditService.editAccountq(account).then( (res) => {
+        EditService.editAccount(account).then( (res) => {
             console.log(res)
+            this.setState({redir: true})
           if (res.data !== "") {
             //console.log(res.data.username);
             //this.setState({username: res.data.username});
@@ -58,7 +59,7 @@ class Edit extends Component {
        //   this.props.history.push('/profile');
         });
         // TODO : Actually submit the information stored in the bio and username variables
-        this.setState({redir: true})
+
     }    
 
     handleChange(e) {

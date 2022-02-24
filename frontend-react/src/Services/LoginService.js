@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const ACCOUNT_API_BASE_URL = "http://localhost:8080/account";
 
-class AccountService {
+class LoginService {
 
     loginAccount(account) {
         return axios.get(ACCOUNT_API_BASE_URL + "/login", account);
@@ -10,4 +10,4 @@ class AccountService {
 
 }
 
-export default new AccountService()
+export default new LoginService()

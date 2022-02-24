@@ -1,7 +1,7 @@
 import React, {  Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 
 import { Typography, Button, Card, CardContent, CardActions, CardHeader, Box, AppBar, Toolbar } from '@material-ui/core';
 

@@ -5,12 +5,14 @@ import org.springframework.web.bind.annotation.*;
 import server.backendspringboot.model.Post;
 import server.backendspringboot.repository.PostRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
 @RestController
 @CrossOrigin
-@RequestMapping("posts")
+@RequestMapping("/posts")
 public class PostController {
 
     @Autowired
@@ -39,11 +41,15 @@ public class PostController {
 
     @PostMapping
     public Post addPost(@RequestBody Post post) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        post.setDateOfPost(date);
         return postRepository.save(post);
     }
 
-    @DeleteMapping(path = "{postId}")
-    public void deleteByPostId(@PathVariable("postId") long postId) {
+    @PostMapping("/delete")
+    public void deleteByPostId(@RequestBody Post post) {
+        long postId = post.getPostId();
         System.out.println("postid= " + postId);
         Post toDel = postRepository.getById(postId);
         postRepository.delete(toDel);

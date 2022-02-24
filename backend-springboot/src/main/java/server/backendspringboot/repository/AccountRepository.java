@@ -18,6 +18,9 @@ public interface AccountRepository extends JpaRepository<Account, Integer>{
 
     @Query("SELECT s FROM Account s where s.email = ?1 and s.crypt_password = ?1")
     Account getAccountByEmailAndCrypt_password(String email, String password);
+
+    @Query("SELECT s FROM Account s where s.email = ?1")
+    Account getAccountByEmail(String email);
     // @Query(
     //     value = "INSERT INTO account_info(username, email, crypt_password) VALUES (?1, ?2, ?3);",
     //     nativeQuery = true

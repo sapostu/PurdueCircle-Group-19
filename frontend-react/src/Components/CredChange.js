@@ -92,7 +92,7 @@ class CredRequestScreen extends Component {
         }
 
         // TODO: authenticate oldUsername and oldPassword
-        let account = {username: this.state.oldUsername, password: this.state.oldPassword};
+        let account = {username: this.state.oldUsername, crypt_password: this.state.oldPassword};
         LoginService.loginAccount(account).then( (res) => {
             console.log(res)
             if (res.data !== "") {
@@ -126,7 +126,7 @@ class CredRequestScreen extends Component {
 
         /* base <CredRequestScreen/> */
         return (
-            <div>
+            <div style={{position:"absolute", top:"relative"}}>
                 {/* error alert/notification */}
                 <Snackbar
                 anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
@@ -160,6 +160,10 @@ class CredRequestScreen extends Component {
 
                 {/* physical componenets of form */}
                 <Box m={1}><Typography variant="h5">Select what you would like to change</Typography></Box>
+                <div>
+                    <Checkbox onChange={e => this.setState({email: !this.state.email})}/>
+                    <Typography style={{display: "inline-block"}}>Email</Typography>
+                </div>
                 <div>
                 <Checkbox onChange={e => this.setState({email: !this.state.email})}/>
                 <Typography style={{display: "inline-block"}}>Email</Typography>
@@ -308,7 +312,8 @@ class CredChangeScreen extends Component {
 
         // PUT requests
         if (emailBool) {
-            let accountEmail = {id: this.state.accountId, email: this.state.email};
+            console.log("hello")
+            let accountEmail = {account_id: this.state.accountId, email: this.state.email};
             AccountService.updateAccountEmail(accountEmail).then(res => {
                 if (res.data !== "") {
                     // success
@@ -318,7 +323,7 @@ class CredChangeScreen extends Component {
             });
         }
         if (usernameBool) {
-            let accountUsername = {id: this.state.accountId, username: this.state.username};
+            let accountUsername = {account_id: this.state.accountId, username: this.state.username};
             AccountService.updateAccountUsername(accountUsername).then(res => {
                 if (res.data !== "") {
                     // success
@@ -328,7 +333,7 @@ class CredChangeScreen extends Component {
             });
         }
         if (passwordBool) {
-            let accountPassword = {id: this.state.accountId, password: this.state.password};
+            let accountPassword = {account_id: this.state.accountId, crypt_password: this.state.password};
             AccountService.updateAccountPassword(accountPassword).then(res => {
                 if (res.data !== "") {
                     // success
@@ -357,7 +362,8 @@ class CredChangeScreen extends Component {
         }
 
         return (
-            <div>
+
+            <div style={{position:"absolute", top:"relative", transform:"translate(0%, 30%)"}}>
                 {/* error alert/notification */}
                 <Snackbar
                 anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}

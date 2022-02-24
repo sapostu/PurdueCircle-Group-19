@@ -32,7 +32,7 @@ class CreatePost extends Component {
             this.setState({errorBio: true});
             return;
         }
-        let post = {accountID: this.state.accountID, dateOfPost: "2021-11-19", type: "TEXT", bio: this.state.bio, isAnon: 0}
+        let post = {accountId: this.state.accountID, dateOfPost: "2021-11-19", type: "TEXT", bio: this.state.bio, isAnon: 0}
         console.log('\n\n post =>' + JSON.stringify(post));
     
         PostService.createPost(post).then( (res) => {

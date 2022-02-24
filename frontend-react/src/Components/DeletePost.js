@@ -20,11 +20,12 @@ class CreatePost extends Component {
     }
 
     handleSubmit() {
-        if (this.state.bio.length > 281) {
+       /* if (this.state.bio.length > 281) {
             this.setState({errorBio: true});
             return;
-        }
+        } */
         let post = {postId: this.state.postID}
+        console.log(post)
         console.log('\n\n post =>' + JSON.stringify(post));
     
         PostService.deletePost(post).then( (res) => {

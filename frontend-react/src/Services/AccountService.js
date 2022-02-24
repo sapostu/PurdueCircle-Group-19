@@ -9,15 +9,15 @@ class AccountService {
     }
 
     updateAccountEmail(account) {
-        return axios.put(ACCOUNT_API_BASE_URL + "/credentials/email", account);
+        return axios.post(ACCOUNT_API_BASE_URL + "/credentials/email", account);
     }
 
     updateAccountUsername(account) {
-        return axios.put(ACCOUNT_API_BASE_URL + "/credentials/username", account);
+        return axios.post(ACCOUNT_API_BASE_URL + "/credentials/username", account);
     }
 
     updateAccountPassword(account) {
-        return axios.put(ACCOUNT_API_BASE_URL + "/credentials/password", account);
+        return axios.post(ACCOUNT_API_BASE_URL + "/credentials/password", account);
     }
 
 }

@@ -19,7 +19,7 @@ public class PostController {
    /* @Autowired
     public PostController(PostRepository postRepository) {
         this.postRepository= postRepository;
-    } */
+    }  */
 
     @GetMapping("/allposts")
     public List<Post> getAllPosts() {

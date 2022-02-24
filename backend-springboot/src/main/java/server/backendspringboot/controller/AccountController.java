@@ -24,6 +24,27 @@ public class AccountController {
         return accountRepository.save(_account);
     }
 
+    @PostMapping("/login")
+    public Account login(@RequestBody Account account) {
+        System.out.println(account.getUsername());
+        System.out.println(account.getCrypt_password());
+        System.out.println("\n\n\n");
+        System.out.println(accountRepository.getAccountByUsernameAndCrypt_password(account.getUsername(), account.getCrypt_password()) != null
+        || accountRepository.getAccountByEmailAndCrypt_password(account.getUsername(), account.getCrypt_password()) != null);
+        Account user = accountRepository.getAccountByUsernameAndCrypt_password(account.getUsername(),account.getCrypt_password());
+        Account email = accountRepository.getAccountByEmailAndCrypt_password(account.getEmail(), account.getCrypt_password());
+        if (user != null) {
+
+            return user;
+        }
+
+        if (email != null) {
+            return email;
+        }
+
+        return null;
+    }
+
     @GetMapping("/allAccounts")
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();

@@ -32,7 +32,7 @@ public class AccountController {
         System.out.println(accountRepository.getAccountByUsernameAndCrypt_password(account.getUsername(), account.getCrypt_password()) != null
         || accountRepository.getAccountByEmailAndCrypt_password(account.getUsername(), account.getCrypt_password()) != null);
         Account user = accountRepository.getAccountByUsernameAndCrypt_password(account.getUsername(),account.getCrypt_password());
-        Account email = accountRepository.getAccountByEmailAndCrypt_password(account.getEmail(), account.getCrypt_password());
+        Account email = accountRepository.getAccountByEmailAndCrypt_password(account.getUsername(), account.getCrypt_password());
         if (user != null) {
 
             return user;

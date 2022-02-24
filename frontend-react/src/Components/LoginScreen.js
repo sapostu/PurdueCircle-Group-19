@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent} from '@material-ui/core';
 import { Link, Navigate } from 'react-router-dom';
 import { UserContext } from '../UserAuthContext';
+import AccountService from '../Services/LoginService';
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -31,6 +32,12 @@ class LoginScreen extends Component {
         }
 
         // TODO: authenticate with axios
+        let account = {usernameEmail: this.state.usernameEmail, crypt_password: this.state.password}
+        console.log('\n\n account =>' + JSON.stringify(account));
+    
+        AccountService.loginAccount(account).then( res => {
+          this.props.history.push('/profile');
+        });
 
         // navigate to user's profile page if authenticated
         this.setState({toProfile: true});

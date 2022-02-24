@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent, FormHelperText } from '@material-ui/core';
 import AccountService from '../Services/AccountService';
+import {Navigate} from "react-router-dom";
 
 class Signup extends Component {
   constructor(props) {
@@ -109,8 +110,9 @@ class Signup extends Component {
     console.log('\n\n account =>' + JSON.stringify(account));
 
     AccountService.createAccount(account).then( res => {
-      this.props.history.push('/signup');
+    //  this.props.history.push('/signup');
     });
+    this.setState({redir: true});
 
 
 /*
@@ -127,6 +129,10 @@ class Signup extends Component {
   
 
   render() {
+    if (this.state.redir) {
+      //    return <Navigate to={`/${this.context.accountId}`}/>;
+      return <Navigate to={'/success' /* this.state.username */}/>
+    }
     return (
       <div>
          <>

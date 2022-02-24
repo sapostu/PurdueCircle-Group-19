@@ -3,6 +3,7 @@ import LoginService from '../Services/LoginService';
 import { Link, Navigate } from 'react-router-dom';
 
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent, FormHelperText } from '@material-ui/core';
+import DeleteService from "../Services/DeleteService";
 
 class Delete extends Component {
   constructor(props) {
@@ -44,13 +45,12 @@ class Delete extends Component {
     let account = {username: this.state.usernameEmail, crypt_password: this.state.password}
     console.log('\n\n account =>' + JSON.stringify(account));
 
-    LoginService.loginAccount(account).then( (res) => {
-      console.log(res.data.username);
-      this.setState({username: res.data.username});
-      this.setState({toProfile: true});
+    DeleteService.deleteAccount(account).then( (res) => {
+      console.log(res);
 
    //   this.props.history.push('/profile');
     });
+
 
     // TODO : Actually delete the user's account
 

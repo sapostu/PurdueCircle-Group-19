@@ -56,10 +56,7 @@ class Profile extends Component {
         // if (this.state.username.length === 0) {
         //     return (<Typography align='center' variant='h4' style={{ padding: "20px"}}>Oops! Looks like there's nothing here...</Typography>);
         // }
-        if (this.state.redir) {
-            //    return <Navigate to={`/${this.context.accountId}`}/>;
-                  return <Navigate to={'/success' + this.state.username}/>
-              }
+
         return (
             <>
 

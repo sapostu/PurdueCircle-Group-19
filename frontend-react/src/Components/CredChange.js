@@ -4,6 +4,7 @@ import {Box, Typography, Checkbox, Button, Snackbar, SnackbarContent,
 import { Navigate } from 'react-router-dom';
 import { UserContext } from '../UserAuthContext';
 import AccountService from '../Services/AccountService';
+import LoginService from '../Services/LoginService';
 
 
 /**
@@ -90,9 +91,17 @@ class CredRequestScreen extends Component {
             return;
         }
 
-        // TODO: authenticate this.state.oldPassword
+        // TODO: authenticate oldUsername and oldPassword
+        let account = {username: this.state.oldUsername, password: this.state.oldPassword};
+        LoginService.loginAccount(account).then( (res) => {
+            console.log(res)
+            if (res.data !== "") {
+                this.setState({toCredChange: true});
+            } else {
+                // failure
+            }
+        });
 
-        this.setState({toCredChange: true}); // render <CredChangeScreen/> if their old password is correct
     }
 
 

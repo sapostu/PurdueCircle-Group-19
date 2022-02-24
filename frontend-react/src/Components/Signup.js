@@ -15,6 +15,7 @@ class Signup extends Component {
       password: '',
       confirm_password: '',
       dob: '',
+      bio: '',
       error: false,
       errorName: false,
       errorEmail: false,
@@ -23,7 +24,9 @@ class Signup extends Component {
       errorEmailFormat: false,
       errorMatchingPassword: false,
       errorDOBFormat: false,
-      errorDOBAge: false
+      errorDOBAge: false,
+      errorBio: false,
+      errorNameTaken: false
     }
 
     this.handleSignup = this.handleSignup.bind(this);
@@ -35,9 +38,9 @@ class Signup extends Component {
     this.setMatchingPasswordError = this.setMatchingPasswordError.bind(this);
     this.setDOBFormatError = this.setDOBFormatError.bind(this);
     this.setDOBAgeError = this.setDOBAgeError.bind(this);
-
+    this.setBioError = this.setBioError.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
+    this.setErrorNameTaken = this.setErrorNameTaken.bind(this);
   }
 
   handleChange(e) {
@@ -48,7 +51,12 @@ class Signup extends Component {
   setMissingError(state) {
       this.setState({error: false});
   }
-
+  setErrorNameTaken(state) {
+    this.setState({errorNameTaken: false});
+}
+  setBioError(state) {
+    this.setState({bioError: false});
+}
   setNameError(state) {
     this.setState({errorName: false});  }
 
@@ -101,18 +109,29 @@ class Signup extends Component {
       this.setState({errorDOBFormat: true});
       return;
     }
+    if (this.state.bio.length > 200) {
+      this.setState({errorBio: true});
+      return;
+    }
     if (this.#checkAge()) {
       this.setState({errorDOBAge: true});
       return;
     }
 
-    let account = {username: this.state.username, email: this.state.email, crypt_password: this.state.password}
+    let account = {username: this.state.username, email: this.state.email, crypt_password: this.state.password, bio: this.state.bio}
     console.log('\n\n account =>' + JSON.stringify(account));
 
     AccountService.createAccount(account).then( res => {
     //  this.props.history.push('/signup');
+    if (res.data != '') {
+      this.setState({redir: true});
+      return;
+    } else {
+      this.setState({errorNameTaken: true});
+    }
+
     });
-    this.setState({redir: true});
+    
 
 
 /*
@@ -143,6 +162,20 @@ class Signup extends Component {
     onClose={this.setMissingError}
     autoHideDuration={5000}>
       <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please fill in all fields."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.errorNameTaken}
+    onClose={this.setErrorNameTaken}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Sorry, that username is already taken."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.error}
+    onClose={this.setBioError}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your bio is less than 200 characters."/>
     </Snackbar>
     <Snackbar
     anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
@@ -258,7 +291,13 @@ class Signup extends Component {
             onChange={this.handleChange}/>
             <FormHelperText>You must be at least 13 years old to use PurdueCircle.</FormHelperText>
             </Box>
-
+            <Box m = {2}><TextField label = "Your Bio"
+            variant="outlined" type="text"
+            required size="small"
+            name='bio'
+            onChange={this.handleChange}/>
+            <FormHelperText>Your bio should be less than 200 characters.</FormHelperText>
+            </Box>
             <Box m={2} textAlign='center'>
             <Button variant="outlined" color="primary" size="medium"
             onClick={this.handleSignup}>Sign Up</Button>

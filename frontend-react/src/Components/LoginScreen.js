@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent} from '@material-ui/core';
 import { Link, Navigate } from 'react-router-dom';
 import { UserContext } from '../UserAuthContext';
-import AccountService from '../Services/LoginService';
+import LoginService from '../Services/LoginService';
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -35,7 +35,7 @@ class LoginScreen extends Component {
         let account = {usernameEmail: this.state.usernameEmail, crypt_password: this.state.password}
         console.log('\n\n account =>' + JSON.stringify(account));
     
-        AccountService.loginAccount(account).then( (res) => {
+        LoginService.loginAccount(account).then( (res) => {
           console.log(res);
           this.props.history.push('/profile');
         });

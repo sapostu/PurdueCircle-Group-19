@@ -84,7 +84,7 @@ class LoginScreen extends Component {
                   <Box m={2}><TextField label="Password"
                   variant="outlined" type="password"
                   required size="small"
-                  onChange={e => this.setState({pwd: e.target.value})}
+                  onChange={e => this.setState({password: e.target.value})}
                   /></Box>
                   <Box m={2} textAlign='center'>
                     <Button variant="outlined" color="primary" size="medium"

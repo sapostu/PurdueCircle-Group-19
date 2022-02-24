@@ -13,6 +13,7 @@ import Delete from './Components/Delete';
 import CredRequestScreen from './Components/CredChange';
 import Navbar from './Components/Navbar';
 import Success from './Components/Success';
+import CreatePost from './Components/CreatePost';
 import {UserContext} from './UserAuthContext';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route path="/login" element={<LoginScreen />}/>
             <Route path="/signup" element={<Signup />}/>
             <Route path="/success" element={<Success />}/>
+            <Route path="/post" element={<CreatePost />}/>
           </Route>
 
 

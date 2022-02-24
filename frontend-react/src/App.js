@@ -31,6 +31,9 @@ function App() {
           <Route path="/edit" element={<Edit />}/>
           <Route path="/delete" element={<Delete />}/>
           <Route path="/cred_request" element={<CredRequestScreen />}/>
+          <Route path="/profile" element={<Profile />}>
+            <Route path=":username" name="fdsa" element={<Profile/>}/>
+          </Route>
 
         </Routes>
       </BrowserRouter>

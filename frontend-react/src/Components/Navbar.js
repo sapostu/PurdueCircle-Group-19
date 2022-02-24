@@ -31,6 +31,16 @@ export default function DenseAppBar() {
                     Signup
                 </Typography>
             </Link>
+            <Link to="/post">
+                <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
+                    Create Post
+                </Typography>
+            </Link>
+            <Link to="/delete_post">
+                <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
+                    Delete Post
+                </Typography>
+            </Link>
             </Toolbar>
         </AppBar>
         </Box>

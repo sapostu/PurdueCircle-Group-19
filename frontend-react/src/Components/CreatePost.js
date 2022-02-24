@@ -1,15 +1,15 @@
 import { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import EditService from '../Services/EditService';
+import PostService from '../Services/PostService';
 
 import { Typography, Button, Card, CardContent, CardActions, CardHeader, Grid, TextField, Snackbar, SnackbarContent } from '@material-ui/core';
-class Edit extends Component {
+class CreatePost extends Component {
     constructor(props) {
         super(props);
         
         this.state = {
             // TODO : populate username and bio variables with the user's actual username and bio
-            username: '',
+            accountID: '',
             bio: '',
             errorName: false,
             errorBio: false,
@@ -19,13 +19,8 @@ class Edit extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.setNameError = this.setNameError.bind(this);
         this.setBioError = this.setBioError.bind(this);
 
-    }
-    
-    setNameError() {
-        this.setState({errorName: false});
     }
 
     setBioError() {
@@ -33,21 +28,16 @@ class Edit extends Component {
     }
 
     handleSubmit() {
-        if (this.state.username.length > 15 || this.state.username.length < 3) {
-            this.setState({errorName: true});
-            return;
-        }
-
-        if (this.state.bio.length > 200) {
+        if (this.state.bio.length > 281) {
             this.setState({errorBio: true});
             return;
         }
-        let account = {username: this.state.username, bio: this.state.bio}
-        console.log('\n\n account =>' + JSON.stringify(account));
+        let post = {accountId: this.state.accountID, dateOfPost: "2021-11-19", type: "TEXT", bio: this.state.bio, isAnon: 0}
+        console.log('\n\n post =>' + JSON.stringify(post));
     
-        EditService.editAccount(account).then( (res) => {
+        PostService.createPost(post).then( (res) => {
             console.log(res)
-            this.setState({redir: true})
+            this.setState({redir: true});
           if (res.data !== "") {
             //console.log(res.data.username);
             //this.setState({username: res.data.username});
@@ -59,7 +49,6 @@ class Edit extends Component {
        //   this.props.history.push('/profile');
         });
         // TODO : Actually submit the information stored in the bio and username variables
-
     }    
 
     handleChange(e) {
@@ -70,23 +59,16 @@ class Edit extends Component {
 
     render() {
         if (this.state.redir) {
-            return <Navigate to={'/profile/' + this.state.username}/>;        
+            return <Navigate to={'/post'}/>;
         }
         return (
             <>
             <Snackbar
             anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
-            open={this.state.errorName}
-            onClose={this.setNameError}
-            autoHideDuration={5000}>
-            <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your username is between 3 and 15 characters"/>
-            </Snackbar>
-            <Snackbar
-            anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
             open={this.state.errorBio}
             onClose={this.setBioError}
             autoHideDuration={5000}>
-            <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your bio is no more than 281 characters"/>
+            <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your post is no more than 281 characters"/>
             </Snackbar>
             <div style={{
             display: "flex",
@@ -108,22 +90,9 @@ class Edit extends Component {
                         <CardHeader style={{ height: "1.5vh", backgroundColor: "#f5f5f5" }}>
     
                         </CardHeader>
-                        <Grid container>
-                            <Grid item xs={4}>
-                            <div style={{'height': '200px', 'width': '200px', "padding-left": '20px', "padding-top": '5px'}}>
-                                <img src='https://www.w3schools.com/html/img_chania.jpg' style={{'height': '100%', 'width': '100%', 'object-fit': 'contain'}} alt="Profile"/>
-                                </div> {/* TODO : use a real profile picture*/}
-    
-                            </Grid>
-                            <Grid item xs={4}>
-                            <Button size="small" style={{transform: "translate(+10%, +490%)"}}>Edit Picture</Button> {/* TODO : Add edit picture functionality */}
-    
-                            </Grid>
-                        </Grid>
-                        
                         <CardContent style={{ height: "12vh", 'object-fit': 'contain'}}>
                             <Typography gutterBottom variant="h5" component="div">
-                                <TextField id="filled-static" label="Edit Username" defaultValue={this.state.username} name='username' onChange={this.handleChange}></TextField> 
+                                <TextField id="filled-static" label="Enter User ID" defaultValue={this.state.accountID} name='accountID' onChange={this.handleChange}></TextField> 
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                             <TextField
@@ -154,4 +123,4 @@ class Edit extends Component {
     }
 }
 
-export default Edit;
+export default CreatePost;

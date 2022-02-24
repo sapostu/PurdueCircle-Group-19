@@ -3,6 +3,8 @@ import {Box, Typography, Checkbox, Button, Snackbar, SnackbarContent,
     Dialog, DialogTitle, DialogContent, TextField, DialogActions, Divider} from '@material-ui/core';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from '../UserAuthContext';
+import AccountService from '../Services/AccountService';
+import LoginService from '../Services/LoginService';
 
 
 /**
@@ -23,7 +25,8 @@ class CredRequestScreen extends Component {
             lname: false,
             dob: false,
             oldPassword: "",
-            // for pop-up that asks for old password
+            oldUsername: "",
+            // for pop-up that asks for username and password
             popupBool: false,
             // navigating to different pages
             toProfile: false,
@@ -82,15 +85,23 @@ class CredRequestScreen extends Component {
     handlePopupSubmit = e => {
         e.preventDefault();
         // ensure user fills in their old password
-        if (!this.state.oldPassword) {
+        if (!this.state.oldPassword || !this.state.oldUsername) {
             this.setState({alertMsg: "Please fill in the 'old password' field"});
             this.setState({alertBool: true});
             return;
         }
 
-        // TODO: authenticate this.state.oldPassword
+        // TODO: authenticate oldUsername and oldPassword
+        let account = {username: this.state.oldUsername, crypt_password: this.state.oldPassword};
+        LoginService.loginAccount(account).then( (res) => {
+            console.log(res)
+            if (res.data !== "") {
+                this.setState({toCredChange: true});
+            } else {
+                // failure
+            }
+        });
 
-        this.setState({toCredChange: true}); // render <CredChangeScreen/> if their old password is correct
     }
 
 
@@ -115,7 +126,7 @@ class CredRequestScreen extends Component {
 
         /* base <CredRequestScreen/> */
         return (
-            <div>
+            <div style={{position:"absolute", top:"relative"}}>
                 {/* error alert/notification */}
                 <Snackbar
                 anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
@@ -128,8 +139,11 @@ class CredRequestScreen extends Component {
 
                 {/* old-password confirmation pop-up */}
                 <Dialog open={this.state.popupBool} onClose={e => this.setState({popupBool: false})}>
-                <DialogTitle style={{margin: "auto"}}>Please enter your (old) password:</DialogTitle>
+                <DialogTitle style={{margin: "auto"}}>Please enter your account username and password:</DialogTitle>
                 <DialogContent style={{margin: "auto"}}>
+                    <TextField variant="outlined" label="Account Username" size="small"
+                    onChange={e => this.setState({oldUsername: e.target.value})} type="text"
+                    />
                     <TextField variant="outlined" label="Account Password" size="small"
                     onChange={e => this.setState({oldPassword: e.target.value})} type="password"
                     />
@@ -146,6 +160,10 @@ class CredRequestScreen extends Component {
 
                 {/* physical componenets of form */}
                 <Box m={1}><Typography variant="h5">Select what you would like to change</Typography></Box>
+                <div>
+                    <Checkbox onChange={e => this.setState({email: !this.state.email})}/>
+                    <Typography style={{display: "inline-block"}}>Email</Typography>
+                </div>
                 <div>
                 <Checkbox onChange={e => this.setState({email: !this.state.email})}/>
                 <Typography style={{display: "inline-block"}}>Email</Typography>
@@ -209,7 +227,9 @@ class CredChangeScreen extends Component {
             // bools passed from <CredRequestScreen/> for which credentials user selected
             bools: props.bools,
             // for backing up and rendering <CredRequestScreen/>
-            toCredRequest: false
+            toCredRequest: false,
+            // temporary field for passing user's account id
+            accountId: ""
         };
 
         // TODO: GET request to initialize the input fields to user's old data
@@ -232,7 +252,7 @@ class CredChangeScreen extends Component {
         if ( !( (emailBool?this.state.email:true) && (usernameBool?this.state.username:true) && 
                 (passwordBool?this.state.password:true) && (passwordBool?this.state.secPassword:true) && 
                 (fnameBool?this.state.fname:true) && (lnameBool?this.state.lname:true) && 
-                (dobBool?this.state.dob:true) )) {
+                (dobBool?this.state.dob:true) && this.state.accountId)) {
             this.setState({alertMsg: "Please fill in all fields."});
             this.setState({alertBool: true});
             return;
@@ -290,7 +310,38 @@ class CredChangeScreen extends Component {
             // TODO: if available, send email with verification link
         }
 
-        // TODO: send PUT request to update with this new account information
+        // PUT requests
+        if (emailBool) {
+            console.log("hello")
+            let accountEmail = {account_id: this.state.accountId, email: this.state.email};
+            AccountService.updateAccountEmail(accountEmail).then(res => {
+                if (res.data !== "") {
+                    // success
+                } else {
+                    // failure
+                }
+            });
+        }
+        if (usernameBool) {
+            let accountUsername = {account_id: this.state.accountId, username: this.state.username};
+            AccountService.updateAccountUsername(accountUsername).then(res => {
+                if (res.data !== "") {
+                    // success
+                } else {
+                    // failure
+                }
+            });
+        }
+        if (passwordBool) {
+            let accountPassword = {account_id: this.state.accountId, crypt_password: this.state.password};
+            AccountService.updateAccountPassword(accountPassword).then(res => {
+                if (res.data !== "") {
+                    // success
+                } else {
+                    // failure
+                }
+            });
+        }
 
     }
 
@@ -311,7 +362,8 @@ class CredChangeScreen extends Component {
         }
 
         return (
-            <div>
+
+            <div style={{position:"absolute", top:"relative", transform:"translate(0%, 30%)"}}>
                 {/* error alert/notification */}
                 <Snackbar
                 anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
@@ -366,6 +418,11 @@ class CredChangeScreen extends Component {
                     <Box mr={1} mb={1} style={{display: this.state.bools.passwordBool ? 'inline-block': 'none'}}>
                     <TextField size="small" variant="outlined" label="Re-Enter Password" type="password"
                     onChange={e => this.setState({secPassword: e.target.value})}
+                    />
+                    </Box>
+                    <Box mr={1} mb={1}>
+                    <TextField size="small" variant="outlined" label="Account ID" type="text"
+                    onChange={e => this.setState({accountId: e.target.value})}
                     />
                     </Box>
                     <Box mt={1}>

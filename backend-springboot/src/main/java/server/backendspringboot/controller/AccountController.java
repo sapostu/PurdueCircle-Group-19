@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import server.backendspringboot.model.Account;
+import server.backendspringboot.model.Security;
 import server.backendspringboot.repository.AccountRepository;
 import server.backendspringboot.repository.PostRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -23,8 +25,20 @@ public class AccountController {
     @PostMapping("/signup")
     public Account createAccount(@RequestBody Account _account) {
         //TODO: process POST request
+        Account exists = accountRepository.getAccountByUsername(_account.getUsername());
+        if (exists != null) {
+            return null;
+        }
+      /*  try {
+            _account.setCrypt_password(Security.encrypt(_account.getCrypt_password()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } */
 
-        
+       // System.out.println(_account.getCrypt_password());
+       // System.out.println(_account.getCrypt_password().length());
+
+
         return accountRepository.save(_account);
     }
 
@@ -84,9 +98,65 @@ public class AccountController {
         if (toDel == null) {
             return;
         }
+        if (!toDel.getCrypt_password().equals(account.getCrypt_password())) {
+            return;
+        }
         pc.deleteByAccountId(toDel.getAccount_id());
         accountRepository.delete(toDel);
 
     }
+    @Transactional
+    @PostMapping("/edit")
+    public void editAccount(@RequestBody Account account) {
+        System.out.println("SHould be working!");
+        Account edit = accountRepository.getAccountByUsername(account.getUsername());
+        edit.setBio(account.getBio());
+
+    }
+
+    @Transactional
+    @PostMapping("/credentials/password")
+    public Account editPassword(@RequestBody Account account) {
+    //    Account edit = accountRepository.getAccountByUsername(account.getUsername());
+        Account edit = accountRepository.findById(account.getAccount_id()).orElseThrow(() ->
+                new IllegalStateException("No such account id " + account.getAccount_id()));
+
+        edit.setCrypt_password(account.getCrypt_password());
+        return edit;
+    }
+
+    @Transactional
+    @PostMapping("/credentials/email")
+    public Account editEmail(@RequestBody Account account) {
+        System.out.println("debugging!");
+      //  Account edit = accountRepository.getAccountByUsername(account.getUsername());
+        Account edit = accountRepository.findById(account.getAccount_id()).orElseThrow(() ->
+                new IllegalStateException("No such account id " + account.getAccount_id()));
+
+        Account exists = accountRepository.getAccountByEmail(account.getEmail());
+        if (exists != null) {
+            return null;
+        }
+
+        edit.setEmail(account.getEmail());
+        return edit;
+    }
+
+    @Transactional
+    @PostMapping("credentials/username")
+    public Account editUsername(@RequestBody Account account) {
+        Account edit = accountRepository.findById(account.getAccount_id()).orElseThrow(() ->
+                new IllegalStateException("No such account id " + account.getAccount_id()));
+
+        Account exits = accountRepository.getAccountByUsername(account.getUsername());
+        if (exits != null) {
+            return null;
+        }
+
+        edit.setUsername(account.getUsername());
+        return edit;
+    }
+
+
     
 }

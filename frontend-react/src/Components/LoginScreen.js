@@ -32,7 +32,7 @@ class LoginScreen extends Component {
         }
 
         // TODO: authenticate with axios
-        let account = {usernameEmail: this.state.usernameEmail, crypt_password: this.state.password}
+        let account = {username: this.state.usernameEmail, crypt_password: this.state.password}
         console.log('\n\n account =>' + JSON.stringify(account));
     
         LoginService.loginAccount(account).then( (res) => {

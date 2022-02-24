@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent, FormHelperText } from '@material-ui/core';
 
-class Signup extends Component {
+class Delete extends Component {
   constructor(props) {
     super(props);
 
@@ -104,4 +104,4 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+export default Delete;

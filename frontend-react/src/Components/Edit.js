@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
+import EditService from '../Services/EditService';
 
 import { Typography, Button, Card, CardContent, CardActions, CardHeader, Grid, TextField, Snackbar, SnackbarContent } from '@material-ui/core';
 class Edit extends Component {
@@ -8,10 +9,11 @@ class Edit extends Component {
         
         this.state = {
             // TODO : populate username and bio variables with the user's actual username and bio
-            username: 'ExampleUsername',
-            bio: 'Bio that is 260 charactersBio that is 20 charactersBio that is 260 charactersBio that is 260 charactersBio that is 260 charactersBiothat is 260 charactersBio that is 260 charactersBio that is 260 charactersBio that is 260 charactersBio that is 260 charactersadding21characters123',
+            username: '',
+            bio: '',
             errorName: false,
-            errorBio: false
+            errorBio: false,
+            redir: false
 
         }
 
@@ -36,12 +38,27 @@ class Edit extends Component {
             return;
         }
 
-        if (this.state.bio.length > 281) {
+        if (this.state.bio.length > 200) {
             this.setState({errorBio: true});
             return;
         }
+        let account = {username: this.state.username, bio: this.state.bio}
+        console.log('\n\n account =>' + JSON.stringify(account));
+    
+        EditService.editAccountq(account).then( (res) => {
+            console.log(res)
+          if (res.data !== "") {
+            //console.log(res.data.username);
+            //this.setState({username: res.data.username});
+            //this.setState({toProfile: true});
+          } else {
+            //this.setState({errorCredentials: true});
+          }
 
+       //   this.props.history.push('/profile');
+        });
         // TODO : Actually submit the information stored in the bio and username variables
+        this.setState({redir: true})
     }    
 
     handleChange(e) {
@@ -51,6 +68,9 @@ class Edit extends Component {
     }
 
     render() {
+        if (this.state.redir) {
+            return <Navigate to={'/profile/' + this.state.username}/>;        
+        }
         return (
             <>
             <Snackbar

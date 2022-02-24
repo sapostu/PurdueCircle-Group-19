@@ -22,6 +22,7 @@ class Signup extends Component {
       errorMatchingEmail: false,
       errorEmailFormat: false,
       errorMatchingPassword: false,
+      errorPasswordNumber: false,
       errorDOBFormat: false,
       errorDOBAge: false
     }
@@ -33,6 +34,7 @@ class Signup extends Component {
     this.setMatchingEmailError = this.setMatchingEmailError.bind(this);
     this.setEmailFormatError = this.setEmailFormatError.bind(this);
     this.setMatchingPasswordError = this.setMatchingPasswordError.bind(this);
+    this.setPasswordNumberError = this.setPasswordNumberError.bind(this);
     this.setDOBFormatError = this.setDOBFormatError.bind(this);
     this.setDOBAgeError = this.setDOBAgeError.bind(this);
 
@@ -63,6 +65,9 @@ class Signup extends Component {
 
   setMatchingPasswordError(state) {
     this.setState({errorMatchingPassword: false});  }
+
+  setPasswordNumberError(state) {
+    this.setState({errorPasswordNumber: false});  }
   
   setDOBFormatError(state) {
     this.setState({errorDOBFormat: false});  }
@@ -95,6 +100,10 @@ class Signup extends Component {
     }
     if (this.state.password.length < 10 || this.state.password.length > 20) {
       this.setState({errorPassword: true});
+      return;
+    }
+    if (this.state.password.match(new RegExp("[0-9]+")) == null) {
+      this.setState({errorPasswordNumber: true});
       return;
     }
     if (this.state.dob.match(new RegExp("[0-9]{4}\-[0-9]{2}\-[0-9]{2}")) == null) {
@@ -181,10 +190,17 @@ class Signup extends Component {
     </Snackbar>
     <Snackbar
     anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.errorPasswordNumber}
+    onClose={this.setPasswordNumberError}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please make sure your password has at least 1 number."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
     open={this.state.errorDOBFormat}
     onClose={this.setDOBFormatError}
     autoHideDuration={5000}>
-      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please enter your DOB in the format MM/DD/YYYY."/>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please enter your DOB in the format YYYY-MM-DD."/>
     </Snackbar>
     <Snackbar
     anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
@@ -276,6 +292,10 @@ class Signup extends Component {
     const today = new Date();
   
     if (isNaN(dob.getTime())) {
+      return true;
+    }
+
+    if (dob.getFullYear() < 1900) {
       return true;
     }
   

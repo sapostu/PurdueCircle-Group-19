@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
 
-import { Typography, Button, Card, CardContent, CardActions, CardHeader } from '@material-ui/core';
+import { Typography, Button, Card, CardContent, CardActions, CardHeader, Box, AppBar, Toolbar } from '@material-ui/core';
 
 
 function withRouter(Component) {
@@ -56,14 +56,18 @@ class Profile extends Component {
         // if (this.state.username.length === 0) {
         //     return (<Typography align='center' variant='h4' style={{ padding: "20px"}}>Oops! Looks like there's nothing here...</Typography>);
         // }
-
+        if (this.state.redir) {
+            //    return <Navigate to={`/${this.context.accountId}`}/>;
+                  return <Navigate to={'/success' + this.state.username}/>
+              }
         return (
             <>
+
                 <div style={{
                     display: "flex",
                     backgroundColor: "#f5f5f5",
                     position: "absolute",
-                    top: 0, left: 0,
+                    top: 'relative', left: 0,
                     width: "100vw",
                     height: "100vh"
                 }}>
@@ -75,6 +79,7 @@ class Profile extends Component {
                         width: "40vw",
                         height: "40vh",
                     }}>
+                        
                         <Card sx={{ maxWidth: "10%" }} style={{ transform: "translate(-50%, -0%)", "width": "25vw", "height": "35vh", backgroundColor: "#e0e0e0" }} square elevation={0} variant="outlined">
                             <CardHeader style={{ height: "1.5vh", backgroundColor: "#f5f5f5" }}>
 

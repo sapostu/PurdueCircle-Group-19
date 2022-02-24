@@ -71,7 +71,7 @@ class Edit extends Component {
             display: "flex",
             backgroundColor: "#f5f5f5",
             position: "absolute",
-            top: 0, left: 0,
+            top: 'relative', left: 0,
             width: "100vw",
             height: "100vh"
             }}>

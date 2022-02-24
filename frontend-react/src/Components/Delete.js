@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import LoginService from '../Services/LoginService';
+import { Link, Navigate } from 'react-router-dom';
 
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent, FormHelperText } from '@material-ui/core';
 
@@ -8,8 +10,10 @@ class Signup extends Component {
 
     this.state = {
       confirm: '',
-      errorNotMatching: false
-
+      errorNotMatching: false,
+      usernameEmail: '',
+      password: '',
+      toProfile: false
 
     }
 
@@ -37,6 +41,17 @@ class Signup extends Component {
       return;
     }
 
+    let account = {username: this.state.usernameEmail, crypt_password: this.state.password}
+    console.log('\n\n account =>' + JSON.stringify(account));
+
+    LoginService.loginAccount(account).then( (res) => {
+      console.log(res.data.username);
+      this.setState({username: res.data.username});
+      this.setState({toProfile: true});
+
+   //   this.props.history.push('/profile');
+    });
+
     // TODO : Actually delete the user's account
 
 /*
@@ -51,6 +66,10 @@ class Signup extends Component {
   }
 
   render() {
+    if (this.state.toProfile) {
+        //    return <Navigate to={`/${this.context.accountId}`}/>;
+              return <Navigate to={'/login'}/>
+    }
     return (
       <div>
          <>
@@ -68,7 +87,7 @@ class Signup extends Component {
       display: "flex",
       backgroundColor: "#f5f5f5",
       position: "absolute",
-      top: 0, left: 0,
+      top: 'relative', left: 0,
       width: "100vw",
       height: "100vh"
       }}>
@@ -92,6 +111,15 @@ class Signup extends Component {
             onChange={this.handleChange}/>
             <FormHelperText>You must copy the statement exactly</FormHelperText>
             </Box>
+            <Box m={2}><TextField label="Email/Username"
+                  variant="outlined" type="text"
+                  required size="small"
+                  onChange={e => this.setState({usernameEmail: e.target.value})}/></Box>
+                  <Box m={2}><TextField label="Password"
+                  variant="outlined" type="password"
+                  required size="small"
+                  onChange={e => this.setState({password: e.target.value})}
+                  /></Box>
             <Box m={2} textAlign='center'>
             <Button variant="outlined" color="primary" size="medium"
             onClick={this.handleDelete}>Delete Account</Button>

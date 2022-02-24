@@ -12,6 +12,7 @@ class LoginScreen extends Component {
             usernameEmail: "", // tracks first field (either username or email)
             password: "", // tracks second field
             toProfile: false, // setting true navigates to profile page
+            errorCredentials: false,
             username: ""
 
         };
@@ -38,9 +39,13 @@ class LoginScreen extends Component {
         console.log('\n\n account =>' + JSON.stringify(account));
     
         LoginService.loginAccount(account).then( (res) => {
-          console.log(res.data.username);
-          this.setState({username: res.data.username});
-          this.setState({toProfile: true});
+          if (res.data != null) {
+            console.log(res.data.username);
+            this.setState({username: res.data.username});
+            this.setState({toProfile: true});
+          } else {
+            this.setState({errorCredentials: true});
+          }
 
        //   this.props.history.push('/profile');
         });
@@ -69,6 +74,13 @@ class LoginScreen extends Component {
               onClose={e => this.setState({alertBool: false})}
               autoHideDuration={5000}>
                 <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Please fill in both fields."/>
+              </Snackbar>
+              <Snackbar
+              anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+              open={this.state.errorCredentials}
+              onClose={e => this.setState({errorCredentials: false})}
+              autoHideDuration={5000}>
+                <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="The credentials you entered are incorrect."/>
               </Snackbar>
 
               {/* actual login screen */}

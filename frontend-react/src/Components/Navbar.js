@@ -41,6 +41,11 @@ export default function DenseAppBar() {
                     Delete Post
                 </Typography>
             </Link>
+                <Link to="/cred_request">
+                    <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
+                        Change Credentials
+                    </Typography>
+                </Link>
             </Toolbar>
         </AppBar>
         </Box>

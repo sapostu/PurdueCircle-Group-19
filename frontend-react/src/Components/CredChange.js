@@ -273,7 +273,13 @@ class CredChangeScreen extends Component {
         }
         // password
         if (passwordBool && (this.state.password.length < 10 || this.state.password > 20)) {
+
             this.setState({alertMsg: "Password must be between 10 and 20 characters long."});
+            this.setState({alertBool: true});
+            return;
+        }
+        if (this.state.password.match(new RegExp("[0-9]+")) == null) {
+            this.setState({alertMsg: "Password should contain nmber."});
             this.setState({alertBool: true});
             return;
         }

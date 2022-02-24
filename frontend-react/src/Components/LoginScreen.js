@@ -26,7 +26,7 @@ class LoginScreen extends Component {
      * Ensures fields are filled in, then authenticates
      */
     handleLogin = () => {
-        if (!this.state.usernameEmail || !this.state.pwd) {
+        if (!this.state.usernameEmail || !this.state.password) {
           this.setState({alertBool: true});
           return;
         }
@@ -35,7 +35,8 @@ class LoginScreen extends Component {
         let account = {usernameEmail: this.state.usernameEmail, crypt_password: this.state.password}
         console.log('\n\n account =>' + JSON.stringify(account));
     
-        AccountService.loginAccount(account).then( res => {
+        AccountService.loginAccount(account).then( (res) => {
+          console.log(res);
           this.props.history.push('/profile');
         });
 

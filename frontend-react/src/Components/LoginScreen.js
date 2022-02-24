@@ -11,7 +11,9 @@ class LoginScreen extends Component {
             alertBool: false,  // determines if 'missing fields' alert is shown
             usernameEmail: "", // tracks first field (either username or email)
             password: "", // tracks second field
-            toProfile: false // setting true navigates to profile page
+            toProfile: false, // setting true navigates to profile page
+            username: ""
+
         };
 
         this.handleLogin = this.handleLogin.bind(this);
@@ -36,12 +38,16 @@ class LoginScreen extends Component {
         console.log('\n\n account =>' + JSON.stringify(account));
     
         LoginService.loginAccount(account).then( (res) => {
-          console.log(res);
-          this.props.history.push('/profile');
+          console.log(res.data.username);
+          this.setState({username: res.data.username});
+          this.setState({toProfile: true});
+
+       //   this.props.history.push('/profile');
         });
 
         // navigate to user's profile page if authenticated
-        this.setState({toProfile: true});
+
+
     }
 
     /**
@@ -51,7 +57,8 @@ class LoginScreen extends Component {
      */
     render() {
         if (this.state.toProfile) {
-          return <Navigate to={`/${this.context.accountId}`}/>;
+      //    return <Navigate to={`/${this.context.accountId}`}/>;
+            return <Navigate to={'/profile/' + this.state.username}/>
         }
         return (
             <div>

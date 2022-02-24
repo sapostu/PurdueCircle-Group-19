@@ -5,7 +5,7 @@ const ACCOUNT_API_BASE_URL = "http://localhost:8080/account";
 class LoginService {
 
     loginAccount(account) {
-        return axios.get(ACCOUNT_API_BASE_URL + "/login", account);
+        return axios.post(ACCOUNT_API_BASE_URL + "/login", account);
     }
 
 }

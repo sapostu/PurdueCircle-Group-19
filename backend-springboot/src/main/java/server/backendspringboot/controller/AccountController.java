@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import server.backendspringboot.model.Account;
 import server.backendspringboot.repository.AccountRepository;
+import server.backendspringboot.repository.PostRepository;
 
 import java.util.List;
 
@@ -15,6 +16,9 @@ import java.util.List;
 public class AccountController {
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    PostController pc;
 
     @PostMapping("/signup")
     public Account createAccount(@RequestBody Account _account) {
@@ -32,7 +36,7 @@ public class AccountController {
         System.out.println(accountRepository.getAccountByUsernameAndCrypt_password(account.getUsername(), account.getCrypt_password()) != null
         || accountRepository.getAccountByEmailAndCrypt_password(account.getUsername(), account.getCrypt_password()) != null);
         Account user = accountRepository.getAccountByUsernameAndCrypt_password(account.getUsername(),account.getCrypt_password());
-        Account email = accountRepository.getAccountByEmailAndCrypt_password(account.getEmail(), account.getCrypt_password());
+        Account email = accountRepository.getAccountByEmailAndCrypt_password(account.getUsername(), account.getCrypt_password());
         if (user != null) {
 
             return user;
@@ -71,6 +75,18 @@ public class AccountController {
         Account toDel = accountRepository.getAccountByUsername(username);
         accountRepository.delete(toDel);
         return toDel;
+    }
+
+    @PostMapping("/delete")
+    public void deleteAccount(@RequestBody Account account) {
+        System.out.println("\n\n Deleting account");
+        Account toDel = accountRepository.getAccountByUsername(account.getUsername());
+        if (toDel == null) {
+            return;
+        }
+        pc.deleteByAccountId(toDel.getAccount_id());
+        accountRepository.delete(toDel);
+
     }
     
 }

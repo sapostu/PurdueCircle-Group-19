@@ -278,7 +278,7 @@ class CredChangeScreen extends Component {
             this.setState({alertBool: true});
             return;
         }
-        if (this.state.password.match(new RegExp("[0-9]+")) == null) {
+        if (passwordBool && this.state.password.match(new RegExp("[0-9]+")) == null) {
             this.setState({alertMsg: "Password should contain nmber."});
             this.setState({alertBool: true});
             return;

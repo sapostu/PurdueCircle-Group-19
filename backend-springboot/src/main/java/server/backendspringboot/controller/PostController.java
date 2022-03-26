@@ -3,7 +3,9 @@ package server.backendspringboot.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.backendspringboot.model.Post;
+import server.backendspringboot.model.Tags;
 import server.backendspringboot.repository.PostRepository;
+import server.backendspringboot.repository.TagsRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,6 +19,9 @@ public class PostController {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private TagsController tc;
 
    /* @Autowired
     public PostController(PostRepository postRepository) {
@@ -44,13 +49,19 @@ public class PostController {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         post.setDateOfPost(date);
+        long tagId = getTagId(post.getTagName());
+        post.setTag_id(tagId);
         return postRepository.save(post);
+    }
+
+    @DeleteMapping("/deleteAll")
+    public void deleteAllPost() {
+        postRepository.deleteAll(postRepository.findAll());
     }
 
     @PostMapping("/delete")
     public void deleteByPostId(@RequestBody Post post) {
         long postId = post.getPostId();
-        System.out.println("postid= " + postId);
         Post toDel = postRepository.getById(postId);
         postRepository.delete(toDel);
     }
@@ -59,5 +70,31 @@ public class PostController {
     public void deleteByAccountId(@PathVariable("accountId") long accountId) {
         List<Post> toDel = postRepository.getPostByAuthor(accountId);
         postRepository.deleteAll(toDel);
+    }
+
+    @GetMapping(path= "/postByTag")
+    public List<Post> getPostByTagName(@RequestBody Tags tag) {
+        System.out.println("before");
+        System.out.println(tag.getTagName());
+        System.out.println("after");
+        Long tagId = postRepository.getTagsByName(tag.getTagName());
+        if (tagId == null) {
+            return null;
+        }
+        return postRepository.getPostByTag_id(tagId);
+    }
+
+    public Long getTagId(String tagName) {
+        if (tagName == null) {
+            return (long) -1;
+        }
+        Long tagId = postRepository.getTagsByName((tagName));
+        if (tagId != null) {
+            return tagId;
+        } else {
+            tc.addTags(new Tags(tagName));
+            Tags toRet = tc.getTagsByTagName(tagName);
+            return toRet.getTagId();
+        }
     }
 }

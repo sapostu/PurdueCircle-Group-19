@@ -3,8 +3,10 @@ package server.backendspringboot.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.backendspringboot.model.Comment;
+import server.backendspringboot.model.Post;
 import server.backendspringboot.repository.CommentRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -22,7 +24,6 @@ public class CommentController {
 
     @GetMapping("/commentId/{commentId}")
     public Comment getCommentByCommId(@PathVariable("commentId") long commentId) {
-        System.out.println("here");
         return commentRepository.findById(commentId).orElseThrow(() ->
                 new IllegalStateException("No such comment with id: " + commentId));
     }
@@ -39,13 +40,21 @@ public class CommentController {
 
     @PostMapping("/addComment/")
     public Comment addComment(@RequestBody Comment comment) {
+        comment.setDate(new Date());
         commentRepository.save(comment);
         return comment;
     }
 
-    @DeleteMapping("/delete/{commentId}")
-    public void deleteComment(@PathVariable("commentId") long commentId) {
-       commentRepository.deleteById(commentId);
+//    @DeleteMapping("/delete/{commentId}")
+//    public void deleteComment(@PathVariable("commentId") long commentId) {
+//       commentRepository.deleteById(commentId);
+//    }
+
+    @PostMapping("/delete")
+    public void deleteByCommentId(@RequestBody Comment comment) {
+        long commentId = comment.getCommentId();
+        Comment toDel = commentRepository.getById(commentId);
+        commentRepository.delete(toDel);
     }
 
 

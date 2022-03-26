@@ -46,7 +46,6 @@ public class PostController {
 
     @PostMapping
     public Post addPost(@RequestBody Post post) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         post.setDateOfPost(date);
         long tagId = getTagId(post.getTagName());

@@ -4,6 +4,10 @@ import { Link, Navigate } from 'react-router-dom';
 import { UserContext } from '../UserAuthContext';
 import LoginService from '../Services/LoginService';
 
+var CryptoJS = require("crypto-js/core");
+CryptoJS.AES = require("crypto-js/aes");
+const secret = "d9aopdisfoaid923u-2u;okdfosidhgsigudw;s9u2308rlskf;sdh;aoisdhg;aowghp02384gykjdhskgsjba.dkjgd;aaDSFAS";
+
 class LoginScreen extends Component {
     constructor(props) {
         super(props);
@@ -42,8 +46,22 @@ class LoginScreen extends Component {
             console.log(res)
           if (res.data !== "") {
             console.log(res.data.username);
-            this.setState({username: res.data.username});
-            this.setState({toProfile: true});
+
+            let aes_crypt = res.data.crypt_password;
+            let uncrypt = CryptoJS.AES.decrypt(aes_crypt, secret).toString(CryptoJS.enc.Utf8);
+
+            if (uncrypt !== this.state.password) {
+              console.log("FAIL");
+              this.setState({errorCredentials: true});
+            }
+            else {
+              console.log("the verification is true!");
+              this.setState({username: res.data.username});
+              this.setState({toProfile: true});
+            }
+
+
+
           } else {
             this.setState({errorCredentials: true});
           }

@@ -47,10 +47,11 @@ public class AccountController {
         System.out.println(account.getUsername());
         System.out.println(account.getCrypt_password());
         System.out.println("\n\n\n");
-        System.out.println(accountRepository.getAccountByUsernameAndCrypt_password(account.getUsername(), account.getCrypt_password()) != null
-        || accountRepository.getAccountByEmailAndCrypt_password(account.getUsername(), account.getCrypt_password()) != null);
-        Account user = accountRepository.getAccountByUsernameAndCrypt_password(account.getUsername(),account.getCrypt_password());
-        Account email = accountRepository.getAccountByEmailAndCrypt_password(account.getUsername(), account.getCrypt_password());
+        // System.out.println(accountRepository.getAccountByUsernameAndCrypt_password(account.getUsername(), account.getCrypt_password()) != null
+        // || accountRepository.getAccountByEmailAndCrypt_password(account.getUsername(), account.getCrypt_password()) != null);
+
+        Account user = accountRepository.getAccountByOnlyUsername(account.getUsername());
+        Account email = accountRepository.getAccountByOnlyEmail(account.getUsername());
         if (user != null) {
 
             return user;

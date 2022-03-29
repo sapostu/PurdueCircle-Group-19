@@ -15,6 +15,7 @@ import Navbar from './Components/Navbar';
 import Success from './Components/Success';
 import CreatePost from './Components/CreatePost';
 import DeletePost from './Components/DeletePost';
+import Topic from './Components/Topic';
 import {UserContext} from './UserAuthContext';
 
 function App() {
@@ -41,6 +42,9 @@ function App() {
             <Route path="/success" element={<Success />}/>
             <Route path="/post" element={<CreatePost />}/>
             <Route path="/delete_post" element={<DeletePost />}/>
+            <Route path="/topic" element={<Topic />}>
+              <Route path=":topic" name="fdsa" element={<Topic/>}/>
+            </Route>
           </Route>
 
 

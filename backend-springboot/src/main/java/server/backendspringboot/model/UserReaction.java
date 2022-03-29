@@ -7,7 +7,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "UserReactions")
 @IdClass(UserReactionID.class)
 public class UserReaction {
     @Id

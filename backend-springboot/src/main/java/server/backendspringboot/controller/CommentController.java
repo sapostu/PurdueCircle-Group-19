@@ -50,6 +50,11 @@ public class CommentController {
 //       commentRepository.deleteById(commentId);
 //    }
 
+    @DeleteMapping("/deleteByPostId/{postId}")
+    public void deleteCommentsByPostId(@PathVariable long postId) {
+        commentRepository.detleteCommentsByPostId(postId);
+    }
+
     @PostMapping("/delete")
     public void deleteByCommentId(@RequestBody Comment comment) {
         long commentId = comment.getCommentId();

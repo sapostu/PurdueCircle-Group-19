@@ -28,7 +28,7 @@ public class Account {
     @Column(name = "date_of_birth", columnDefinition = "VARCHAR(32)")
     private String date_of_birth;
 
-    @Column(name = "crypt_password", columnDefinition = "VARCHAR(20)")
+    @Column(name = "crypt_password", columnDefinition = "VARCHAR(100)")
     private String crypt_password;
 
     @Lob

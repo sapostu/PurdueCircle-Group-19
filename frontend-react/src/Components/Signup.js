@@ -4,6 +4,11 @@ import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent, Fo
 import AccountService from '../Services/AccountService';
 import {Navigate} from "react-router-dom";
 
+
+var CryptoJS = require("crypto-js/core");
+CryptoJS.AES = require("crypto-js/aes");
+const secret = "d9aopdisfoaid923u-2u;okdfosidhgsigudw;s9u2308rlskf;sdh;aoisdhg;aowghp02384gykjdhskgsjba.dkjgd;aaDSFAS";
+
 class Signup extends Component {
   constructor(props) {
     super(props)
@@ -126,6 +131,11 @@ class Signup extends Component {
       this.setState({errorDOBAge: true});
       return;
     }
+
+    this.state.password = CryptoJS.AES.encrypt(this.state.password, secret).toString();
+
+    console.log("DECRUPt =" + CryptoJS.AES.decrypt(this.state.password, secret).toString(CryptoJS.enc.Utf8));
+    // this.state.password = this.state.password.substring(0, 15);
 
     let account = {username: this.state.username, email: this.state.email, crypt_password: this.state.password, bio: this.state.bio}
     console.log('\n\n account =>' + JSON.stringify(account));

@@ -25,7 +25,7 @@ class Topic extends Component {
         super(props);
         this.state = {
             exists: true,
-            topic: '',
+            topic: 'default',
             users: [
                 { id: 1, userName: 'user 1', content: 'this is a post 1' },
                 { id: 2, userName: 'user 2', content: 'this is a post 2' },
@@ -59,7 +59,7 @@ class Topic extends Component {
                         "text-align": "center"
                     }} id="login_cont">
                         <h1>
-                        this.state.topic
+                        {this.state.topic}
                         </h1>
                     </Paper>
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>

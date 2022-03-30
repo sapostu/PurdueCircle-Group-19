@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import { UserContext } from '../UserAuthContext';
 import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper, Typography, Divider } from '@material-ui/core';
-import axios from 'axios';
+import PostService from '../Services/PostService';
+
+function withRouter(Component) {
+    function ComponentWithRouterProp(props) {
+        let params = useParams();
+        return (
+            <Component
+                {...props}
+                router={{ params }}
+            />
+        );
+    }
+
+    return ComponentWithRouterProp;
+}
 
 class Userline extends Component {
     constructor(props) {
         super(props);
         this.state = {
             username: '',
-            posts: [{id: 0, userName: "eeby deeby", content: "hope this works"}]
+            posts: []
         };
     }
 
@@ -20,6 +34,18 @@ class Userline extends Component {
         //    console.log(response);
         
         //});
+        console.log(this.props);
+        console.log(this.props.router.params.username);
+        PostService.getPostsByName(this.props.router.params.username).then((response) => {
+            console.log(response);
+            var arr = [];
+
+            response.data.forEach(post => {
+                arr.push({id: post.postId, userName: this.props.router.params.username, content: post.bio});
+            });
+
+            this.setState({posts: arr});
+        });
     }
     
     render() {
@@ -79,4 +105,4 @@ class Userline extends Component {
 
 }
 
-export default Userline;
+export default withRouter(Userline);

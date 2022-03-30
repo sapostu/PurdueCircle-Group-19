@@ -39,6 +39,12 @@ public class PostController {
         return postRepository.getPostByAuthor(authorId);
     }
 
+    @GetMapping("/postByName{username}")
+    public List<Post> getPostByUsername(@PathVariable("username") String username) {
+        System.out.println(username);
+        return postRepository.getPostByName(username);
+    }
+
     @PostMapping
     public Post addPost(@RequestBody Post post) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

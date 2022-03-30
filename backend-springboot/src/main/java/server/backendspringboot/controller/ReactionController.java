@@ -1,10 +1,13 @@
 package server.backendspringboot.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +46,22 @@ public class ReactionController {
     @GetMapping("/reactionsByPostId/{postId}")
     public List<UserReaction> getReactionsByPostId(@PathVariable long postId) {
         return userReactionsRepository.getReactionsByPostId(postId);
+    }
+
+    @GetMapping("/reactionCounts/{postId}")
+    public Map<Long, Integer> getReactionCountsByPostId(@PathVariable long postId) {
+        Map<Long, Integer> ret = new HashMap<Long, Integer>();
+        List<Reaction> reactionTypes = reactionRepository.findAll();
+        for (Reaction r : reactionTypes) {
+            int count = userReactionsRepository.countReactionsByPostIdAndReactionId(postId, r.getReactionId());
+            ret.put(r.getReactionId(), count);
+        }
+        return ret;
+    }
+
+    @DeleteMapping("/deleteByPostId/{postId}")
+    public void deleteReactionsByPostId(@PathVariable long postId) {
+        userReactionsRepository.deleteUserReactionsByPostId(postId);
     }
 
     @PostMapping("/addReaction")

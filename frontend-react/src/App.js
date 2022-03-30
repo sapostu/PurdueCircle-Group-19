@@ -15,16 +15,13 @@ import Navbar from './Components/Navbar';
 import Success from './Components/Success';
 import CreatePost from './Components/CreatePost';
 import DeletePost from './Components/DeletePost';
-import {UserContext} from './UserAuthContext';
+import UserProvider from './UserContext';
 
 function App() {
   // allows all children of <App/> to get and modify user's id and authentication status through UserContext
-  const [accountId, setAccountId] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const authValue = { accountId, setAccountId, isAuthenticated, setIsAuthenticated };
 
   return (
-  <UserContext.Provider value={authValue}>
+  <UserProvider>
       <BrowserRouter>
         <Routes>
           <Route path="*" element={<LoginScreen />}/>
@@ -46,7 +43,7 @@ function App() {
 
         </Routes>
       </BrowserRouter>
-    </UserContext.Provider>
+    </UserProvider>
   );
 }
 

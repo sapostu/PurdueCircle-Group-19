@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Box, Typography, Checkbox, Button, Snackbar, SnackbarContent,
     Dialog, DialogTitle, DialogContent, TextField, DialogActions, Divider} from '@material-ui/core';
 import { Navigate } from 'react-router-dom';
-import { UserContext } from '../UserAuthContext';
+//import { UserContext } from '../UserAuthContext';
 import AccountService from '../Services/AccountService';
 import LoginService from '../Services/LoginService';
 
@@ -42,7 +42,7 @@ class CredRequestScreen extends Component {
 
     // for tracking user authentication status
     // use this.context to access
-    static contextType = UserContext;
+    // static contextType = UserContext;
 
     /**
      * Handles cancel button
@@ -240,7 +240,7 @@ class CredChangeScreen extends Component {
 
     // for tracking user authentication status
     // use this.context to access
-    static contextType = UserContext;
+    // static contextType = UserContext;
 
     /**
      * Handles submit button

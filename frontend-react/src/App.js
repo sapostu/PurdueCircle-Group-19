@@ -16,6 +16,8 @@ import Success from './Components/Success';
 import CreatePost from './Components/CreatePost';
 import DeletePost from './Components/DeletePost';
 import {UserContext} from './UserAuthContext';
+import Timeline from './Components/Timeline';
+import Userline from './Components/Userline';
 
 function App() {
   // allows all children of <App/> to get and modify user's id and authentication status through UserContext
@@ -41,6 +43,10 @@ function App() {
             <Route path="/success" element={<Success />}/>
             <Route path="/post" element={<CreatePost />}/>
             <Route path="/delete_post" element={<DeletePost />}/>
+            <Route path="/timeline" element={<Timeline />}/>
+            <Route path="/userline" element={<Userline />}>
+              <Route path=":username" element={<Userline />}/>
+            </Route>
           </Route>
 
 

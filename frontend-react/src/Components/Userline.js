@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import { UserContext } from '../UserAuthContext';
 import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper, Typography, Divider } from '@material-ui/core';
 import axios from 'axios';
 
-class Timeline extends Component {
+class Userline extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: [{id: 0, userName: "Blah", content: "This is a test"}]
+            username: '',
+            posts: [{id: 0, userName: "eeby deeby", content: "hope this works"}]
         };
-
     }
 
     componentDidMount() {
@@ -20,7 +21,6 @@ class Timeline extends Component {
         
         //});
     }
-
     
     render() {
         return (
@@ -79,4 +79,4 @@ class Timeline extends Component {
 
 }
 
-export default Timeline;
+export default Userline;

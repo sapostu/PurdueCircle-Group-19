@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import server.backendspringboot.model.Account;
-import server.backendspringboot.model.Security;
 import server.backendspringboot.repository.AccountRepository;
 import server.backendspringboot.repository.PostRepository;
 

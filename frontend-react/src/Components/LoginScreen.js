@@ -92,8 +92,7 @@ class LoginScreen extends Component {
     render() {
         if (this.state.toProfile) {
       //    return <Navigate to={`/${this.context.accountId}`}/>;
-            //return <Navigate to={'/profile/' + this.state.username}/>
-            return <Navigate to={'/mypost'}/>
+            return <Navigate to={'/profile/' + this.state.username}/>
         }
 
         // const {auth_username, isAuthenticated, logIn} = this.context;

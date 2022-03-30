@@ -10,7 +10,7 @@ export default function DenseAppBar() {
   return (
       <div>
         <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="absolute" color='white'>
+        <AppBar position="sticky" color='white'>
             <Toolbar variant="dense">
 
             <Typography variant="h6" color="inherit" component="div">

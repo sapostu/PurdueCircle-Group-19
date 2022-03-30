@@ -15,7 +15,10 @@ import Navbar from './Components/Navbar';
 import Success from './Components/Success';
 import CreatePost from './Components/CreatePost';
 import DeletePost from './Components/DeletePost';
+import Topic from './Components/Topic';
+import {UserContext} from './UserAuthContext';
 import UserProvider from './UserContext';
+
 
 function App() {
   // allows all children of <App/> to get and modify user's id and authentication status through UserContext
@@ -38,6 +41,9 @@ function App() {
             <Route path="/success" element={<Success />}/>
             <Route path="/post" element={<CreatePost />}/>
             <Route path="/delete_post" element={<DeletePost />}/>
+            <Route path="/topic" element={<Topic />}>
+              <Route path=":topic" name="fdsa" element={<Topic/>}/>
+            </Route>
           </Route>
 
 

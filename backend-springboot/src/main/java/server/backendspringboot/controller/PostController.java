@@ -71,15 +71,17 @@ public class PostController {
         postRepository.deleteAll(toDel);
     }
 
-    @GetMapping(path= "/postByTag")
-    public List<Post> getPostByTagName(@RequestBody Tags tag) {
+    @GetMapping(path= "/postByTag/{tag}")
+    public List<Post> getPostByTagName(@PathVariable("tag") String tag) {
         System.out.println("before");
-        System.out.println(tag.getTagName());
+        //System.out.println(tag).getTagName());
         System.out.println("after");
-        Long tagId = postRepository.getTagsByName(tag.getTagName());
+        Long tagId = postRepository.getTagsByName(tag);
         if (tagId == null) {
             return null;
         }
+        System.out.println(tagId);
+
         return postRepository.getPostByTag_id(tagId);
     }
 
@@ -96,4 +98,5 @@ public class PostController {
             return toRet.getTagId();
         }
     }
+
 }

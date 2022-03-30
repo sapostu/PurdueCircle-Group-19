@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent} from '@material-ui/core';
 import { Link, Navigate } from 'react-router-dom';
-import UserContext from '../UserContext';
+import { UserContext } from '../UserContext';
 import LoginService from '../Services/LoginService';
 
 var CryptoJS = require("crypto-js/core");
@@ -38,7 +38,7 @@ class LoginScreen extends Component {
           return;
         }
 
-        const {auth_username, isAuthenticated, logIn} = this.context;
+        const {logIn} = this.context;
 
         // TODO: authenticate with axios
         let account = {username: this.state.usernameEmail, crypt_password: this.state.password}
@@ -59,6 +59,7 @@ class LoginScreen extends Component {
             else {
               console.log("the verification is true!");
               this.setState({username: res.data.username});
+              logIn(res.data.username);
               this.setState({toProfile: true});
               console.log("res data = " + JSON.stringify(res.data.username));
               //logIn(JSON.stringify(res.data.username));
@@ -91,7 +92,8 @@ class LoginScreen extends Component {
     render() {
         if (this.state.toProfile) {
       //    return <Navigate to={`/${this.context.accountId}`}/>;
-            return <Navigate to={'/profile/' + this.state.username}/>
+            //return <Navigate to={'/profile/' + this.state.username}/>
+            return <Navigate to={'/mypost'}/>
         }
 
         // const {auth_username, isAuthenticated, logIn} = this.context;
@@ -154,4 +156,5 @@ class LoginScreen extends Component {
     }
 }
 
+// LoginScreen.contextType = UserContext;
 export default LoginScreen;

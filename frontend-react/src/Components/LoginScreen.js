@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {TextField, Typography, Box, Paper, Button, Snackbar, SnackbarContent} from '@material-ui/core';
 import { Link, Navigate } from 'react-router-dom';
-import { UserContext } from '../UserAuthContext';
+import UserContext from '../UserContext';
 import LoginService from '../Services/LoginService';
 
 var CryptoJS = require("crypto-js/core");
@@ -17,7 +17,7 @@ class LoginScreen extends Component {
             password: "", // tracks second field
             toProfile: false, // setting true navigates to profile page
             errorCredentials: false,
-            username: ""
+            username: "",
 
         };
 
@@ -37,6 +37,8 @@ class LoginScreen extends Component {
           this.setState({alertBool: true});
           return;
         }
+
+        const {auth_username, isAuthenticated, logIn} = this.context;
 
         // TODO: authenticate with axios
         let account = {username: this.state.usernameEmail, crypt_password: this.state.password}
@@ -58,6 +60,13 @@ class LoginScreen extends Component {
               console.log("the verification is true!");
               this.setState({username: res.data.username});
               this.setState({toProfile: true});
+              console.log("res data = " + JSON.stringify(res.data.username));
+              //logIn(JSON.stringify(res.data.username));
+
+              // let printAuth = {username: username, isAuthenticated: isAuthenticated}
+              console.log ("print auth below\n");
+              console.log(this.context);
+
             }
 
 
@@ -84,6 +93,10 @@ class LoginScreen extends Component {
       //    return <Navigate to={`/${this.context.accountId}`}/>;
             return <Navigate to={'/profile/' + this.state.username}/>
         }
+
+        // const {auth_username, isAuthenticated, logIn} = this.context;
+        // let currentAuth = {_username: username, _isAuth: isAuthenticated};
+
         return (
             <div>
               {/* for alert */}

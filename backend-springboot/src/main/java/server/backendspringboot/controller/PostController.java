@@ -81,6 +81,7 @@ public class PostController {
             return null;
         }
         System.out.println(tagId);
+
         return postRepository.getPostByTag_id(tagId);
     }
 
@@ -97,4 +98,5 @@ public class PostController {
             return toRet.getTagId();
         }
     }
+
 }

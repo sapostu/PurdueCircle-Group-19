@@ -37,10 +37,12 @@ public class Post {
     @Transient
     private String tagName;
 
+
     @Column(name = "name", columnDefinition = "VARCHAR(15)")
     private String username;
 
     public Post(long postId, long accountId, Date dateOfPost, String bio, String type, int isAnon, String tagName, String username) {
+
         super();
         this.postId = postId;
         this.accountId = accountId;
@@ -49,7 +51,9 @@ public class Post {
         this.isAnon = isAnon;
         this.bio = bio;
         this.tagName = tagName;
+
         this.username = username;
+
        /* if (tagName != null) {
             System.out.println("null!");
             PostController pc = new PostController();

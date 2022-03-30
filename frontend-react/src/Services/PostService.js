@@ -11,6 +11,10 @@ class PostService {
     deletePost(post) {
         return axios.post(ACCOUNT_API_BASE_URL + "/posts/delete", post);
     }
+    
+    getPostById(post_id) {
+        return axios.get(ACCOUNT_API_BASE_URL + "/posts/" + post_id);
+    }
 }
 
 export default new PostService()

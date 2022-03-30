@@ -24,6 +24,10 @@ class AccountService {
         return axios.get(ACCOUNT_API_BASE_URL + "/getAccountbyID/" + account_id);
     }
 
+    getAccountByUsername(username) {
+        return axios.get(ACCOUNT_API_BASE_URL + "/getByUsername/" + username);
+    }
+
 }
 
 export default new AccountService()

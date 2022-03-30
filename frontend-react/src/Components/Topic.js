@@ -25,24 +25,27 @@ class Topic extends Component {
         super(props);
         this.state = {
             exists: true,
-            topic: 'default',
+            topic: this.props.router.params.topic,
             users: [
-                { id: 1, userName: 'user 1', content: 'this is a post 1' },
-                { id: 2, userName: 'user 2', content: 'this is a post 2' },
-                { id: 3, userName: 'user 3', content: 'this is a post 3' }
+                // { id: 1, userName: 'user 1', content: 'this is a post 1' },
+                // { id: 2, userName: 'user 2', content: 'this is a post 2' },
+                // { id: 3, userName: 'user 3', content: 'this is a post 3' }
             ]
         }
     }
 
     componentDidMount() {
+        let tag = { tagName: this.props.router.params.topic }
         //console.log(this.props);
         //console.log(this.props.router.params.username);
-        //axios.get('http://localhost:8080/account/getByUsername/'.concat(this.props.router.params.username)).then((response) => {
+        console.log(tag)
+        axios.get('http://localhost:8080/posts/postByTag/'.concat(this.props.router.params.topic)).then((response) => {
         //    console.log(response);
         //    this.setState({ username: response.data.username });
         //    this.setState({ bio: response.data.bio });
-        
-        //});
+            console.log(response)
+            this.setState({ users: Array.from(response.data)} )
+        });
     }
 
     render() {
@@ -83,7 +86,7 @@ class Topic extends Component {
                 
                 >
 
-                    <ListItemText id={user.id} primary={`${user.userName}`} secondary={`${user.content}`} />
+                    <ListItemText id={user.id} primary={`${user.username}`} secondary={`${user.bio}`} />
                 </ListItem>
                 
                 </Paper>

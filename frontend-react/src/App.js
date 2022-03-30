@@ -16,7 +16,6 @@ import Success from './Components/Success';
 import CreatePost from './Components/CreatePost';
 import DeletePost from './Components/DeletePost';
 import Topic from './Components/Topic';
-import {UserContext} from './UserAuthContext';
 import UserProvider from './UserContext';
 
 

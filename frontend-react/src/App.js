@@ -19,6 +19,7 @@ import Timeline from './Components/Timeline';
 import Userline from './Components/Userline';
 import Topic from './Components/Topic';
 import Post from './Components/Post';
+import TopicSearch from './Components/SearchTopic';
 import {UserContext} from './UserContext';
 import UserProvider from './UserContext';
 
@@ -55,6 +56,7 @@ function App() {
             <Route path="/p" element={<Post />}>
               <Route path=":post_id" name="fdsa" element={<Post />}/>
             </Route>
+            <Route path="/topicsearch" element={<TopicSearch/>} />
           </Route>
 
 

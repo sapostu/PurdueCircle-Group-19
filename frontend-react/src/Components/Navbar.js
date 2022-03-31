@@ -31,6 +31,11 @@ export default function DenseAppBar() {
                     Signup
                 </Typography>
             </Link>
+            <Link to="/timeline">
+                <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
+                    Timeline
+                </Typography>
+            </Link>
             <Link to="/post">
                 <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
                     Create Post

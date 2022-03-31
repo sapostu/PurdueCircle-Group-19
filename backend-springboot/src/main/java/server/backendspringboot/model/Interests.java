@@ -1,13 +1,12 @@
 package server.backendspringboot.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Interests {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long interest_id;
 
     @Column(name = "account_id")

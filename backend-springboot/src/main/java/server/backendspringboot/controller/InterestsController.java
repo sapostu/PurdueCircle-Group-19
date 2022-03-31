@@ -6,6 +6,7 @@ import server.backendspringboot.model.Interests;
 import server.backendspringboot.model.Tags;
 import server.backendspringboot.repository.InterestsRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class InterestsController {
 
     @GetMapping("/tagsByAccountId/{accountId}")
     List<Interests> getTagsById(@PathVariable("accountId") Long id) {
-        return interestsRepository.getByAccount_id(id);
+        return interestsRepository.getByAccount_id(Math.toIntExact(id));
     }
 
     @PostMapping("/addInterests")
@@ -29,8 +30,10 @@ public class InterestsController {
 
     @PostMapping("/deleteInterests")
     Interests deleteInterest(@RequestBody Interests interests) {
-        Interests toDel = interestsRepository.getById(interests.getInterest_id());
-        interestsRepository.delete(toDel);
+        Interests toDel = interestsRepository.getInterestsByAccount_idAndTag_id(interests.getAccount_id(), interests.getTag_id());
+        System.out.println(toDel.getAccount_id() +  " " + toDel.getTag_id() + " " + toDel.getInterest_id());
+       interestsRepository.delete(toDel);
+        interestsRepository.deleteInterestsByAccountIdandTagID(toDel.getAccount_id(), toDel.getAccount_id());
         return toDel;
     }
 

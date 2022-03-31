@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useParams, Navigate } from "react-router-dom";
 import TagService from '../Services/TagService';
+import FollowService from '../Services/FollowService';
 
-import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper, Typography, Divider } from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper, Typography, Divider, Button } from '@material-ui/core';
 
 
 function withRouter(Component) {
@@ -26,6 +27,8 @@ class Topic extends Component {
         super(props);
         this.state = {
             exists: true,
+            followed: false,
+            account: null,
             topic: this.props.router.params.topic,
             users: [
                 // { id: 1, userName: 'user 1', content: 'this is a post 1' },
@@ -33,18 +36,31 @@ class Topic extends Component {
                 // { id: 3, userName: 'user 3', content: 'this is a post 3' }
             ]
         }
+
+        this.handleFollow = this.handleFollow.bind(this);
+        this.handleUnfollow = this.handleUnfollow.bind(this);
+    }
+
+    handleFollow() {
+        FollowService.followTopic(this.state.account);
+        this.setState({ followed: true });
+    }
+
+    handleUnfollow() {
+        FollowService.unfollowTopic(this.state.account);
+        this.setState({ followed: false });
     }
 
     componentDidMount() {
         let tag = { tagName: this.props.router.params.topic }
         //console.log(this.props);
         //console.log(this.props.router.params.username);
-        console.log(tag)
+        //console.log(tag)
         axios.get('http://localhost:8080/tags/getByName/'.concat(this.props.router.params.topic)).then((response) => {
             //    console.log(response);
             //    this.setState({ username: response.data.username });
             //    this.setState({ bio: response.data.bio });
-                console.log(response)
+                //console.log(response)
                 if (response.data.length == 0) {
                     this.setState({ exists: false });
                     return;
@@ -54,8 +70,17 @@ class Topic extends Component {
         //    console.log(response);
         //    this.setState({ username: response.data.username });
         //    this.setState({ bio: response.data.bio });
-            console.log(response)
+            //console.log(response)
             this.setState({ users: Array.from(response.data)} )
+            this.setState()
+            axios.get('http://localhost:8080/tags/getByName/'.concat(this.props.router.params.topic)).then((response) => {
+                this.setState( { account: {account_id: localStorage.getItem('accountId'), tag_id: response.data.tagId} });
+                //console.log(response.data)
+                FollowService.isFollowingTopic(this.state.account).then((response) => {
+                    this.setState( { followed: response.data });
+                    //console.log(this.state.account);
+                });
+            });
         });
     }
 
@@ -92,6 +117,8 @@ class Topic extends Component {
                     }} id="login_cont">
                         <h1>
                         {this.state.topic}
+                        <Button size="small" onClick={this.handleUnfollow} style={{display: this.state.followed ? 'inherit' : 'none'}}>Unfollow</Button>
+                        <Button size="small" onClick={this.handleFollow} style={{display: this.state.followed ? 'none' : 'block'}}>Follow</Button>
                         </h1>
                     </Paper>
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>

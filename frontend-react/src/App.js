@@ -34,6 +34,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="*" element={<LoginScreen />}/>
+          <Route path="/signup" element={<Signup />}/>
           <Route path="/" element={<Navbar />}>
             <Route path="/profile_temp" element={<><h1>asdf</h1><Navbar /><Profile /></>}/>
             <Route path="/edit" element={<Edit />}/>
@@ -43,7 +44,6 @@ function App() {
               <Route path=":username" name="fdsa" element={<Profile/>}/>
             </Route>
             <Route path="/login" element={<LoginScreen />}/>
-            <Route path="/signup" element={<Signup />}/>
             <Route path="/success" element={<Success />}/>
             <Route path="/post" element={<CreatePost />}/>
             <Route path="/delete_post" element={<DeletePost />}/>

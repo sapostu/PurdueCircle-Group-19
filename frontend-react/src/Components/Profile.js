@@ -2,6 +2,7 @@ import React, {  Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useParams, Navigate } from "react-router-dom";
+import FollowService from '../Services/FollowService';
 
 import { Typography, Button, Card, CardContent, CardActions, CardHeader, Box, AppBar, Toolbar } from '@material-ui/core';
 
@@ -30,8 +31,13 @@ class Profile extends Component {
             username: '',
             bio: '',
             exists: true,
-            authUsername: localStorage.getItem('username')
+            authUsername: localStorage.getItem('username'),
+            account: null,
+            followed: false
         }
+
+        this.handleFollow = this.handleFollow.bind(this);
+        this.handleUnfollow = this.handleUnfollow.bind(this);
 
       /*  axios.get('http://localhost:8080/account/getByUsername/'.concat(this.props.router.params.username)).then(function (response) {
             console.log(response);
@@ -41,6 +47,16 @@ class Profile extends Component {
 
     }
 
+    handleFollow() {
+        FollowService.followAccount(this.state.account);
+        this.setState({ followed: true });
+    }
+
+    handleUnfollow() {
+        FollowService.unfollowAccount(this.state.account);
+        this.setState({ followed: false });
+    }
+
     componentDidMount() {
         console.log(this.props);
         console.log(this.props.router.params.username);
@@ -48,6 +64,14 @@ class Profile extends Component {
             console.log(response);
             this.setState({ username: response.data.username });
             this.setState({ bio: response.data.bio });
+            this.setState({ account: {account_id: localStorage.getItem('accountId'), followed: response.data.account_id} })
+            //console.log(this.account)
+            FollowService.isFollowing(this.state.account).then((response) => {
+                if (response.data) {
+                    this.setState({ following: true });
+                    console.log("following");
+                }
+            });
         });
     }
 
@@ -94,7 +118,8 @@ class Profile extends Component {
                                 </Typography>
                             </CardContent>
                             <CardActions style={{"padding-left": "0.5vw"}}>
-                                <Button size="small">Follow</Button> {/* TODO : Add following functionality */}
+                                <Button size="small" onClick={this.handleUnfollow} style={{display: this.state.followed ? 'inherit' : 'none'}}>Unfollow</Button>
+                                <Button size="small" onClick={this.handleFollow} style={{display: this.state.followed ? 'none' : 'block'}}>Follow</Button>
                                 <Button size="small"><Link to="/edit" style={{ display: this.state.username === this.state.authUsername ? 'block' : 'none', color: "inherit", "text-decoration": "none" }}>Edit</Link></Button> {/* TODO : Add edit functionality and hide the button for users that are not on their own pages */}
                             </CardActions>
                         </Card>

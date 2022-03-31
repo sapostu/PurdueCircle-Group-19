@@ -15,7 +15,8 @@ class UserProvider extends Component {
 
         
         this.setState({auth_username: _username, isAuthenticated: true});
-
+        localStorage.setItem('username', _username);
+        localStorage.setItem('isAuthenticated', true);
 
 
 
@@ -24,6 +25,8 @@ class UserProvider extends Component {
 
     logOut = () => {
         this.setState({auth_username: "", isAuthenticated: false})
+        sessionStorage.setItem('username', "");
+        sessionStorage.setItem('isAuthenticated', false)
     }
 
     getUsername = () => {

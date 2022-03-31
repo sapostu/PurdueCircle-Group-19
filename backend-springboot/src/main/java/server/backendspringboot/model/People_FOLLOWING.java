@@ -1,9 +1,6 @@
 package server.backendspringboot.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class People_FOLLOWING {
@@ -18,12 +15,16 @@ public class People_FOLLOWING {
     @Column
     private long followed;
 
+    @Column(name = "namee", columnDefinition = "VARCHAR(15)")
+    private String follow_username;
+
     public People_FOLLOWING() {
     }
 
-    public People_FOLLOWING(long account_id, long followed) {
+    public People_FOLLOWING(long account_id, long followed, String follow_username) {
         this.account_id = account_id;
         this.followed = followed;
+        this.follow_username = follow_username;
     }
 
     public long getFollow_id() {
@@ -48,6 +49,14 @@ public class People_FOLLOWING {
 
     public void setFollowed(long followed) {
         this.followed = followed;
+    }
+
+    public String getFollow_username() {
+        return follow_username;
+    }
+
+    public void setFollow_username(String follow_username) {
+        this.follow_username = follow_username;
     }
 
     @Override

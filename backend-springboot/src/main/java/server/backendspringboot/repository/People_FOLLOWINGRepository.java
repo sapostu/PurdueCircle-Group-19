@@ -14,6 +14,7 @@ public interface People_FOLLOWINGRepository extends JpaRepository<People_FOLLOWI
 
     @Query("SELECT s.followed FROM People_FOLLOWING s WHERE s.account_id = ?1")
     List<Long> getByAccount(long accountId);
+    //@Query(value = "SELECT account.username as name, post.* FROM post INNER JOIN account ON post.account_id=account.account_id WHERE post.tag_id = ?1", nativeQuery = true)
 
     @Query("SELECT s.account_id FROM People_FOLLOWING s where s.followed = ?1")
     List<Long> getFollowers(long followed);

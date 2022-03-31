@@ -3,9 +3,12 @@ package server.backendspringboot.controller;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import server.backendspringboot.model.Account;
 import server.backendspringboot.model.People_FOLLOWING;
+import server.backendspringboot.repository.AccountRepository;
 import server.backendspringboot.repository.People_FOLLOWINGRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,6 +18,9 @@ public class People_FOLLOWINGController {
 
     @Autowired
     private People_FOLLOWINGRepository people_followingRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     @PostMapping("/addFollow")
     public People_FOLLOWING addFollowing(@RequestBody People_FOLLOWING people_following) {
@@ -39,8 +45,23 @@ public class People_FOLLOWINGController {
     }
 
     @GetMapping("/getFollowingById/{accountId}")
-    public List<Long> getAccountsFollowed(@PathVariable("accountId") Long accountId) {
-        return people_followingRepository.getByAccount(accountId);
+    public List<String> getAccountsFollowed(@PathVariable("accountId") Long accountId) {
+        List<Long> ids =  people_followingRepository.getByAccount(accountId);
+        if (ids == null || ids.size() == 0) {
+            return null;
+        }
+
+        ArrayList<String> usernames = new ArrayList<>();
+        for (Long id : ids) {
+            int int_id = Math.toIntExact(id);
+            Account account = accountRepository.findById(int_id).orElse(null);
+            if (account == null) {
+                continue;
+            }
+            usernames.add(account.getUsername());
+
+        }
+        return usernames;
     }
 
     @GetMapping("/getFollowersById/{accountId}")

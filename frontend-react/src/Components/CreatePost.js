@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import PostService from '../Services/PostService';
 
-import { Typography, Button, Card, CardContent, CardActions, CardHeader, Grid, TextField, Snackbar, SnackbarContent } from '@material-ui/core';
+import { Typography, Button, Card, CardContent, CardActions, CardHeader, Grid, TextField, Snackbar, SnackbarContent, Checkbox, FormControlLabel } from '@material-ui/core';
 class CreatePost extends Component {
     constructor(props) {
         super(props);
@@ -13,14 +13,20 @@ class CreatePost extends Component {
             bio: '',
             errorName: false,
             errorBio: false,
-            redir: false
+            redir: false,
+            anonymous: false
 
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.setBioError = this.setBioError.bind(this);
+        this.handleChangeAnonymous = this.handleChangeAnonymous.bind(this);
+    }
 
+
+    handleChangeAnonymous() {
+        this.setState({anonymous: !this.state.anonymous})
     }
 
     setBioError() {
@@ -97,7 +103,7 @@ class CreatePost extends Component {
                             <Typography variant="body2" color="text.secondary">
                             <TextField
                             id="filled-multiline-static"
-                            label="Edit Bio"
+                            label="Write your post here..."
                             multiline
                             rows={3}
                             defaultValue={this.state.bio}
@@ -109,6 +115,14 @@ class CreatePost extends Component {
                             </Typography>
                         </CardContent>
                         <CardActions style={{"padding-left": "0.5vw"}}>
+                            <FormControlLabel
+                                control={<Checkbox
+                                    checked={this.state.anonymous}
+                                    onChange={this.handleChangeAnonymous}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                        />}
+                                label="Anonymous"
+                            />
                             <Button size="small" onClick={this.handleSubmit}>Submit</Button>
                             <Button size="small"><Link to="/profile_temp" style={{ color: "inherit", "text-decoration": "none" }}>Cancel</Link></Button> {/* TODO : edit the link to profile to link to the actual profile */}
                             <Button size="small"><Link to="/delete" style={{ color: "inherit", "text-decoration": "none" }}>Delete</Link></Button>

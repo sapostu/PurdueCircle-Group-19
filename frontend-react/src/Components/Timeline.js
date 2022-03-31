@@ -2,23 +2,37 @@ import React, { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper, Typography, Divider } from '@material-ui/core';
 import axios from 'axios';
+import PostService from '../Services/PostService';
 
 class Timeline extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: [{id: 0, userName: "Blah", content: "This is a test"}]
+            isAuthenticated: localStorage.getItem('isAuthenticated'),
+            username: localStorage.getItem('username'),
+            account_id: localStorage.getItem('accountId'),
+            posts: []
         };
 
     }
 
     componentDidMount() {
-        //console.log(this.props);
-        //console.log(this.props.router.params.username);
-        //axios.get('http://localhost:8080/account/getByUsername/'.concat(this.props.router.params.username)).then((response) => {
-        //    console.log(response);
-        
-        //});
+        PostService.getFollowedTagsByAccountId(this.state.account_id).then(tags_response => {
+            var arr = [];
+
+            tags_response.data.forEach(tag => {
+                PostService.getPostsByTagId(tag.tag_id).then(post_response => {
+                    post_response.data.forEach(post => {
+                        arr.push({id: post.id, userName: post.username, content: post.bio});
+                    });
+                });
+            });
+
+            this.setState({posts: arr});
+        });
+
+
+        // todo: figure out how to put them in chrono order
     }
 
     

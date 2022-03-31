@@ -46,7 +46,6 @@ public class PostController {
 
     @GetMapping("/postByName{username}")
     public List<Post> getPostByUsername(@PathVariable("username") String username) {
-        System.out.println(username);
         return postRepository.getPostByName(username);
     }
 
@@ -89,6 +88,16 @@ public class PostController {
         System.out.println(tagId);
 
         return postRepository.getPostByTag_id(tagId);
+    }
+
+    @GetMapping(path = "/followedTagsByUsername/{id}")
+    public List<Tags> getFollowedTagsByAccountId(@PathVariable("id") long id) {
+        return postRepository.getFollowedTagsByAccountId(id);
+    }
+
+    @GetMapping(path = "/postByTagId/{id}")
+    public List<Post> getPostByTagId(@PathVariable("id") long id) {
+        return postRepository.getPostByTag_id(id);
     }
 
     public Long getTagId(String tagName) {

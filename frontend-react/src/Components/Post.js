@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {TextField, Paper, Button, Snackbar, SnackbarContent} from '@material-ui/core';
-import { Navigate } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 
 import PostService from '../Services/PostService';
 import AccountService from '../Services/AccountService';
@@ -10,12 +10,27 @@ import ReactionService from '../Services/ReactionService';
 
 import { UserContext } from '../UserContext';
 
+
+function withRouter(Component) {
+    function ComponentWithRouterProp(props) {
+        let params = useParams();
+        return (
+            <Component
+                {...props}
+                router={{ params }}
+            />
+        );
+    }
+
+    return ComponentWithRouterProp;
+}
+
 // usage: <Post post_id="1" />
 class Post extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            post_id: props.post_id,
+            post_id: this.props.router.params.post_id,
             // post details
             type: "",
             username: "", // set to Anonymous if isAnonymous
@@ -282,4 +297,4 @@ class Post extends Component {
     }
 }
 
-export default Post;
+export default withRouter(Post);

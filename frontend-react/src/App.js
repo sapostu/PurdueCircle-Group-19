@@ -16,13 +16,15 @@ import Success from './Components/Success';
 import CreatePost from './Components/CreatePost';
 import DeletePost from './Components/DeletePost';
 import Topic from './Components/Topic';
-import {UserContext} from './UserAuthContext';
+import Post from './Components/Post';
+import {UserContext} from './UserContext';
 import UserProvider from './UserContext';
 
 
 function App() {
   // allows all children of <App/> to get and modify user's id and authentication status through UserContext
 
+  localStorage.setItem('token', 'fdsa');
   return (
   <UserProvider>
       <BrowserRouter>
@@ -42,7 +44,10 @@ function App() {
             <Route path="/post" element={<CreatePost />}/>
             <Route path="/delete_post" element={<DeletePost />}/>
             <Route path="/topic" element={<Topic />}>
-              <Route path=":topic" name="fdsa" element={<Topic/>}/>
+              <Route path=":topic" name="fdsa" element={<Topic />}/>
+            </Route>
+            <Route path="/p" element={<Post />}>
+              <Route path=":post_id" name="fdsa" element={<Post />}/>
             </Route>
           </Route>
 

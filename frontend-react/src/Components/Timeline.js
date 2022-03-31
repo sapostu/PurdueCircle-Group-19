@@ -18,18 +18,23 @@ class Timeline extends Component {
 
     componentDidMount() {
         PostService.getFollowedTagsByAccountId(this.state.account_id).then(tags_response => {
-            var arr = [];
+            //var arr = [];
 
             tags_response.data.forEach(tag => {
-                console.log(tag)
+                //console.log(tag)
                 PostService.getPostsByTagId(tag.tag_id).then(post_response => {
                     post_response.data.forEach(post => {
-                        arr.push({id: post.id, userName: post.name, content: post.bio});
+                        //console.log("_1")
+                        //console.log(post);
+                        var posts = this.state.posts;
+                        posts.push({id: post.id, userName: post.username, content: post.bio})
+                        this.setState({posts: posts});
+                        //arr.push({id: post.id, userName: post.name, content: post.bio});
                     });
                 });
             });
 
-            this.setState({posts: arr});
+            //this.setState({posts: arr});
         });
 
 

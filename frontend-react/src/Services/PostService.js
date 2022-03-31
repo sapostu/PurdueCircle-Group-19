@@ -13,12 +13,19 @@ class PostService {
     }
   
     getPostsByName(username) {
-        console.log(username)
         return axios.get(ACCOUNT_API_BASE_URL + "/posts/postByName" +  username)
     }
     
     getPostById(post_id) {
         return axios.get(ACCOUNT_API_BASE_URL + "/posts/" + post_id);
+    }
+
+    getFollowedTagsByAccountId(account_id) {
+        return axios.get(ACCOUNT_API_BASE_URL + "/followedTagsByUsername/" + account_id)
+    }
+
+    getPostsByTagId(tag_id) {
+        return axios.get(ACCOUNT_API_BASE_URL + "/postByTagId/" + tag_id)
     }
 }
 

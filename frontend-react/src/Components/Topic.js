@@ -115,7 +115,8 @@ class Topic extends Component {
                 
                 >
 
-                    <ListItemText id={user.id} primary={`${user.username}`} secondary={`${user.bio}`} />
+                    <ListItemText id={user.id} primary={`${user.isAnon}` == 1 ? 'Anonymous' : `${user.username}`} secondary={`${user.bio}`} />
+                
                 </ListItem>
                 
                 </Paper>

@@ -9,12 +9,13 @@ class CreatePost extends Component {
         
         this.state = {
             // TODO : populate username and bio variables with the user's actual username and bio
-            accountID: '',
+            accountID: localStorage.getItem('accountId'),
             bio: '',
             errorName: false,
             errorBio: false,
             redir: false,
-            anonymous: false
+            anonymous: 0,
+            tagName: ""
 
         }
 
@@ -26,7 +27,9 @@ class CreatePost extends Component {
 
 
     handleChangeAnonymous() {
-        this.setState({anonymous: !this.state.anonymous})
+        console.log(this.state.anonymous);
+        this.setState({anonymous: this.state.anonymous == 0 ? 1 : 0 })
+
     }
 
     setBioError() {
@@ -38,7 +41,7 @@ class CreatePost extends Component {
             this.setState({errorBio: true});
             return;
         }
-        let post = {accountId: this.state.accountID, dateOfPost: "2021-11-19", type: "TEXT", bio: this.state.bio, isAnon: 0}
+        let post = {accountId: this.state.accountID, dateOfPost: "2021-11-19", type: "TEXT", bio: this.state.bio, isAnon: this.state.anonymous, tagName: this.state.tagName }
         console.log('\n\n post =>' + JSON.stringify(post));
     
         PostService.createPost(post).then( (res) => {
@@ -98,7 +101,7 @@ class CreatePost extends Component {
                         </CardHeader>
                         <CardContent style={{ height: "12vh", 'object-fit': 'contain'}}>
                             <Typography gutterBottom variant="h5" component="div">
-                                <TextField id="filled-static" label="Enter User ID" defaultValue={this.state.accountID} name='accountID' onChange={this.handleChange}></TextField> 
+                                <TextField id="filled-static" label="Enter Topic Name" defaultValue={this.state.tagName} name='tagName' onChange={this.handleChange}></TextField> 
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                             <TextField

@@ -8,6 +8,10 @@ class TagService {
         return axios.get(TAG_API_BASE_URL + "/getById/" + tag_id);
     }
 
+    getTagByName(tag_name) {
+        return axios.get(TAG_API_BASE_URL + "/getByName/" + tag_name)
+    }
+
 }
 
 export default new TagService()

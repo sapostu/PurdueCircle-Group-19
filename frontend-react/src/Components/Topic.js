@@ -2,6 +2,7 @@ import React, {  Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useParams, Navigate } from "react-router-dom";
+import TagService from '../Services/TagService';
 
 import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper, Typography, Divider } from '@material-ui/core';
 
@@ -39,6 +40,16 @@ class Topic extends Component {
         //console.log(this.props);
         //console.log(this.props.router.params.username);
         console.log(tag)
+        axios.get('http://localhost:8080/tags/getByName/'.concat(this.props.router.params.topic)).then((response) => {
+            //    console.log(response);
+            //    this.setState({ username: response.data.username });
+            //    this.setState({ bio: response.data.bio });
+                console.log(response)
+                if (response.data.length == 0) {
+                    this.setState({ exists: false });
+                    return;
+                }
+            });
         axios.get('http://localhost:8080/posts/postByTag/'.concat(this.props.router.params.topic)).then((response) => {
         //    console.log(response);
         //    this.setState({ username: response.data.username });
@@ -49,6 +60,24 @@ class Topic extends Component {
     }
 
     render() {
+
+        if (!this.state.exists) {
+            return (
+                <div>
+                    <Paper elevation={8} style={{
+                        backgroundColor: "#f5f5f5",
+                        margin: "auto",
+                        padding: "20px",
+                        "text-align": "center"
+                    }} id="login_cont">
+                        <Typography>
+                            Error: Topic does not exist
+                        </Typography>
+                    </Paper>
+
+                </div>
+            )
+        }
 
         return (
             

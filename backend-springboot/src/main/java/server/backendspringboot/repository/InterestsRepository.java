@@ -10,4 +10,7 @@ public interface InterestsRepository extends JpaRepository<Interests, Long> {
 
     @Query("SELECT s FROM Interests s WHERE s.account_id = ?1")
     List<Interests> getByAccount_id(Long accountId);
+
+    @Query("SELECT s FROM Interests s WHERE s.account_id = ?1 AND s.tag_id = ?2")
+    Interests getInterestsByAccount_idAndTag_id(int accountId, Long tagId);
 }

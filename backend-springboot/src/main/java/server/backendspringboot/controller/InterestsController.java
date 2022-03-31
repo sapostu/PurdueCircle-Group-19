@@ -21,7 +21,7 @@ public class InterestsController {
         return interestsRepository.getByAccount_id(id);
     }
 
-    @PostMapping("/addInterest")
+    @PostMapping("/addInterests")
     Interests addInterest(@RequestBody Interests interest) {
         interestsRepository.save(interest);
         return interest;
@@ -32,5 +32,11 @@ public class InterestsController {
         Interests toDel = interestsRepository.getById(interests.getInterest_id());
         interestsRepository.delete(toDel);
         return toDel;
+    }
+
+    @PostMapping("/checkInterests")
+    public boolean checkInt(@RequestBody Interests interest) {
+        Interests interests = interestsRepository.getInterestsByAccount_idAndTag_id( interest.getAccount_id(), interest.getTag_id());
+        return interests != null;
     }
 }

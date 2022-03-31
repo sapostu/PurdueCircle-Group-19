@@ -21,9 +21,10 @@ class Timeline extends Component {
             var arr = [];
 
             tags_response.data.forEach(tag => {
+                console.log(tag)
                 PostService.getPostsByTagId(tag.tag_id).then(post_response => {
                     post_response.data.forEach(post => {
-                        arr.push({id: post.id, userName: post.username, content: post.bio});
+                        arr.push({id: post.id, userName: post.name, content: post.bio});
                     });
                 });
             });

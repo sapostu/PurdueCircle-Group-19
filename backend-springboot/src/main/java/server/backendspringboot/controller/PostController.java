@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.backendspringboot.model.Post;
 import server.backendspringboot.model.Tags;
+import server.backendspringboot.model.Interests;
 import server.backendspringboot.repository.PostRepository;
 import server.backendspringboot.repository.TagsRepository;
 
@@ -91,7 +92,7 @@ public class PostController {
     }
 
     @GetMapping(path = "/followedTagsByAccountId/{id}")
-    public List<Tags> getFollowedTagsByAccountId(@PathVariable("id") int id) {
+    public List<Interests> getFollowedTagsByAccountId(@PathVariable("id") int id) {
         return postRepository.getFollowedTagsByAccountId(id);
     }
 

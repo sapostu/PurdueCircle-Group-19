@@ -25,9 +25,9 @@ class Timeline extends Component {
                 PostService.getPostsByTagId(tag.tag_id).then(post_response => {
                     post_response.data.forEach(post => {
                         //console.log("_1")
-                        //console.log(post);
+                        console.log(post);
                         var posts = this.state.posts;
-                        posts.push({id: post.id, userName: post.username, content: post.bio})
+                        posts.push({ id: post.id, userName: post.username, content: post.bio, tagName: post.tag_id })
                         this.setState({posts: posts});
                         //arr.push({id: post.id, userName: post.name, content: post.bio});
                     });
@@ -77,8 +77,10 @@ class Timeline extends Component {
                     }
                     
                     >
+                        <a href={'/profile/'.concat(`${post.userName}`)}>
+                        <ListItemText id={post.id} primary={`${post.userName} Tag: ${post.tagName}`} secondary={`${post.content}`} />
 
-                        <ListItemText id={post.id} primary={`${post.userName}`} secondary={`${post.content}`} />
+                        </a>
                     </ListItem>
                     
                     </Paper>

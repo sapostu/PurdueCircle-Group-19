@@ -21,7 +21,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT s.tagId FROM Tags s WHERE s.tagName =?1")
     Long getTagsByName(String name);
 
-    @Query("SELECT s FROM Tags s WHERE s.account_id = ?1")
+    @Query("SELECT s FROM Interests s WHERE s.account_id = ?1")
     List<Tags> getFollowedTagsByAccountId(long id);
 
 }

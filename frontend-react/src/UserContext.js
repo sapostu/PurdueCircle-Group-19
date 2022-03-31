@@ -25,9 +25,9 @@ class UserProvider extends Component {
 
     logOut = () => {
         this.setState({auth_username: "", isAuthenticated: false})
-        localStorage.setItem('username', "");
-        localStorage.setItem('isAuthenticated', false);
-        localStorage.setItem('accountId', -1);
+        localStorage.removeItem('username');
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('accountId');
     }
 
     getUsername = () => {

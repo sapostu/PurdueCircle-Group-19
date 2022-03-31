@@ -50,7 +50,10 @@ class Post extends Component {
             alertBool: false,
             alertMsg: "",
             // navigation
-            toProfile: false
+            toProfile: false,
+            // auth variables
+            auth_username: localStorage.getItem('username'),
+            isAuthenticated: localStorage.getItem('isAuthenticated')
         };
         this.handleComment = this.handleComment.bind(this);
         this.handleReaction = this.handleReaction.bind(this);
@@ -62,7 +65,7 @@ class Post extends Component {
     static contextType = UserContext;
 
     componentDidMount() {
-        const { auth_username, isAuthenticated } = this.context;
+        //const { auth_username, isAuthenticated } = this.context;
         // retrieve all data (post, comments, reactions)
         PostService.getPostById(this.state.post_id).then(post_res => {
             if (post_res.data) {
@@ -123,7 +126,7 @@ class Post extends Component {
                                     // order by name ascending
                                     const reactArr = this.state.reactions;
                                     this.setState({reactionElements: reactArr.sort((a,b) => a.name.localeCompare(b.name)).map(r => (
-                                        <button disabled={!isAuthenticated || !auth_username} onClick={e => this.handleReaction(r.reaction_id)} key={r.reaction_id}>{r.name + ": " + r.count}</button>
+                                        <button disabled={!this.state.isAuthenticated || !this.state.auth_username} onClick={e => this.handleReaction(r.reaction_id)} key={r.reaction_id}>{r.name + ": " + r.count}</button>
                                     ))});
                                 }
                             });
@@ -135,10 +138,10 @@ class Post extends Component {
     }
 
     handleReaction = reaction_id => {
-        const { auth_username, isAuthenticated } = this.context;
-        if (!isAuthenticated || !auth_username) { return; } // just in case user is able to click reaction buttons
+        //const { auth_username, isAuthenticated } = this.context;
+        if (!this.state.isAuthenticated || !this.state.auth_username) { return; } // just in case user is able to click reaction buttons
         // get account id using username
-        AccountService.getAccountByUsername(auth_username).then(acc_res => {
+        AccountService.getAccountByUsername(this.state.auth_username).then(acc_res => {
             if (acc_res.data) {
                 const user_reaction = {
                     postId: this.state.post_id,
@@ -178,15 +181,15 @@ class Post extends Component {
     }
 
     handleComment = () => {
-        const { auth_username, isAuthenticated } = this.context;
-        if (!isAuthenticated && !auth_username) { return; } // just in case user is able to interact with comment elements
+        //const { auth_username, isAuthenticated } = this.context;
+        if (!this.state.isAuthenticated && !this.state.auth_username) { return; } // just in case user is able to interact with comment elements
         if (!this.state.commentInput) {
             this.setState({alertMsg: "Can't post an empty comment."});
             this.setState({alertBool: true});
             return;
         }
         // get account id using username
-        AccountService.getAccountByUsername(auth_username).then(acc_res => {
+        AccountService.getAccountByUsername(this.state.auth_username).then(acc_res => {
             if (acc_res.data) {
                 const comment = {
                     accountId: acc_res.data.account_id,
@@ -198,7 +201,7 @@ class Post extends Component {
                     if (res.data) {
                         this.setState({comments: [...this.state.comments, {
                             comment_id: res.data.commentId,
-                            username: auth_username,
+                            username: this.state.auth_username,
                             date: res.data.date.substr(0, 10),
                             text: res.data.text
                         }]});
@@ -230,6 +233,8 @@ class Post extends Component {
                     }
                 });
             }
+            this.setState({ commentInput: "" });
+            document.getElementById('submitButton').value = "";
         });
     }
 
@@ -240,8 +245,8 @@ class Post extends Component {
     }
 
     handleDelete = () => {
-        const { auth_username, isAuthenticated } = this.context;
-        if (!isAuthenticated || !auth_username) { return; }
+        //const { auth_username, isAuthenticated } = this.context;
+        if (!this.state.isAuthenticated || !this.state.auth_username) { return; }
         if (!window.confirm("ARE YOU SURE?\nThis will permanently delete all of this post's...\n- details\n- associated comments\n- associated reactions"))
             { return; }
         const thisPostId = this.state.post_id;
@@ -261,7 +266,7 @@ class Post extends Component {
         if (this.state.toProfile === true) {
             return <Navigate to={'/profile/' + this.state.username}/>
         }
-        const { auth_username, isAuthenticated } = this.context;
+        //const { auth_username, isAuthenticated } = this.context;
         return (
             <>
             <Snackbar
@@ -279,14 +284,14 @@ class Post extends Component {
                     <p style={{display: 'inline', margin: '0 10px'}}>{this.state.date}</p>
                     <p style={{display: 'inline'}}><mark>{this.state.tag && this.state.tag.toUpperCase()}</mark></p>
                     <Button onClick={e => this.handleDelete()} style={{marginLeft: '20px', backgroundColor: 'red', color: 'white',
-                            display: this.state.username === auth_username ? 'inline' : 'none'
+                            display: this.state.username === this.state.auth_username ? 'inline' : 'none'
                             }}>Delete Post</Button>
                 </div>
                 <p>{this.state.text}</p>
                 <div>{this.state.reactionElements}</div>
             </Paper>
-            <div style={{display: isAuthenticated ? 'block' : 'none', margin: '10px'}}>
-                <TextField onChange={e => this.setState({commentInput: e.target.value})} size="small" label="Your comment..." variant="filled"/>
+            <div style={{display: this.state.isAuthenticated ? 'block' : 'none', margin: '10px'}}>
+                <TextField id="submitButton" onChange={e => this.setState({commentInput: e.target.value})} size="small" label="Your comment..." variant="filled"/>
                 <Button onClick={this.handleComment} style={{margin: "5px"}} variant="contained" color="primary">Post Comment</Button>
             </div>
             <Paper style={{margin: '10px'}} elevation={4}>

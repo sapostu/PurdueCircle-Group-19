@@ -21,11 +21,11 @@ class PostService {
     }
 
     getFollowedTagsByAccountId(account_id) {
-        return axios.get(ACCOUNT_API_BASE_URL + "/followedTagsByUsername/" + account_id)
+        return axios.get(ACCOUNT_API_BASE_URL + "/posts/followedTagsByAccountId/" + account_id)
     }
 
     getPostsByTagId(tag_id) {
-        return axios.get(ACCOUNT_API_BASE_URL + "/postByTagId/" + tag_id)
+        return axios.get(ACCOUNT_API_BASE_URL + "/posts/postByTagId/" + tag_id)
     }
 }
 

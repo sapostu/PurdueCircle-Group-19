@@ -22,7 +22,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Long getTagsByName(String name);
 
     @Query("SELECT s FROM Interests s WHERE s.account_id = ?1")
-    List<Tags> getFollowedTagsByAccountId(long id);
+    List<Tags> getFollowedTagsByAccountId(int id);
 
 }
 

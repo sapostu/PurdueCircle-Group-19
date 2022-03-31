@@ -90,8 +90,8 @@ public class PostController {
         return postRepository.getPostByTag_id(tagId);
     }
 
-    @GetMapping(path = "/followedTagsByUsername/{id}")
-    public List<Tags> getFollowedTagsByAccountId(@PathVariable("id") long id) {
+    @GetMapping(path = "/followedTagsByAccountId/{id}")
+    public List<Tags> getFollowedTagsByAccountId(@PathVariable("id") int id) {
         return postRepository.getFollowedTagsByAccountId(id);
     }
 

@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import {Box, Typography, Checkbox, Button, Snackbar, SnackbarContent,
     Dialog, DialogTitle, DialogContent, TextField, DialogActions, Divider} from '@material-ui/core';
 import { Navigate } from 'react-router-dom';
-import { UserContext } from '../UserAuthContext';
 import AccountService from '../Services/AccountService';
 import LoginService from '../Services/LoginService';
+import { UserContext } from '../UserContext';
 
+
+var CryptoJS = require("crypto-js/core");
+CryptoJS.AES = require("crypto-js/aes");
+const secret = "d9aopdisfoaid923u-2u;okdfosidhgsigudw;s9u2308rlskf;sdh;aoisdhg;aowghp02384gykjdhskgsjba.dkjgd;aaDSFAS";
 
 /**
  * GUI for selecting which credentials to change
@@ -64,8 +68,8 @@ class CredRequestScreen extends Component {
             this.setState({alertBool: true});
             return;
         }
-
-        if (true) { // TODO: change to this.context.isAuthenticated or something when authentication is set up
+        const { auth_username, isAuthenticated } = this.context;
+        if (isAuthenticated && auth_username) {
             // ask user to enter their old password if they select to change their username or password
             if (this.state.username || this.state.password) {
               this.setState({popupBool: true});
@@ -91,14 +95,24 @@ class CredRequestScreen extends Component {
             return;
         }
 
-        // TODO: authenticate oldUsername and oldPassword
         let account = {username: this.state.oldUsername, crypt_password: this.state.oldPassword};
         LoginService.loginAccount(account).then( (res) => {
             console.log(res)
             if (res.data !== "") {
-                this.setState({toCredChange: true});
+                let aes_crypt = res.data.crypt_password;
+                let uncrypt = CryptoJS.AES.decrypt(aes_crypt, secret).toString(CryptoJS.enc.Utf8);
+                if (uncrypt === this.state.oldPassword) {
+                    this.setState({toCredChange: true});
+                }
+                else {
+                    this.setState({alertMsg: "Incorrect credentials."});
+                    this.setState({alertBool: true});
+                    return;
+                }
             } else {
-                // failure
+                this.setState({alertMsg: "Incorrect credentials."});
+                this.setState({alertBool: true});
+                return;
             }
         });
 
@@ -160,10 +174,6 @@ class CredRequestScreen extends Component {
 
                 {/* physical componenets of form */}
                 <Box m={1}><Typography variant="h5">Select what you would like to change</Typography></Box>
-                <div>
-                    <Checkbox onChange={e => this.setState({email: !this.state.email})}/>
-                    <Typography style={{display: "inline-block"}}>Email</Typography>
-                </div>
                 <div>
                 <Checkbox onChange={e => this.setState({email: !this.state.email})}/>
                 <Typography style={{display: "inline-block"}}>Email</Typography>
@@ -228,11 +238,7 @@ class CredChangeScreen extends Component {
             bools: props.bools,
             // for backing up and rendering <CredRequestScreen/>
             toCredRequest: false,
-            // temporary field for passing user's account id
-            accountId: ""
         };
-
-        // TODO: GET request to initialize the input fields to user's old data
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleBack = this.handleBack.bind(this);
@@ -246,13 +252,16 @@ class CredChangeScreen extends Component {
      * Handles submit button
      */
     handleSubmit = e => {
+        const { auth_username, isAuthenticated } = this.context;
+        if (!isAuthenticated || !auth_username) { return; }
+
         e.preventDefault();
         // ensure all requested fields are filled in
         const {emailBool, usernameBool, passwordBool, fnameBool, lnameBool, dobBool} = this.state.bools;
         if ( !( (emailBool?this.state.email:true) && (usernameBool?this.state.username:true) && 
                 (passwordBool?this.state.password:true) && (passwordBool?this.state.secPassword:true) && 
                 (fnameBool?this.state.fname:true) && (lnameBool?this.state.lname:true) && 
-                (dobBool?this.state.dob:true) && this.state.accountId)) {
+                (dobBool?this.state.dob:true))) {
             this.setState({alertMsg: "Please fill in all fields."});
             this.setState({alertBool: true});
             return;
@@ -317,37 +326,42 @@ class CredChangeScreen extends Component {
         }
 
         // PUT requests
-        if (emailBool) {
-            console.log("hello")
-            let accountEmail = {account_id: this.state.accountId, email: this.state.email};
-            AccountService.updateAccountEmail(accountEmail).then(res => {
-                if (res.data !== "") {
-                    // success
-                } else {
-                    // failure
+        // get account id from username
+        AccountService.getAccountByUsername(auth_username).then(res_first => {
+            if (res_first.data) {
+                const accountId = res_first.data.account_id;
+                if (emailBool) {
+                    let accountEmail = {account_id: accountId, email: this.state.email};
+                    AccountService.updateAccountEmail(accountEmail).then(res => {
+                        if (res.data !== "") {
+                            // success
+                        } else {
+                            // failure
+                        }
+                    });
                 }
-            });
-        }
-        if (usernameBool) {
-            let accountUsername = {account_id: this.state.accountId, username: this.state.username};
-            AccountService.updateAccountUsername(accountUsername).then(res => {
-                if (res.data !== "") {
-                    // success
-                } else {
-                    // failure
+                if (usernameBool) {
+                    let accountUsername = {account_id: accountId, username: this.state.username};
+                    AccountService.updateAccountUsername(accountUsername).then(res => {
+                        if (res.data !== "") {
+                            // success
+                        } else {
+                            // failure
+                        }
+                    });
                 }
-            });
-        }
-        if (passwordBool) {
-            let accountPassword = {account_id: this.state.accountId, crypt_password: this.state.password};
-            AccountService.updateAccountPassword(accountPassword).then(res => {
-                if (res.data !== "") {
-                    // success
-                } else {
-                    // failure
+                if (passwordBool) {
+                    let accountPassword = {account_id: accountId, crypt_password: this.state.password};
+                    AccountService.updateAccountPassword(accountPassword).then(res => {
+                        if (res.data !== "") {
+                            // success
+                        } else {
+                            // failure
+                        }
+                    });
                 }
-            });
-        }
+            }
+        });
 
     }
 
@@ -369,7 +383,7 @@ class CredChangeScreen extends Component {
 
         return (
 
-            <div style={{position:"absolute", top:"relative", transform:"translate(0%, 30%)"}}>
+            <div>
                 {/* error alert/notification */}
                 <Snackbar
                 anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
@@ -424,11 +438,6 @@ class CredChangeScreen extends Component {
                     <Box mr={1} mb={1} style={{display: this.state.bools.passwordBool ? 'inline-block': 'none'}}>
                     <TextField size="small" variant="outlined" label="Re-Enter Password" type="password"
                     onChange={e => this.setState({secPassword: e.target.value})}
-                    />
-                    </Box>
-                    <Box mr={1} mb={1}>
-                    <TextField size="small" variant="outlined" label="Account ID" type="text"
-                    onChange={e => this.setState({accountId: e.target.value})}
                     />
                     </Box>
                     <Box mt={1}>

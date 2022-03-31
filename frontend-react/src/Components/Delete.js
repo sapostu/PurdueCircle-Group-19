@@ -14,7 +14,8 @@ class Delete extends Component {
       errorNotMatching: false,
       usernameEmail: '',
       password: '',
-      toProfile: false
+      toProfile: false,
+      authUsername: localStorage.getItem('username')
 
     }
 
@@ -42,7 +43,7 @@ class Delete extends Component {
       return;
     }
 
-    let account = {username: this.state.usernameEmail, crypt_password: this.state.password}
+    let account = {username: this.state.authUsername, crypt_password: this.state.password}
     console.log('\n\n account =>' + JSON.stringify(account));
 
     DeleteService.deleteAccount(account).then( (res) => {

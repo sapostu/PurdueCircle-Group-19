@@ -29,7 +29,8 @@ class Profile extends Component {
             // TODO : populate username and bio variables with the user's actual username and bio
             username: '',
             bio: '',
-            exists: true
+            exists: true,
+            authUsername: localStorage.getItem('username')
         }
 
       /*  axios.get('http://localhost:8080/account/getByUsername/'.concat(this.props.router.params.username)).then(function (response) {
@@ -94,7 +95,7 @@ class Profile extends Component {
                             </CardContent>
                             <CardActions style={{"padding-left": "0.5vw"}}>
                                 <Button size="small">Follow</Button> {/* TODO : Add following functionality */}
-                                <Button size="small"><Link to="/edit" style={{ color: "inherit", "text-decoration": "none" }}>Edit</Link></Button> {/* TODO : Add edit functionality and hide the button for users that are not on their own pages */}
+                                <Button size="small"><Link to="/edit" style={{ display: this.state.username === this.state.authUsername ? 'block' : 'none', color: "inherit", "text-decoration": "none" }}>Edit</Link></Button> {/* TODO : Add edit functionality and hide the button for users that are not on their own pages */}
                             </CardActions>
                         </Card>
                     </div>

@@ -20,6 +20,14 @@ class AccountService {
         return axios.post(ACCOUNT_API_BASE_URL + "/credentials/password", account);
     }
 
+    getAccountById(account_id) {
+        return axios.get(ACCOUNT_API_BASE_URL + "/getAccountbyID/" + account_id);
+    }
+
+    getAccountByUsername(username) {
+        return axios.get(ACCOUNT_API_BASE_URL + "/getByUsername/" + username);
+    }
+
 }
 
 export default new AccountService()

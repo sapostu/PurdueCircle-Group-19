@@ -1,5 +1,7 @@
 package server.backendspringboot.model;
 
+import server.backendspringboot.controller.PostController;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,8 +31,18 @@ public class Post {
     @Column(name = "bio", columnDefinition = "VARCHAR(281)")
     private String bio;
 
+    @Column(name = "tag_id", columnDefinition = "LONG")
+    private long tag_id;
 
-    public Post(long postId, long accountId, Date dateOfPost, String bio, String type, int isAnon) {
+    @Transient
+    private String tagName;
+
+
+    @Column(name = "name", columnDefinition = "VARCHAR(15)")
+    private String username;
+
+    public Post(long postId, long accountId, Date dateOfPost, String bio, String type, int isAnon, String tagName, String username) {
+
         super();
         this.postId = postId;
         this.accountId = accountId;
@@ -38,6 +50,20 @@ public class Post {
         this.type = type;
         this.isAnon = isAnon;
         this.bio = bio;
+        this.tagName = tagName;
+
+        this.username = username;
+
+       /* if (tagName != null) {
+            System.out.println("null!");
+            PostController pc = new PostController();
+            this.tag_id = pc.getTagId(tagName);
+            System.out.println(this.tag_id + "\n\n");
+        } else {
+            System.out.println("not null!");
+            this.tag_id = -1;
+            System.out.println(this.tag_id + "\n\n");
+        } */
     }
 
     /*public Post(long accountId, Date dateOfPost, String bio, String type, int isAnon) {
@@ -57,6 +83,13 @@ public class Post {
         return postId;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public long  getAccountId() {
         return accountId;
@@ -104,6 +137,22 @@ public class Post {
         this.type = type;
     }
 
+    public long getTag_id() {
+        return tag_id;
+    }
+
+    public void setTag_id(long tag_id) {
+        this.tag_id = tag_id;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -116,4 +165,3 @@ public class Post {
                 '}';
     }
 }
-

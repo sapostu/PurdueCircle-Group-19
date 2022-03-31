@@ -49,6 +49,7 @@ function App() {
             <Route path="/timeline" element={<Timeline />}/>
             <Route path="/userline" element={<Userline />}>
               <Route path=":username" element={<Userline />}/>
+            </Route>
             <Route path="/topic" element={<Topic />}>
               <Route path=":topic" name="fdsa" element={<Topic />}/>
             </Route>

@@ -33,6 +33,13 @@ public class People_FOLLOWINGController {
 
     }
 
+    @PostMapping("/checkFollow")
+    public boolean checkFollowing(@RequestBody People_FOLLOWING check) {
+        People_FOLLOWING exists = people_followingRepository.getByAccountIdandFollowed(check.getAccount_id(), check.getFollowed()).orElse(null);
+        return exists != null;
+
+    }
+
     @PostMapping("/deleteFollow")
     public People_FOLLOWING deleteFollowing(@RequestBody People_FOLLOWING toDel) {
         People_FOLLOWING exists = people_followingRepository.getByAccountIdandFollowed(toDel.getAccount_id(), toDel.getFollowed()).orElse(null);

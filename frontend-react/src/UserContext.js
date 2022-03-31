@@ -27,6 +27,7 @@ class UserProvider extends Component {
         this.setState({auth_username: "", isAuthenticated: false})
         localStorage.setItem('username', "");
         localStorage.setItem('isAuthenticated', false);
+        localStorage.setItem('accountId', -1);
     }
 
     getUsername = () => {

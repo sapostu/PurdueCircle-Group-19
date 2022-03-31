@@ -58,6 +58,7 @@ class LoginScreen extends Component {
             }
             else {
               console.log("the verification is true!");
+              localStorage.setItem('accountId', res.data.account_id);
               this.setState({username: res.data.username});
               logIn(res.data.username);
               this.setState({toProfile: true});

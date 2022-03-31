@@ -20,6 +20,7 @@ import Userline from './Components/Userline';
 import Topic from './Components/Topic';
 import Post from './Components/Post';
 import TopicSearch from './Components/SearchTopic';
+import Logout from './Components/Logout';
 import {UserContext} from './UserContext';
 import UserProvider from './UserContext';
 
@@ -57,6 +58,7 @@ function App() {
               <Route path=":post_id" name="fdsa" element={<Post />}/>
             </Route>
             <Route path="/topicsearch" element={<TopicSearch/>} />
+            <Route path="/logout" element={<Logout />} />
           </Route>
 
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { UserContext } from '../UserAuthContext';
+import { UserContext } from '../UserContext';
 import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper, Typography, Divider } from '@material-ui/core';
 import PostService from '../Services/PostService';
 

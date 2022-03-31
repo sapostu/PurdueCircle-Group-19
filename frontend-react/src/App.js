@@ -15,7 +15,6 @@ import Navbar from './Components/Navbar';
 import Success from './Components/Success';
 import CreatePost from './Components/CreatePost';
 import DeletePost from './Components/DeletePost';
-import {UserContext} from './UserAuthContext';
 import Timeline from './Components/Timeline';
 import Userline from './Components/Userline';
 import Topic from './Components/Topic';

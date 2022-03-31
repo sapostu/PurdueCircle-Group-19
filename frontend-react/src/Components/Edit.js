@@ -13,8 +13,9 @@ class Edit extends Component {
             bio: '',
             errorName: false,
             errorBio: false,
-            redir: false
-
+            redir: false,
+            isAuthenticated: localStorage.getItem('isAuthenticated'),
+            authUsername: localStorage.getItem('username')
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,7 +43,7 @@ class Edit extends Component {
             this.setState({errorBio: true});
             return;
         }
-        let account = {username: this.state.username, bio: this.state.bio}
+        let account = {username: this.state.authUsername, bio: this.state.bio}
         console.log('\n\n account =>' + JSON.stringify(account));
     
         EditService.editAccount(account).then( (res) => {
@@ -70,7 +71,7 @@ class Edit extends Component {
 
     render() {
         if (this.state.redir) {
-            return <Navigate to={'/profile/' + this.state.username}/>;        
+            return <Navigate to={'/profile/' + this.state.authUsername}/>;        
         }
         return (
             <>
@@ -142,7 +143,7 @@ class Edit extends Component {
                         <CardActions style={{"padding-left": "0.5vw"}}>
                             <Button size="small" onClick={this.handleSubmit}>Submit</Button>
                             <Button size="small"><Link to="/profile_temp" style={{ color: "inherit", "text-decoration": "none" }}>Cancel</Link></Button> {/* TODO : edit the link to profile to link to the actual profile */}
-                            <Button size="small"><Link to="/delete" style={{ color: "inherit", "text-decoration": "none" }}>Delete</Link></Button>
+                            <Button size="small"><Link to="/delete" style={{ display: this.state.isAuthenticated ? 'block' : 'none', color: "inherit", "text-decoration": "none" }}>Delete</Link></Button>
                         </CardActions>
                     </Card>
                 </div>

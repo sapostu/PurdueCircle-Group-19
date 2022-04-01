@@ -27,7 +27,11 @@ class Timeline extends Component {
                         //console.log("_1")
                         console.log(post);
                         var posts = this.state.posts;
-                        posts.push({ id: post.id, userName: post.username, content: post.bio, tagName: post.tag_id })
+                        if (post.isAnon == 1){
+                            posts.push({ id: post.id, userName: 'Anonymous', content: post.bio, tagName: post.tag_id })
+                        } else {
+                            posts.push({ id: post.id, userName: post.username, content: post.bio, tagName: post.tag_id })
+                        }
                         this.setState({posts: posts});
                         //arr.push({id: post.id, userName: post.name, content: post.bio});
                     });

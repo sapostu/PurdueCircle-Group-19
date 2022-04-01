@@ -118,7 +118,7 @@ class Profile extends Component {
                                 </Typography>
                             </CardContent>
                             <CardActions style={{"padding-left": "0.5vw"}}>
-                                <Button size="small" onClick={this.handleUnfollow} style={{display: this.state.followed ? 'inherit' : 'none'}}>Unfollow</Button>
+                                <Button size="small" onClick={this.handleUnfollow} style={{display: this.state.followed ? 'block' : 'none'}}>Unfollow</Button>
                                 <Button size="small" onClick={this.handleFollow} style={{display: this.state.followed ? 'none' : 'block'}}>Follow</Button>
                                 <Button size="small"><Link to="/edit" style={{ display: this.state.username === this.state.authUsername ? 'block' : 'none', color: "inherit", "text-decoration": "none" }}>Edit</Link></Button> {/* TODO : Add edit functionality and hide the button for users that are not on their own pages */}
                             </CardActions>

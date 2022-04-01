@@ -65,6 +65,11 @@ export default function DenseAppBar() {
                       Topic Search
                   </Typography>
               </Link>
+              <Link to="/following">
+                  <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
+                      Following
+                  </Typography>
+              </Link>
               </Toolbar>
           </AppBar>
           </Box>

@@ -21,6 +21,7 @@ import Topic from './Components/Topic';
 import Post from './Components/Post';
 import TopicSearch from './Components/SearchTopic';
 import Logout from './Components/Logout';
+import Following from './Components/Following';
 import {UserContext} from './UserContext';
 import UserProvider from './UserContext';
 
@@ -59,6 +60,7 @@ function App() {
             </Route>
             <Route path="/topicsearch" element={<TopicSearch/>} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/following" element={<Following />} />
           </Route>
 
 

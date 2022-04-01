@@ -59,7 +59,12 @@ export default function DenseAppBar() {
                       <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
                           Change Credentials
                       </Typography>
-                  </Link>
+                </Link>
+                <Link to="/topicsearch">
+                  <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
+                      Topic Search
+                  </Typography>
+              </Link>
               </Toolbar>
           </AppBar>
           </Box>

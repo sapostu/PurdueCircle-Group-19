@@ -2,9 +2,11 @@ package server.backendspringboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import server.backendspringboot.model.Comment;
 import server.backendspringboot.model.Post;
 import server.backendspringboot.model.Tags;
 import server.backendspringboot.model.Interests;
+import server.backendspringboot.repository.CommentRepository;
 import server.backendspringboot.repository.PostRepository;
 import server.backendspringboot.repository.TagsRepository;
 
@@ -23,6 +25,9 @@ public class PostController {
 
     @Autowired
     private TagsController tc;
+
+    @Autowired
+    CommentRepository commentRepository;
 
    /* @Autowired
     public PostController(PostRepository postRepository) {
@@ -69,6 +74,8 @@ public class PostController {
         long postId = post.getPostId();
         Post toDel = postRepository.getById(postId);
         postRepository.delete(toDel);
+        List<Comment> commentToDel = commentRepository.getCommentsByPostId(postId);
+        commentRepository.deleteAll(commentToDel);
     }
 
     @DeleteMapping(path = "/deleteUserPost/{accountId}")

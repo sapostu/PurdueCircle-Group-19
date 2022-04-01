@@ -68,7 +68,7 @@ class Profile extends Component {
             //console.log(this.account)
             FollowService.isFollowing(this.state.account).then((response) => {
                 if (response.data) {
-                    this.setState({ following: true });
+                    this.setState({ followed: true });
                     console.log("following");
                 }
             });

@@ -22,7 +22,7 @@ class Userline extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            username: 'Userline',
             posts: []
         };
     }
@@ -60,7 +60,7 @@ class Userline extends Component {
                         "text-align": "center"
                     }} id="login_cont">
                         <h1>
-                        {this.state.topic}
+                        {this.state.username}
                         </h1>
                     </Paper>
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>

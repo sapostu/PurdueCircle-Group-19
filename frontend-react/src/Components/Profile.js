@@ -111,7 +111,7 @@ class Profile extends Component {
                             </div> {/* TODO : use a real profile picture*/}
                             <CardContent style={{ height: "9vh", 'object-fit': 'contain'}}>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    {this.state.username}
+                                    <a href={'/userline/'+this.state.username}>{this.state.username}</a>
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     {this.state.bio}

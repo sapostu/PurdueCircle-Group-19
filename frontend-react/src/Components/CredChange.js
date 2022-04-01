@@ -36,7 +36,9 @@ class CredRequestScreen extends Component {
             toProfile: false,
             toLogin: false,
             // rendering the UI for changing credentials
-            toCredChange: false
+            toCredChange: false,
+            isAuthenticated: localStorage.getItem('isAuthenticated'),
+            auth_username: localStorage.getItem('username')
         };
 
         this.handleCancel = this.handleCancel.bind(this);
@@ -69,7 +71,7 @@ class CredRequestScreen extends Component {
             return;
         }
         const { auth_username, isAuthenticated } = this.context;
-        if (isAuthenticated && auth_username) {
+        if (this.state.isAuthenticated && this.state.auth_username) {
             // ask user to enter their old password if they select to change their username or password
             if (this.state.username || this.state.password) {
               this.setState({popupBool: true});
@@ -238,6 +240,8 @@ class CredChangeScreen extends Component {
             bools: props.bools,
             // for backing up and rendering <CredRequestScreen/>
             toCredRequest: false,
+            auth_username: localStorage.getItem('username'),
+            isAuthenticated: localStorage.getItem('isAuthenticated')
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -253,7 +257,7 @@ class CredChangeScreen extends Component {
      */
     handleSubmit = e => {
         const { auth_username, isAuthenticated } = this.context;
-        if (!isAuthenticated || !auth_username) { return; }
+        if (!this.state.isAuthenticated || !this.state.auth_username) { console.log("doesn't make it" + this.state.auth_username); return; }
 
         e.preventDefault();
         // ensure all requested fields are filled in
@@ -327,7 +331,8 @@ class CredChangeScreen extends Component {
 
         // PUT requests
         // get account id from username
-        AccountService.getAccountByUsername(auth_username).then(res_first => {
+        //console.log(this.state.auth_username + "asdf this si");
+        AccountService.getAccountByUsername(this.state.auth_username).then(res_first => {
             if (res_first.data) {
                 const accountId = res_first.data.account_id;
                 if (emailBool) {
@@ -345,8 +350,13 @@ class CredChangeScreen extends Component {
                     AccountService.updateAccountUsername(accountUsername).then(res => {
                         if (res.data !== "") {
                             // success
+                            console.log("success");
+                            localStorage.setItem('username', this.state.username);
                         } else {
                             // failure
+                            console.log("failure");
+                            this.setState({ alertMsg: "That username is taken, please try again."});
+                            this.setState({ alertBool: true });
                         }
                     });
                 }

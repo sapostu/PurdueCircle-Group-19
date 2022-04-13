@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import React from 'react';
-import {Routes, Route, BrowserRouter} from 'react-router-dom';
+import {Routes, Route, BrowserRouter, Navigate} from 'react-router-dom';
 import { useState } from 'react';
 
 import LoginScreen from './Components/LoginScreen';
@@ -34,7 +34,7 @@ function App() {
   <UserProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<LoginScreen />}/>
+          <Route path="*" element={<Navigate to={'/login'}/>}/>
           <Route path="/signup" element={<Signup />}/>
           <Route path="/" element={<Navbar />}>
             <Route path="/profile_temp" element={<><h1>asdf</h1><Navbar /><Profile /></>}/>

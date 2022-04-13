@@ -18,6 +18,7 @@ class UserProvider extends Component {
         localStorage.setItem('username', _username);
         localStorage.setItem('isAuthenticated', true);
 
+        window.dispatchEvent(new Event("storage")); // so navbar useEffect picks up the localStorage change
 
 
         // console.log("after username= "+ this.state.auth_username + "\n");
@@ -28,6 +29,8 @@ class UserProvider extends Component {
         localStorage.removeItem('username');
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('accountId');
+
+        window.dispatchEvent(new Event("storage")); // so navbar useEffect picks up the localStorage change
     }
 
     getUsername = () => {

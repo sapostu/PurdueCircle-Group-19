@@ -28,10 +28,11 @@ class Timeline extends Component {
                         console.log(post);
                         var posts = this.state.posts;
                         if (post.isAnon == 1){
-                            posts.push({ id: post.id, userName: 'Anonymous', content: post.bio, tagName: post.tag_id })
+                            posts.push({ id: post.postId, userName: 'Anonymous', content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10) })
                         } else {
-                            posts.push({ id: post.id, userName: post.username, content: post.bio, tagName: post.tag_id })
+                            posts.push({ id: post.postId, userName: post.username, content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10) })
                         }
+                        posts.sort((a, b) => parseFloat(b.id) - parseFloat(a.id));
                         this.setState({posts: posts});
                         //arr.push({id: post.id, userName: post.name, content: post.bio});
                     });
@@ -81,12 +82,15 @@ class Timeline extends Component {
                     }
                     
                     >
-                        <a href={'/profile/'.concat(`${post.userName}`)}>
-                        <ListItemText id={post.id} primary={`${post.userName} Tag: ${post.tagName}`} secondary={`${post.content}`} />
-
+                        <a href={'/profile/'.concat(`${post.userName}`)} style={{"text-decoration": "none"}}>
+                        <ListItemText id={post.id} primary={`${post.userName}`} secondary={`${post.date}`} />
                         </a>
                     </ListItem>
-                    
+                    <ListItem>
+                        <a href={'/p/'.concat(`${post.id}`)} style={{"text-decoration": "none"}}>
+                        <ListItemText style={{"padding": 0}} id={post.id} secondary={`${post.content}`} />
+                        </a>
+                    </ListItem>
                     </Paper>
                     <Divider variant="inset" component="li" />
                     </>

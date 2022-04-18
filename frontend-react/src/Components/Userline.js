@@ -41,9 +41,11 @@ class Userline extends Component {
             var arr = [];
 
             response.data.forEach(post => {
-                arr.push({id: post.postId, userName: this.props.router.params.username, content: post.bio});
+                if (post.isAnon == 0) {
+                    arr.push({id: post.postId, userName: this.props.router.params.username, content: post.bio, date: post.dateOfPost.substring(0, 10)});
+                }
             });
-
+            arr.sort((a, b) => parseFloat(b.id) - parseFloat(a.id));
             this.setState({posts: arr});
         });
     }
@@ -83,8 +85,14 @@ class Userline extends Component {
                     }
                     
                     >
-
-                        <ListItemText id={post.id} primary={`${post.userName}`} secondary={`${post.content}`} />
+                        <a href={'/profile/'.concat(`${post.userName}`)} style={{"text-decoration": "none"}}>
+                            <ListItemText id={post.id} primary={`${post.userName}`} secondary={`${post.date}`}/>
+                        </a>
+                    </ListItem>
+                    <ListItem>
+                        <a href={'/p/'.concat(`${post.id}`)} style={{"text-decoration": "none"}}>
+                            <ListItemText id={post.id} secondary={`${post.content}`} />
+                        </a>
                     </ListItem>
                     
                     </Paper>

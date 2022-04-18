@@ -28,7 +28,7 @@ export default function DenseAppBar() {
               <Typography variant="h6" color="inherit" component="div">
                   PurdueCircle
               </Typography>
-              <Link to="/profile">
+              <Link to={"/profile/".concat(localStorage.getItem('username'))}>
                   <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
                       Profile
                   </Typography>

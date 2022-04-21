@@ -35,16 +35,15 @@ public class Account {
     @Column(name="bio", length=512, columnDefinition = "LONGTEXT")
     private String bio;
 
-    @Lob
-    @Column(name = "profile_pic", columnDefinition = "BLOB")
-    private Blob profile_pic;
+    @Column(name = "profile_pic", columnDefinition = "VARCHAR(100)")
+    private String profile_pic;
 
 
     public Account() {
     }
 
     public Account(int account_id, String username, String first_name, String last_name, String email, String date_of_birth, String crypt_password, 
-            String bio, Blob profile_pic) {
+            String bio, String profile_pic) {
 
         super();
         this.account_id = account_id;
@@ -123,11 +122,11 @@ public class Account {
         this.bio = bio;
     }
 
-    public Blob getProfile_pic() {
+    public String getProfile_pic() {
         return this.profile_pic;
     }
 
-    public void setProfile_pic(Blob profile_pic) {
+    public void setProfile_pic(String profile_pic) {
         this.profile_pic = profile_pic;
     }
 

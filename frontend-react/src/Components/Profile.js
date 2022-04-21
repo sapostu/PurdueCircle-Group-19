@@ -32,6 +32,7 @@ class Profile extends Component {
             bio: '',
             exists: true,
             authUsername: localStorage.getItem('username'),
+            profile_pic: null,
             account: null,
             followed: false
         }
@@ -65,6 +66,14 @@ class Profile extends Component {
             this.setState({ username: response.data.username });
             this.setState({ bio: response.data.bio });
             this.setState({ account: {account_id: localStorage.getItem('accountId'), followed: response.data.account_id} })
+            if (response.data.profile_pic === null) {
+                this.setState({ profile_pic: 'https://www.w3schools.com/html/img_chania.jpg'})
+            } else {
+                this.setState({ profile_pic: response.data.profile_pic })
+                console.log(response.data.profile_pic)
+            }
+
+
             //console.log(this.account)
             FollowService.isFollowing(this.state.account).then((response) => {
                 if (response.data) {
@@ -104,11 +113,12 @@ class Profile extends Component {
                         
                         <Card sx={{ maxWidth: "10%" }} style={{ transform: "translate(-50%, -0%)", "width": "25vw", "height": "35vh", backgroundColor: "#e0e0e0" }} square elevation={0} variant="outlined">
                             <CardHeader style={{ height: "1.5vh", backgroundColor: "#f5f5f5" }}>
-
                             </CardHeader>
-                            <div style={{'height': '200px', 'width': '200px', "padding-left": '20px', "padding-top": '5px'}}>
-                                <img src='https://www.w3schools.com/html/img_chania.jpg' style={{'height': '100%', 'width': '100%', 'object-fit': 'contain'}} alt="Profile"/>
-                            </div> {/* TODO : use a real profile picture*/}
+
+                            <div style={{'height': '50px', 'width': '50px', "padding-left": '20px', "padding-top": '5px'}}>
+                                <img src={this.state.profile_pic} style={{'height': '100%', 'width': '100%', 'object-fit': 'contain'}} alt="Profile"/>
+                            </div>
+
                             <CardContent style={{ height: "9vh", 'object-fit': 'contain'}}>
                                 <Typography gutterBottom variant="h5" component="div">
                                     <a href={'/userline/'+this.state.username}>{this.state.username}</a>

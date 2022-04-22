@@ -74,16 +74,12 @@ class Timeline extends Component {
                         margin: "auto",
                         padding: "20px"
                     }} id="login_cont">
-                    <ListItem
-                    key={post.id}
-                    secondaryAction={
+                    <ListItem key={post.id} secondaryAction={
                         <IconButton edge="end" aria-label="comments">
                         </IconButton>
-                    }
-                    
-                    >
-                        <a href={'/profile/'.concat(`${post.userName}`)} style={{"text-decoration": "none"}}>
-                        <ListItemText id={post.id} primary={`${post.userName}`} secondary={`${post.date}`} />
+                    }>
+                        <a href={`${post.userName}` == 'Anonymous' ? 'javascript:;' : '/profile/'.concat(`${post.userName}`)} style={{"text-decoration": "none"}}>
+                            <ListItemText id={post.id} primary={`${post.userName}`} secondary={`${post.date}`} />
                         </a>
                     </ListItem>
                     <ListItem>

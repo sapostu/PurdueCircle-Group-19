@@ -68,7 +68,8 @@ class CreatePost extends Component {
 
     render() {
         if (this.state.redir) {
-            return <Navigate to={'/post'}/>;
+            window.location.reload();
+            //return <Navigate to={'/post'}/>;
         }
         return (
             <>

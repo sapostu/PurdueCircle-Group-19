@@ -71,8 +71,8 @@ class Topic extends Component {
         //    this.setState({ username: response.data.username });
         //    this.setState({ bio: response.data.bio });
             //console.log(response)
-            this.setState({ users: Array.from(response.data)} )
-            this.setState()
+            this.setState({ users: Array.from(response.data).sort((a, b) => parseFloat(b.postId) - parseFloat(a.postId)) } )
+            console.log(this.state.users);
             axios.get('http://localhost:8080/tags/getByName/'.concat(this.props.router.params.topic)).then((response) => {
                 this.setState( { account: {account_id: localStorage.getItem('accountId'), tag_id: response.data.tagId} });
                 //console.log(response.data)
@@ -133,19 +133,19 @@ class Topic extends Component {
                     margin: "auto",
                     padding: "20px"
                 }} id="login_cont">
-                <ListItem
-                key={user.id}
-                secondaryAction={
+                <ListItem key={user.id} secondaryAction={
                     <IconButton edge="end" aria-label="comments">
                     </IconButton>
-                }
-                
-                >
-
-                    <ListItemText id={user.id} primary={`${user.isAnon}` == 1 ? 'Anonymous' : `${user.username}`} secondary={`${user.bio}`} />
-                
+                }>
+                    <a href={`${user.isAnon}` == 1 ? 'javascript:;' : '/profile/'.concat(`${user.username}`)} style={{"text-decoration": "none"}}>
+                        <ListItemText id={user.id} primary={`${user.isAnon}` == 1 ? 'Anonymous' : `${user.username}`} secondary={`${user.dateOfPost}`.substring(0,10)} />
+                    </a>
                 </ListItem>
-                
+                <ListItem>
+                        <a href={'/p/'.concat(`${user.postId}`)} style={{"text-decoration": "none"}}>
+                            <ListItemText style={{"padding": 0}} id={user.postId} secondary={`${user.bio}`} />
+                        </a>
+                    </ListItem>
                 </Paper>
                 <Divider variant="inset" component="li" />
                 </>

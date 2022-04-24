@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper, Typography, Divider } from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper, Typography, Divider, Button } from '@material-ui/core';
 import axios from 'axios';
 import PostService from '../Services/PostService';
+import BlockService from '../Services/BlockService';
 
 class Timeline extends Component {
     constructor(props) {
@@ -14,6 +15,34 @@ class Timeline extends Component {
             posts: []
         };
 
+        this.handleBlock = this.handleBlock.bind(this);
+        this.handleUnBlock = this.handleUnBlock.bind(this);
+
+    }
+
+    handleBlock(blocked) {
+        // why is it calling it a bunch?
+      //  console.log(blocked)
+        console.log("begin")
+        var accountId = localStorage.getItem('accountId');
+        var blockObj = new Object();
+        blockObj.account_id = accountId;
+        blockObj.blocked = blocked;
+        console.log('***')
+        console.log(accountId)
+        console.log(blocked)
+        console.log("^^^")
+      //  console.log('blocking');
+      //  console.log(this.state.account);
+        console.log('here')
+        BlockService.blockAccount(blockObj);
+    //    this.setState({ blocked: true });
+    }
+
+    handleUnBlock() {
+        console.log('unblock');
+    //    BlockService.unBlockAccount();
+  //      this.setState({ blocked: false });
     }
 
     componentDidMount() {
@@ -26,14 +55,27 @@ class Timeline extends Component {
                     post_response.data.forEach(post => {
                         //console.log("_1")
                         console.log(post);
-                        var posts = this.state.posts;
-                        if (post.isAnon == 1){
-                            posts.push({ id: post.postId, userName: 'Anonymous', content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10) })
-                        } else {
-                            posts.push({ id: post.postId, userName: post.username, content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10) })
-                        }
-                        posts.sort((a, b) => parseFloat(b.id) - parseFloat(a.id));
-                        this.setState({posts: posts});
+                        var blockCheck = new Object();
+                        var blocked = false;
+                        blockCheck.account_id = this.state.account_id;
+                        blockCheck.blocked = post.accountId;
+                        BlockService.checkBlock(blockCheck).then(isBlock => {
+                            blocked = isBlock.data;
+                       //     console.log(blocked)
+                     //      console.log(post.bio);
+                            var posts = this.state.posts;
+                            console.log(blocked);
+                            if (!blocked) {
+                                console.log(post.bio)
+                                if (post.isAnon == 1){
+                                    posts.push({ id: post.postId, userName: 'Anonymous', content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10), accountId: post.accountId })
+                                } else {
+                                    posts.push({ id: post.postId, userName: post.username, content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10), accountId: post.accountId })
+                                }
+                            }
+                            posts.sort((a, b) => parseFloat(b.id) - parseFloat(a.id));
+                            this.setState({posts: posts});
+                        });
                         //arr.push({id: post.id, userName: post.name, content: post.bio});
                     });
                 });
@@ -78,6 +120,7 @@ class Timeline extends Component {
                         <IconButton edge="end" aria-label="comments">
                         </IconButton>
                     }>
+                        <Button onClick={() => {this.handleBlock(post.accountId)}} style={{position:'absolute', right:10}} > Block </Button>
                         <a href={`${post.userName}` == 'Anonymous' ? 'javascript:;' : '/profile/'.concat(`${post.userName}`)} style={{"text-decoration": "none"}}>
                             <ListItemText id={post.id} primary={`${post.userName}`} secondary={`${post.date}`} />
                         </a>

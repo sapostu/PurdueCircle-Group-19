@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useParams, Navigate } from "react-router-dom";
 import FollowService from '../Services/FollowService';
+import BlockService from '../Services/BlockService'
 
 import { Typography, Button, Card, CardContent, CardActions, CardHeader, Box, AppBar, Toolbar } from '@material-ui/core';
 
@@ -33,11 +34,14 @@ class Profile extends Component {
             exists: true,
             authUsername: localStorage.getItem('username'),
             account: null,
-            followed: false
+            followed: false,
+            blocked: false
         }
 
         this.handleFollow = this.handleFollow.bind(this);
         this.handleUnfollow = this.handleUnfollow.bind(this);
+        this.handleBlock = this.handleBlock.bind(this);
+        this.handleUnBlock = this.handleUnBlock.bind(this);
 
       /*  axios.get('http://localhost:8080/account/getByUsername/'.concat(this.props.router.params.username)).then(function (response) {
             console.log(response);
@@ -57,6 +61,19 @@ class Profile extends Component {
         this.setState({ followed: false });
     }
 
+    handleBlock() {
+        console.log('blocking');
+        console.log(this.state.account);
+        BlockService.blockAccount(this.state.account);
+        this.setState({ blocked: true });
+    }
+
+    handleUnBlock() {
+        console.log('unblock');
+        BlockService.unBlockAccount(this.state.account);
+        this.setState({ blocked: false });
+    }
+
     componentDidMount() {
         console.log(this.props);
         console.log(this.props.router.params.username);
@@ -64,7 +81,7 @@ class Profile extends Component {
             console.log(response);
             this.setState({ username: response.data.username });
             this.setState({ bio: response.data.bio });
-            this.setState({ account: {account_id: localStorage.getItem('accountId'), followed: response.data.account_id} })
+            this.setState({ account: {account_id: localStorage.getItem('accountId'), followed: response.data.account_id, blocked: response.data.account_id} })
             //console.log(this.account)
             FollowService.isFollowing(this.state.account).then((response) => {
                 if (response.data) {
@@ -72,11 +89,18 @@ class Profile extends Component {
                     console.log("following");
                 }
             });
+            BlockService.checkBlock(this.state.account).then((response) => {
+                if (response.data) {
+                    this.setState({ blocked: true })
+                    console.log("blocked")
+                }
+            })
         });
     }
 
     render() {
         console.log(this.state.bio)
+        console.log(this.state.blocked && this.state.username !== this.state.authUsername)
 
         // if (this.state.username.length === 0) {
         //     return (<Typography align='center' variant='h4' style={{ padding: "20px"}}>Oops! Looks like there's nothing here...</Typography>);
@@ -118,9 +142,11 @@ class Profile extends Component {
                                 </Typography>
                             </CardContent>
                             <CardActions style={{"padding-left": "0.5vw"}}>
-                                <Button size="small" onClick={this.handleUnfollow} style={{display: this.state.followed ? 'block' : 'none'}}>Unfollow</Button>
-                                <Button size="small" onClick={this.handleFollow} style={{display: this.state.followed ? 'none' : 'block'}}>Follow</Button>
-                                <Button size="small"><Link to="/edit" style={{ display: this.state.username === this.state.authUsername ? 'block' : 'none', color: "inherit", "text-decoration": "none" }}>Edit</Link></Button> {/* TODO : Add edit functionality and hide the button for users that are not on their own pages */}
+                                <Button size="small" onClick={this.handleUnfollow} style={{display: (this.state.followed && this.state.username == this.state.authUsername) ? 'block' : 'none'}}>Unfollow</Button>
+                                <Button size="small" onClick={this.handleFollow} style={{display: (this.state.followed || this.state.username == this.state.authUsername) ? 'none' : 'block'}}>Follow</Button>
+                                <Button size="small"><Link to="/edit" style={{ display: this.state.username === this.state.authUsername ? 'block' : 'none', color: "inherit", "text-decoration": "none" }}>Edit</Link></Button>
+                                <Button size="small" onClick={this.handleBlock} style={{display: (this.state.blocked || this.state.username == this.state.authUsername) ? 'none' : 'block'}}>Block</Button>
+                                <Button size="small" onClick={this.handleUnBlock} style={{display: this.state.blocked  ? 'block' : 'none'}}>UnBlock</Button> {/* TODO : Add edit functionality and hide the button for users that are not on their own pages */}
                             </CardActions>
                         </Card>
                     </div>

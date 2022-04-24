@@ -2,6 +2,8 @@ package server.backendspringboot.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -9,6 +11,7 @@ public class Message {
     
     @Id
     @Column(name = "msg_id", columnDefinition = "INT")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long msg_id;
     
     @Column(name = "sender_username", columnDefinition = "VARCHAR(15)")

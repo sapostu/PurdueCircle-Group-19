@@ -14,9 +14,12 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 
     /* The query below will return */
 
-    @Query("SELECT sender_username, msg FROM Message WHERE ( sender_id = ?1 OR sender_id = ?2 )")
-    List<Message> getAllMessageBetween2People(long person1_id, long person2_id);
+    // @Query("SELECT sender_username, msg FROM message WHERE ( sender_id = ?1 OR sender_id = ?2 )")
+    // List<Message> getAllMessageBetween2People(long person1_id, long person2_id);
 
+    @Query(value = "SELECT * FROM message WHERE ((sender_id = ?1 AND receiver_id = ?2) OR (sender_id = ?2 AND receiver_id = ?1))", 
+            nativeQuery = true)
+    List<Message> getChat(long id1, long id2);
 
 
     /* This is the query to create message. Idk if it is need tho, just added just in case */

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {TextField, Paper, Button, Snackbar, SnackbarContent} from '@material-ui/core';
+import {TextField, Paper, Button, Snackbar, SnackbarContent, Dialog, DialogActions, 
+        DialogContent, DialogContentText} from '@material-ui/core';
 import { useParams, Navigate } from 'react-router-dom';
 
 import PostService from '../Services/PostService';
@@ -49,6 +50,8 @@ class Post extends Component {
             // comment error alert
             alertBool: false,
             alertMsg: "",
+            // delete post confirmation
+            dialogOpen: false,
             // navigation
             toProfile: false,
             // auth variables
@@ -247,8 +250,10 @@ class Post extends Component {
     handleDelete = () => {
         //const { auth_username, isAuthenticated } = this.context;
         if (!this.state.isAuthenticated || !this.state.auth_username) { return; }
-        if (!window.confirm("ARE YOU SURE?\nThis will permanently delete all of this post's...\n- details\n- associated comments\n- associated reactions"))
-            { return; }
+        this.setState({dialogOpen: true});
+    }
+
+    handleDeleteConfirm = () => {
         const thisPostId = this.state.post_id;
         // delete all reactions
         ReactionService.deleteByPostId(thisPostId);
@@ -277,6 +282,16 @@ class Post extends Component {
             <SnackbarContent style={{backgroundColor: "#D32F2F"}}
             message={this.state.alertMsg}/>
             </Snackbar>
+
+            <Dialog open={this.state.dialogOpen} onClose={() => this.setState({dialogOpen: false})}>
+                <DialogContent>
+                    <DialogContentText>ARE YOU SURE?<br/>This will permanently delete all of this post's...<br/>- details<br/>- associated comments<br/>- associated reactions</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={e => this.setState({dialogOpen: false})}>Cancel</Button>
+                    <Button style={{backgroundColor: "red", color: "white"}} variant="contained" onClick={e => this.handleDeleteConfirm()}>DELETE</Button>
+                </DialogActions>
+            </Dialog>
 
             <Paper style={{margin: '10px'}} elevation={4}>
                 <div>

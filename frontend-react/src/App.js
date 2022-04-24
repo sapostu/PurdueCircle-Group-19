@@ -24,6 +24,7 @@ import Logout from './Components/Logout';
 import Following from './Components/Following';
 import {UserContext} from './UserContext';
 import UserProvider from './UserContext';
+import DM from './Components/DM';
 
 
 function App() {
@@ -57,6 +58,9 @@ function App() {
             </Route>
             <Route path="/p" element={<Post />}>
               <Route path=":post_id" name="fdsa" element={<Post />}/>
+            </Route>
+            <Route path="/dm" element={<DM />}>
+              <Route path=":theirID" name="fdsa" element={<Post />}/>
             </Route>
             <Route path="/topicsearch" element={<TopicSearch/>} />
             <Route path="/logout" element={<Logout />} />

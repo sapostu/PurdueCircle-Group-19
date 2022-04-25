@@ -85,8 +85,12 @@ class Profile extends Component {
             //console.log(this.account)
             FollowService.isFollowing(this.state.account).then((response) => {
                 if (response.data) {
+                    this.setState({ followed: false });
                     this.setState({ followed: true });
                     console.log("following");
+                } else {
+                    this.setState({ followed: true });
+                    this.setState({ followed: false });
                 }
             });
             BlockService.checkBlock(this.state.account).then((response) => {
@@ -142,11 +146,11 @@ class Profile extends Component {
                                 </Typography>
                             </CardContent>
                             <CardActions style={{"padding-left": "0.5vw"}}>
-                                <Button size="small" onClick={this.handleUnfollow} style={{display: (this.state.followed && this.state.username == this.state.authUsername) ? 'block' : 'none'}}>Unfollow</Button>
-                                <Button size="small" onClick={this.handleFollow} style={{display: (this.state.followed || this.state.username == this.state.authUsername) ? 'none' : 'block'}}>Follow</Button>
-                                <Button size="small"><Link to="/edit" style={{ display: this.state.username === this.state.authUsername ? 'block' : 'none', color: "inherit", "text-decoration": "none" }}>Edit</Link></Button>
-                                <Button size="small" onClick={this.handleBlock} style={{display: (this.state.blocked || this.state.username == this.state.authUsername) ? 'none' : 'block'}}>Block</Button>
-                                <Button size="small" onClick={this.handleUnBlock} style={{display: this.state.blocked  ? 'block' : 'none'}}>UnBlock</Button> {/* TODO : Add edit functionality and hide the button for users that are not on their own pages */}
+                                <Button size="small" onClick={this.handleUnfollow} style={{display: (this.state.followed && this.state.username !== this.state.authUsername) ? 'block' : 'none'}}>Unfollow</Button>
+                                <Button size="small" onClick={this.handleFollow} style={{display: (!this.state.followed && this.state.username !== this.state.authUsername) ? 'block' : 'none'}}>Follow</Button>
+                                <Button size="small" style={{display: this.state.username === this.state.authUsername ? 'block' : 'none'}}><Link to="/edit" style={{ color: "inherit", "text-decoration": "none" }}>Edit</Link></Button>
+                                <Button size="small" onClick={this.handleBlock} style={{display: (!this.state.blocked && this.state.username !== this.state.authUsername) ? 'block' : 'none'}}>Block</Button>
+                                <Button size="small" onClick={this.handleUnBlock} style={{display: this.state.blocked ? 'block' : 'none'}}>UnBlock</Button> {/* TODO : Add edit functionality and hide the button for users that are not on their own pages */}
                             </CardActions>
                         </Card>
                     </div>

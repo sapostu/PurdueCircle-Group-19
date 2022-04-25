@@ -21,6 +21,9 @@ public interface UserReactionsRepository extends JpaRepository<UserReaction, Lon
     @Query("SELECT COUNT(s) FROM UserReaction s WHERE s.postId = ?1 AND s.reactionId = ?2")
     int countReactionsByPostIdAndReactionId(long postId, long reactionId);
 
+    @Query(value = "SELECT reactions.reaction_name as name, user_reactions.* FROM user_reactions INNER JOIN reactions ON user_reactions.reaction_id=reactions.reaction_id WHERE user_reactions.account_id = ?1", nativeQuery = true)
+    List<UserReaction> getReactionsByAccountId(int accountId);
+
     @Modifying
     @Query("DELETE FROM UserReaction s WHERE s.postId = ?1")
     void deleteUserReactionsByPostId(long postId);

@@ -13,6 +13,9 @@ class ReactionService {
     }
 
     // User reactions
+    getReactionsByAccountId(account_id) {
+        return axios.get(REACTION_API_BASE_URL + "/reactionsByAccountId/" + account_id);
+    }
     getReactionsByPostId(post_id) {
         return axios.get(REACTION_API_BASE_URL + "/reactionsByPostId/" + post_id);
     }

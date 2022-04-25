@@ -21,12 +21,24 @@ public class UserReaction {
     @Column(name = "reaction_id")
     private long reactionId;
 
+    @Column(name = "name")
+    private String name;
+    
+
     public UserReaction() {}
+
+    public UserReaction(long postId, long accountId, long reactionId, String name) {
+        this.postId = postId;
+        this.accountId = accountId;
+        this.reactionId = reactionId;
+        this.name = name;
+    }
 
     public UserReaction(long postId, long accountId, long reactionId) {
         this.postId = postId;
         this.accountId = accountId;
         this.reactionId = reactionId;
+        this.name = null;
     }
 
     public long getPostId() {
@@ -52,5 +64,12 @@ public class UserReaction {
     public void setReactionId(long reactionId) {
         this.reactionId = reactionId;
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -108,6 +108,11 @@ public class PostController {
         return postRepository.getPostByTag_id(id);
     }
 
+    @GetMapping(path = "/postByAccountId/{id}")
+    public List<Post> getPostByAccountId(@PathVariable("id") int id) {
+        return postRepository.getPostByAccount_id(id);
+    }
+
     public Long getTagId(String tagName) {
         if (tagName == null) {
             return (long) -1;

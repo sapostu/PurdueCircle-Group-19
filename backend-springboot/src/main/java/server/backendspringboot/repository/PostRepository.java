@@ -18,6 +18,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "SELECT account.username as name, post.* FROM post INNER JOIN account ON post.account_id=account.account_id WHERE post.tag_id = ?1", nativeQuery = true)
     List<Post> getPostByTag_id(long tagId);
 
+    @Query(value = "SELECT account.username as name, post.* FROM post INNER JOIN account ON post.account_id=account.account_id WHERE post.account_id = ?1", nativeQuery = true)
+    List<Post> getPostByAccount_id(int accountId);
+
     @Query("SELECT s.tagId FROM Tags s WHERE s.tagName =?1")
     Long getTagsByName(String name);
 

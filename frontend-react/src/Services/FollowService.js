@@ -28,6 +28,10 @@ class FollowService {
     isFollowingTopic(account) {
         return axios.post(INTERESTS_API_BASE_URL + "/checkInterests", account);
     }
+
+    getFollowingList(account_id) {
+        return axios.get(FOLLOW_API_BASE_URL + "/getFollowingIdById/" + account_id);
+    }
 }
 
 export default new FollowService()

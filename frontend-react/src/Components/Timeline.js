@@ -4,6 +4,7 @@ import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper
 import axios from 'axios';
 import PostService from '../Services/PostService';
 import BlockService from '../Services/BlockService';
+import FollowService from '../Services/FollowService';
 
 class Timeline extends Component {
     constructor(props) {
@@ -12,7 +13,8 @@ class Timeline extends Component {
             isAuthenticated: localStorage.getItem('isAuthenticated'),
             username: localStorage.getItem('username'),
             account_id: localStorage.getItem('accountId'),
-            posts: []
+            posts: [],
+            posts_on_page: {}
         };
 
         this.handleBlock = this.handleBlock.bind(this);
@@ -67,10 +69,13 @@ class Timeline extends Component {
                             console.log(blocked);
                             if (!blocked) {
                                 console.log(post.bio)
-                                if (post.isAnon == 1){
-                                    posts.push({ id: post.postId, userName: 'Anonymous', content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10), accountId: post.accountId })
-                                } else {
-                                    posts.push({ id: post.postId, userName: post.username, content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10), accountId: post.accountId })
+                                if (!this.state.posts_on_page.hasOwnProperty(post.postId)) {
+                                    this.state.posts_on_page[post.postId] =  true;
+                                    if (post.isAnon == 1){
+                                        posts.push({ id: post.postId, userName: 'Anonymous', content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10), accountId: post.accountId })
+                                    } else {
+                                        posts.push({ id: post.postId, userName: post.username, content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10), accountId: post.accountId })
+                                    }
                                 }
                             }
                             posts.sort((a, b) => parseFloat(b.id) - parseFloat(a.id));
@@ -83,7 +88,42 @@ class Timeline extends Component {
 
             //this.setState({posts: arr});
         });
+        FollowService.getFollowingList(this.state.account_id).then(tags_response => {
+            //var arr = [];
+            console.log(tags_response);
+            tags_response.data.forEach(tag => {
+                console.log(tag);
+                //console.log(tag)
+                PostService.getPostsByAccountId(tag).then(post_response => {
+                    post_response.data.forEach(post => {
+                        //console.log("_1")
+                        //console.log(post);
+                        // var blockCheck = new Object();
+                        // var blocked = false;
+                        // blockCheck.account_id = this.state.account_id;
+                        // blockCheck.blocked = post.accountId;
+                        //var posts = [];
+                        console.log(!this.state.posts_on_page.hasOwnProperty(post.postId))
+                        if (!this.state.posts_on_page.hasOwnProperty(post.postId)) {
+                            console.log(post.postId)
+                            this.state.posts_on_page[post.postId] =  true;
+                            if (post.isAnon == 1){
+                                //posts.push({ id: post.postId, userName: 'Anonymous', content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10), accountId: post.accountId })
+                            } else {
+                                this.state.posts.push({ id: post.postId, userName: post.username, content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10), accountId: post.accountId })
+                            }
+                        }
+                        //console.log(posts);
+                        //this.state.posts.concat(posts);
+                        this.state.posts.sort((a, b) => parseFloat(b.id) - parseFloat(a.id));
+                        this.setState({posts: this.state.posts});
+                        //arr.push({id: post.id, userName: post.name, content: post.bio});
+                    });
+                });
+            });
 
+            //this.setState({posts: arr});
+        });
 
         // todo: figure out how to put them in chrono order
     }

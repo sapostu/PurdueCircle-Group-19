@@ -25,6 +25,7 @@ import Following from './Components/Following';
 import {UserContext} from './UserContext';
 import UserProvider from './UserContext';
 import DM from './Components/DM';
+import Saved from './Components/Saved';
 
 
 function App() {
@@ -60,8 +61,9 @@ function App() {
               <Route path=":post_id" name="fdsa" element={<Post />}/>
             </Route>
             <Route path="/dm" element={<DM />}>
-              <Route path=":theirID" name="fdsa" element={<Post />}/>
+              <Route path=":theirID" name="fdsa" element={<DM />}/>
             </Route>
+            <Route path="/saved" element={<Saved />} />
             <Route path="/topicsearch" element={<TopicSearch/>} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/following" element={<Following />} />

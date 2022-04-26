@@ -2,12 +2,15 @@ package server.backendspringboot.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class posts_saved {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "saved_post_id", columnDefinition = "INT")
     private long saved_post_id;
 

@@ -8,6 +8,7 @@ import AccountService from '../Services/AccountService';
 import CommentService from '../Services/CommentService';
 import TagService from '../Services/TagService';
 import ReactionService from '../Services/ReactionService';
+import SavedService from '../Services/SavedService';
 
 import { UserContext } from '../UserContext';
 
@@ -56,12 +57,15 @@ class Post extends Component {
             toProfile: false,
             // auth variables
             auth_username: localStorage.getItem('username'),
-            isAuthenticated: localStorage.getItem('isAuthenticated')
+            isAuthenticated: localStorage.getItem('isAuthenticated'),
+            // for saving post button
+            isSaved: false
         };
         this.handleComment = this.handleComment.bind(this);
         this.handleReaction = this.handleReaction.bind(this);
         this.handleClickUsername = this.handleClickUsername.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     // for getting user's authentication status/details
@@ -69,6 +73,12 @@ class Post extends Component {
 
     componentDidMount() {
         //const { auth_username, isAuthenticated } = this.context;
+
+        // get if user has saved this post
+        SavedService.isSaved(this.state.post_id, localStorage.getItem('username')).then(isSave_res => {
+            this.setState({isSaved: isSave_res.data});
+        });
+
         // retrieve all data (post, comments, reactions)
         PostService.getPostById(this.state.post_id).then(post_res => {
             if (post_res.data) {
@@ -265,6 +275,23 @@ class Post extends Component {
         this.setState({toProfile: true});
     }
 
+    handleSave = () => {
+        const ps = {
+            post_id: this.state.post_id,
+            username: localStorage.getItem('username')
+        };
+        SavedService.save(ps).then(save_res => {
+            if (save_res.data) {
+                if (save_res.data === 'saved') {
+                    this.setState({isSaved: true});
+                }
+                else if (save_res.data === 'unsaved') {
+                    this.setState({isSaved: false});
+                }
+            }   
+        });
+    }
+
     
 
     render() {
@@ -301,6 +328,8 @@ class Post extends Component {
                     <Button onClick={e => this.handleDelete()} style={{marginLeft: '20px', backgroundColor: 'red', color: 'white',
                             display: this.state.username === this.state.auth_username ? 'inline' : 'none'
                             }}>Delete Post</Button>
+                    <Button onClick={e => this.handleSave()} style={{marginLeft: '20px', backgroundColor: 'green', color: 'white',display: 'inline'}}>
+                        {this.state.isSaved ? "Unsave Post" : "Save Post"}</Button>
                 </div>
                 <p>{this.state.text}</p>
                 <div>{this.state.reactionElements}</div>

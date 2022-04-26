@@ -78,6 +78,11 @@ export default function DenseAppBar() {
                       Following
                   </Typography>
               </Link>
+              <Link to="/saved">
+                  <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
+                      Saved
+                  </Typography>
+              </Link>
               </Toolbar>
           </AppBar>
           </Box>

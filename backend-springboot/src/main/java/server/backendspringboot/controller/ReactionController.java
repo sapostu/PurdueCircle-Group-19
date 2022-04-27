@@ -59,6 +59,11 @@ public class ReactionController {
         return ret;
     }
 
+    @GetMapping(path= "/reactionsByAccountId/{account_id}")
+    public List<UserReaction> getTagNamesByAccount_id(@PathVariable("account_id") String account_id) {
+        return userReactionsRepository.getReactionsByAccountId(Integer.parseInt(account_id));
+    }
+
     @DeleteMapping("/deleteByPostId/{postId}")
     public void deleteReactionsByPostId(@PathVariable long postId) {
         userReactionsRepository.deleteUserReactionsByPostId(postId);

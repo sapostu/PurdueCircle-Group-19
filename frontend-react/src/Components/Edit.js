@@ -38,10 +38,6 @@ class Edit extends Component {
     }
 
     handleSubmit() {
-        if (this.state.username.length > 15 || this.state.username.length < 3) {
-            this.setState({errorName: true});
-            return;
-        }
 
         if (this.state.bio.length > 200) {
             this.setState({errorBio: true});
@@ -135,9 +131,6 @@ class Edit extends Component {
                         </Grid>
                         
                         <CardContent style={{ height: "12vh", 'object-fit': 'contain'}}>
-                            <Typography gutterBottom variant="h5" component="div">
-                                <TextField id="filled-static" label="Edit Username" defaultValue={this.state.username} name='username' onChange={this.handleChange}></TextField> 
-                            </Typography>
                             <Typography variant="body2" color="text.secondary">
                             <TextField
                             id="filled-multiline-static"

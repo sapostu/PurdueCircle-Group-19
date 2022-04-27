@@ -98,6 +98,17 @@ public class PostController {
         return postRepository.getPostByTag_id(tagId);
     }
 
+    @GetMapping(path = "/postByTagBlock/{tag}/{accountId}")
+    public List<Post> getPostByTagNameBlock(@PathVariable("tag") String tag, @PathVariable("accountId") long accountId) {
+        Long tagId = postRepository.getTagsByName(tag);
+        if (tagId == null) {
+            return null;
+        }
+
+        return postRepository.NO_BLOCKED_getPostByTag_id(tagId, accountId);
+
+    }
+
     @GetMapping(path = "/followedTagsByAccountId/{id}")
     public List<Interests> getFollowedTagsByAccountId(@PathVariable("id") int id) {
         return postRepository.getFollowedTagsByAccountId(id);
@@ -106,6 +117,18 @@ public class PostController {
     @GetMapping(path = "/postByTagId/{id}")
     public List<Post> getPostByTagId(@PathVariable("id") long id) {
         return postRepository.getPostByTag_id(id);
+    }
+
+    @GetMapping(path = "/postByTagIdBlock/{tag}/{account}")
+    public List<Post> getPostbyTagIdBlock(@PathVariable("tag") long id, @PathVariable("account") long account) {
+        System.out.println("tag: " + id + " account: " + account);
+        System.out.println("***\n\n\n\n");
+        return postRepository.NO_BLOCKED_getPostByTag_id(id, account);
+    }
+
+    @GetMapping(path = "/postByAccountId/{id}")
+    public List<Post> getPostByAccountId(@PathVariable("id") int id) {
+        return postRepository.getPostByAccount_id(id);
     }
 
     public Long getTagId(String tagName) {

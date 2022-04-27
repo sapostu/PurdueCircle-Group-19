@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {TextField, Paper, Button, Snackbar, SnackbarContent} from '@material-ui/core';
+import {TextField, Paper, Button, Snackbar, SnackbarContent, Dialog, DialogActions, 
+        DialogContent, DialogContentText} from '@material-ui/core';
 import { useParams, Navigate } from 'react-router-dom';
 
 import PostService from '../Services/PostService';
@@ -7,6 +8,7 @@ import AccountService from '../Services/AccountService';
 import CommentService from '../Services/CommentService';
 import TagService from '../Services/TagService';
 import ReactionService from '../Services/ReactionService';
+import SavedService from '../Services/SavedService';
 
 import { UserContext } from '../UserContext';
 
@@ -49,16 +51,21 @@ class Post extends Component {
             // comment error alert
             alertBool: false,
             alertMsg: "",
+            // delete post confirmation
+            dialogOpen: false,
             // navigation
             toProfile: false,
             // auth variables
             auth_username: localStorage.getItem('username'),
-            isAuthenticated: localStorage.getItem('isAuthenticated')
+            isAuthenticated: localStorage.getItem('isAuthenticated'),
+            // for saving post button
+            isSaved: false
         };
         this.handleComment = this.handleComment.bind(this);
         this.handleReaction = this.handleReaction.bind(this);
         this.handleClickUsername = this.handleClickUsername.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     // for getting user's authentication status/details
@@ -66,6 +73,12 @@ class Post extends Component {
 
     componentDidMount() {
         //const { auth_username, isAuthenticated } = this.context;
+
+        // get if user has saved this post
+        SavedService.isSaved(this.state.post_id, localStorage.getItem('username')).then(isSave_res => {
+            this.setState({isSaved: isSave_res.data});
+        });
+
         // retrieve all data (post, comments, reactions)
         PostService.getPostById(this.state.post_id).then(post_res => {
             if (post_res.data) {
@@ -247,8 +260,10 @@ class Post extends Component {
     handleDelete = () => {
         //const { auth_username, isAuthenticated } = this.context;
         if (!this.state.isAuthenticated || !this.state.auth_username) { return; }
-        if (!window.confirm("ARE YOU SURE?\nThis will permanently delete all of this post's...\n- details\n- associated comments\n- associated reactions"))
-            { return; }
+        this.setState({dialogOpen: true});
+    }
+
+    handleDeleteConfirm = () => {
         const thisPostId = this.state.post_id;
         // delete all reactions
         ReactionService.deleteByPostId(thisPostId);
@@ -258,6 +273,23 @@ class Post extends Component {
         PostService.deletePost({postId: thisPostId});
         // navigate to their profile after deleting
         this.setState({toProfile: true});
+    }
+
+    handleSave = () => {
+        const ps = {
+            post_id: this.state.post_id,
+            username: localStorage.getItem('username')
+        };
+        SavedService.save(ps).then(save_res => {
+            if (save_res.data) {
+                if (save_res.data === 'saved') {
+                    this.setState({isSaved: true});
+                }
+                else if (save_res.data === 'unsaved') {
+                    this.setState({isSaved: false});
+                }
+            }   
+        });
     }
 
     
@@ -278,6 +310,16 @@ class Post extends Component {
             message={this.state.alertMsg}/>
             </Snackbar>
 
+            <Dialog open={this.state.dialogOpen} onClose={() => this.setState({dialogOpen: false})}>
+                <DialogContent>
+                    <DialogContentText>ARE YOU SURE?<br/>This will permanently delete all of this post's...<br/>- details<br/>- associated comments<br/>- associated reactions</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={e => this.setState({dialogOpen: false})}>Cancel</Button>
+                    <Button style={{backgroundColor: "red", color: "white"}} variant="contained" onClick={e => this.handleDeleteConfirm()}>DELETE</Button>
+                </DialogActions>
+            </Dialog>
+
             <Paper style={{margin: '10px'}} elevation={4}>
                 <div>
                     <h1 onClick={e => this.handleClickUsername()} style={{display: 'inline'}}>{this.state.username}</h1>
@@ -286,6 +328,8 @@ class Post extends Component {
                     <Button onClick={e => this.handleDelete()} style={{marginLeft: '20px', backgroundColor: 'red', color: 'white',
                             display: this.state.username === this.state.auth_username ? 'inline' : 'none'
                             }}>Delete Post</Button>
+                    <Button onClick={e => this.handleSave()} style={{marginLeft: '20px', backgroundColor: 'green', color: 'white',display: 'inline'}}>
+                        {this.state.isSaved ? "Unsave Post" : "Save Post"}</Button>
                 </div>
                 <p>{this.state.text}</p>
                 <div>{this.state.reactionElements}</div>

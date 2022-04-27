@@ -18,6 +18,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "SELECT account.username as name, post.* FROM post INNER JOIN account ON post.account_id=account.account_id WHERE post.tag_id = ?1", nativeQuery = true)
     List<Post> getPostByTag_id(long tagId);
 
+    @Query(value = "SELECT t2.username as name, t1.* FROM post t1 join account t2 ON t1.account_id = t2.account_id WHERE t1.tag_id = ?1 AND t1.account_id NOT IN (SELECT s1.blocked FROM people_blocked s1 WHERE s1.account_id = ?2);", nativeQuery = true)
+    List<Post> NO_BLOCKED_getPostByTag_id(long tagId, long accountId);
+
+    @Query(value = "SELECT account.username as name, post.* FROM post INNER JOIN account ON post.account_id=account.account_id WHERE post.account_id = ?1", nativeQuery = true)
+    List<Post> getPostByAccount_id(int accountId);
+
     @Query("SELECT s.tagId FROM Tags s WHERE s.tagName =?1")
     Long getTagsByName(String name);
 

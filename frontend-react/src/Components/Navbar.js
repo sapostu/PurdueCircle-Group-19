@@ -28,11 +28,11 @@ export default function DenseAppBar() {
               <Typography variant="h6" color="inherit" component="div">
                   PurdueCircle
               </Typography>
-              <Link to={"/profile/".concat(localStorage.getItem('username'))}>
+              <a href="javascript:;" onClick={() => window.location.href="/profile/".concat(localStorage.getItem('username'))}>
                   <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
                       Profile
                   </Typography>
-              </Link>
+              </a>
               {/* <Link to="/login">
                   <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
                       Login
@@ -76,6 +76,16 @@ export default function DenseAppBar() {
               <Link to="/following">
                   <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
                       Following
+                  </Typography>
+              </Link>
+              <Link to="/blockList">
+                <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
+                    Block List
+                </Typography>
+            </Link>
+              <Link to="/saved">
+                  <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
+                      Saved
                   </Typography>
               </Link>
               </Toolbar>

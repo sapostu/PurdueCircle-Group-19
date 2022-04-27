@@ -50,6 +50,10 @@ public class People_FOLLOWINGController {
             return toDel;
         }
     }
+    @GetMapping("/getFollowingIdById/{accountId}")
+    public List<Long> getAccountsIdFollowed(@PathVariable("accountId") Long accountId) {
+        return people_followingRepository.getByAccount(accountId);
+    }
 
     @GetMapping("/getFollowingById/{accountId}")
     public List<String> getAccountsFollowed(@PathVariable("accountId") Long accountId) {

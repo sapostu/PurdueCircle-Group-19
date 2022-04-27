@@ -24,8 +24,17 @@ class PostService {
         return axios.get(ACCOUNT_API_BASE_URL + "/posts/followedTagsByAccountId/" + account_id)
     }
 
+    getPostsByAccountId(account_id) {
+        return axios.get(ACCOUNT_API_BASE_URL + "/posts/postByAccountId/" + account_id)
+    }
+
     getPostsByTagId(tag_id) {
         return axios.get(ACCOUNT_API_BASE_URL + "/posts/postByTagId/" + tag_id)
+    }
+
+    getPostsByTagIdBlock(tag_id, account_id) {
+        console.log('tag: ' + tag_id + ' account: ' + account_id);
+        return axios.get(ACCOUNT_API_BASE_URL + "/posts/postByTagIdBlock/" + tag_id + "/" + account_id)
     }
 }
 

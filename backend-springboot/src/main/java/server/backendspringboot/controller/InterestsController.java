@@ -22,6 +22,11 @@ public class InterestsController {
         return interestsRepository.getByAccount_id(Math.toIntExact(id));
     }
 
+    @GetMapping(path= "/namesByAccount/{account_id}")
+    public List<Interests> getTagNamesByAccount_id(@PathVariable("account_id") String account_id) {
+        return interestsRepository.getTagNamesByAccount_id(Integer.parseInt(account_id));
+    }
+
     @PostMapping("/addInterests")
     Interests addInterest(@RequestBody Interests interest) {
         interestsRepository.save(interest);

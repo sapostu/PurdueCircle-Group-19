@@ -15,9 +15,13 @@ public class Interests {
     @Column(name = "tag_id")
     private Long tag_id;
 
-    public Interests(int account_id, Long tag_id) {
+    @Column(name = "name", columnDefinition = "VARCHAR(15)")
+    private String name;
+
+    public Interests(int account_id, Long tag_id, String name) {
         this.account_id = account_id;
         this.tag_id = tag_id;
+        this.name = name;
     }
 
     public Interests() {
@@ -48,5 +52,12 @@ public class Interests {
         this.tag_id = tag_id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

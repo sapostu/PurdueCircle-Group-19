@@ -25,7 +25,6 @@ import Following from './Components/Following';
 import {UserContext} from './UserContext';
 import UserProvider from './UserContext';
 import DM from './Components/DM';
-import BlockList from './Components/BlockList';
 
 
 function App() {

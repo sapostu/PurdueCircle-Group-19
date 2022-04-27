@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useParams, Navigate } from "react-router-dom";
 import TagService from '../Services/TagService';
 import FollowService from '../Services/FollowService';
+import BlockService from '../Services/BlockService';
 
 import { List, ListItem, ListItemIcon, ListItemText, Checkbox, IconButton, Paper, Typography, Divider, Button } from '@material-ui/core';
 
@@ -39,6 +40,7 @@ class Topic extends Component {
 
         this.handleFollow = this.handleFollow.bind(this);
         this.handleUnfollow = this.handleUnfollow.bind(this);
+        this.handleBlock = this.handleBlock.bind(this);
     }
 
     handleFollow() {
@@ -49,6 +51,16 @@ class Topic extends Component {
     handleUnfollow() {
         FollowService.unfollowTopic(this.state.account);
         this.setState({ followed: false });
+    }
+
+    handleBlock(blocked) {
+        console.log(blocked);
+        var accountId = localStorage.getItem('accountId');
+        var blockObj = new Object();
+        blockObj.account_id = accountId;
+        blockObj.blocked = blocked;
+        console.log('blocking ' + blockObj.account_id + " " + blockObj.blocked)
+        BlockService.blockAccount(blockObj);
     }
 
     componentDidMount() {
@@ -66,8 +78,8 @@ class Topic extends Component {
                     return;
                 }
             });
-        axios.get('http://localhost:8080/posts/postByTag/'.concat(this.props.router.params.topic)).then((response) => {
-        //    console.log(response);
+        axios.get('http://localhost:8080/posts/postByTagBlock/'.concat(this.props.router.params.topic).concat('/').concat(localStorage.getItem('accountId'))).then((response) => {
+           // console.log('postByTag/'.concat(this.props.router.params.topic));
         //    this.setState({ username: response.data.username });
         //    this.setState({ bio: response.data.bio });
             //console.log(response)
@@ -137,6 +149,7 @@ class Topic extends Component {
                     <IconButton edge="end" aria-label="comments">
                     </IconButton>
                 }>
+                    <Button onClick={() => {this.handleBlock(user.accountId)}} style={{position:'absolute', right:10}} > Block </Button>
                     <a href={`${user.isAnon}` == 1 ? 'javascript:;' : '/profile/'.concat(`${user.username}`)} style={{"text-decoration": "none"}}>
                         <ListItemText id={user.id} primary={`${user.isAnon}` == 1 ? 'Anonymous' : `${user.username}`} secondary={`${user.dateOfPost}`.substring(0,10)} />
                     </a>

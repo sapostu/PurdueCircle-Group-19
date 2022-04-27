@@ -16,5 +16,9 @@ class BlockService {
         return axios.post(BLOCK_API_BASE_URL + "/checkBlock", account);
     }
 
+    getBlockList(account) {
+        return axios.get()
+    }
+
 }
 export default new BlockService()

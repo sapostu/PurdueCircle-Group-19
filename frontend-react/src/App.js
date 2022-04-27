@@ -26,6 +26,7 @@ import {UserContext} from './UserContext';
 import UserProvider from './UserContext';
 import DM from './Components/DM';
 import Saved from './Components/Saved';
+import BlockList from './Components/BlockList';
 
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
             <Route path="/topicsearch" element={<TopicSearch/>} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/following" element={<Following />} />
+            <Route path="/blockList" element={<BlockList />} />
           </Route>
 
 

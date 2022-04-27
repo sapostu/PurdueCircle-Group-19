@@ -108,10 +108,10 @@ public class AccountController {
     @Transactional
     @PostMapping("/edit")
     public void editAccount(@RequestBody Account account) {
-        System.out.println("SHould be working!");
         Account edit = accountRepository.getAccountByUsername(account.getUsername());
         edit.setBio(account.getBio());
-
+        edit.setProfile_pic(account.getProfile_pic());
+        System.out.println("New pic: " + account.getProfile_pic());
     }
 
     @Transactional

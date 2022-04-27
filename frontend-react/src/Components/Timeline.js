@@ -43,8 +43,7 @@ class Timeline extends Component {
 
     handleUnBlock() {
         console.log('unblock');
-    //    BlockService.unBlockAccount();
-  //      this.setState({ blocked: false });
+        // Probably not necessary because the post disappears from tl
     }
 
     componentDidMount() {
@@ -53,7 +52,11 @@ class Timeline extends Component {
 
             tags_response.data.forEach(tag => {
                 //console.log(tag)
-                PostService.getPostsByTagId(tag.tag_id).then(post_response => {
+                var acccountId = localStorage.getItem('accountId')
+             //   var request_top = new Object();
+              //  request_top.accountId 
+                PostService.getPostsByTagIdBlock(tag.tag_id, acccountId).then(post_response => {
+                
                     post_response.data.forEach(post => {
                         //console.log("_1")
                         console.log(post);
@@ -67,7 +70,7 @@ class Timeline extends Component {
                      //      console.log(post.bio);
                             var posts = this.state.posts;
                             console.log(blocked);
-                            if (!blocked) {
+                        //    if (!blocked) {
                                 console.log(post.bio)
                                 if (!this.state.posts_on_page.hasOwnProperty(post.postId)) {
                                     this.state.posts_on_page[post.postId] =  true;
@@ -77,7 +80,7 @@ class Timeline extends Component {
                                         posts.push({ id: post.postId, userName: post.username, content: post.bio, tagName: post.tag_id, date: post.dateOfPost.substring(0, 10), accountId: post.accountId })
                                     }
                                 }
-                            }
+                       //     }
                             posts.sort((a, b) => parseFloat(b.id) - parseFloat(a.id));
                             this.setState({posts: posts});
                         });

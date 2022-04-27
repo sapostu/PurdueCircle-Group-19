@@ -66,7 +66,6 @@ function App() {
             <Route path="/topicsearch" element={<TopicSearch/>} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/following" element={<Following />} />
-            <Route path="/blockList" element={<BlockList />} />
           </Route>
 
 

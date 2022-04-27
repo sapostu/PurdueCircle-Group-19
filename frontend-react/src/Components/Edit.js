@@ -1,8 +1,9 @@
 import { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import EditService from '../Services/EditService';
-
 import { Typography, Button, Card, CardContent, CardActions, CardHeader, Grid, TextField, Snackbar, SnackbarContent } from '@material-ui/core';
+
+
 class Edit extends Component {
     constructor(props) {
         super(props);
@@ -14,6 +15,7 @@ class Edit extends Component {
             errorName: false,
             errorBio: false,
             redir: false,
+            new_pic: null,
             isAuthenticated: localStorage.getItem('isAuthenticated'),
             authUsername: localStorage.getItem('username')
         }
@@ -24,6 +26,8 @@ class Edit extends Component {
         this.setBioError = this.setBioError.bind(this);
 
     }
+
+    // gets the original profile pic so users can see the change
     
     setNameError() {
         this.setState({errorName: false});
@@ -43,11 +47,11 @@ class Edit extends Component {
             this.setState({errorBio: true});
             return;
         }
-        let account = {username: this.state.authUsername, bio: this.state.bio}
+        let account = {username: this.state.authUsername, bio: this.state.bio, profile_pic: this.state.new_pic}
         console.log('\n\n account =>' + JSON.stringify(account));
     
         EditService.editAccount(account).then( (res) => {
-            console.log(res)
+            console.log("new values:" + res.data)
             this.setState({redir: true})
           if (res.data !== "") {
             //console.log(res.data.username);
@@ -111,14 +115,22 @@ class Edit extends Component {
                         </CardHeader>
                         <Grid container>
                             <Grid item xs={4}>
-                            <div style={{'height': '200px', 'width': '200px', "padding-left": '20px', "padding-top": '5px'}}>
-                                <img src='https://www.w3schools.com/html/img_chania.jpg' style={{'height': '100%', 'width': '100%', 'object-fit': 'contain'}} alt="Profile"/>
-                                </div> {/* TODO : use a real profile picture*/}
+                            <div style={{'height': '50px', 'width': '50px', "padding-left": '20px', "padding-top": '5px'}}>
+                                <img src= {this.state.new_pic || 'https://www.w3schools.com/html/img_chania.jpg'} style={{'height': '100%', 'width': '100%', 'object-fit': 'contain'}} alt="Profile"/>
+                                </div>
     
                             </Grid>
                             <Grid item xs={4}>
-                            <Button size="small" style={{transform: "translate(+10%, +490%)"}}>Edit Picture</Button> {/* TODO : Add edit picture functionality */}
-    
+                                <select id="pics" defaultValue="Choose a New Profile Pic"
+                                    onChange={(e) => this.setState({new_pic: e.target.value || null})}>
+                                    <option value="">Default</option>
+                                    <option value="/resources/guy.jpg">guy.jpg</option>
+                                    <option value="/resources/pop.jpg">pop.jpg</option>
+                                    <option value="/resources/shrek.jpg">shrek.jpg</option>
+                                    <option value="/resources/obama_prism.jpg">obama_prism.jpg</option>
+                                    <option value="/resources/music_make_you.jpg">music_make_you.jpg</option>
+                                    <option value="/resources/mike.jpg">mike.jpg</option>
+                                </select>
                             </Grid>
                         </Grid>
                         

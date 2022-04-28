@@ -38,12 +38,16 @@ public class Account {
     @Column(name = "profile_pic", columnDefinition = "VARCHAR(100)")
     private String profile_pic;
 
+    @Column(name = "req_following", columnDefinition = "INT")
+    private long req_following;
+
+
 
     public Account() {
     }
 
     public Account(int account_id, String username, String first_name, String last_name, String email, String date_of_birth, String crypt_password, 
-            String bio, String profile_pic) {
+            String bio, String profile_pic, long req_following) {
 
         super();
         this.account_id = account_id;
@@ -55,7 +59,9 @@ public class Account {
         this.crypt_password = crypt_password;
         this.bio = bio;
         this.profile_pic = profile_pic;
+        this.req_following = req_following;
     }
+
 
 
     public int getAccount_id() {
@@ -130,5 +136,11 @@ public class Account {
         this.profile_pic = profile_pic;
     }
 
+    public long getReq_following() {
+        return req_following;
+    }
 
+    public void setReq_following(long req_following) {
+        this.req_following = req_following;
+    }
 }

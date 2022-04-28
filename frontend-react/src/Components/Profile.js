@@ -142,7 +142,7 @@ class Profile extends Component {
                             <CardHeader style={{ height: "1.5vh", backgroundColor: "#f5f5f5" }}>
                             </CardHeader>
 
-                            <div style={{'height': '50px', 'width': '50px', "padding-left": '20px', "padding-top": '5px'}}>
+                            <div style={{'height': '200px', 'width': '200px', "padding-left": '20px', "padding-top": '5px'}}>
                                 <img src={this.state.profile_pic} style={{'height': '100%', 'width': '100%', 'object-fit': 'contain'}} alt="Profile"/>
                             </div>
 
@@ -157,7 +157,7 @@ class Profile extends Component {
                             <CardActions style={{"padding-left": "0.5vw"}}>
                                 <Button size="small" onClick={this.handleUnfollow} style={{display: (this.state.followed && this.state.username !== this.state.authUsername) ? 'block' : 'none'}}>Unfollow</Button>
                                 <Button size="small" onClick={this.handleFollow} style={{display: (!this.state.followed && this.state.username !== this.state.authUsername) ? 'block' : 'none'}}>Follow</Button>
-                                <Button size="small" style={{display: this.state.username === this.state.authUsername ? 'block' : 'none'}}><Link to="/edit" style={{ color: "inherit", "text-decoration": "none" }}>Edit</Link></Button>
+                                <Link to="/edit" style={{ color: "inherit", "text-decoration": "none" }}><Button size="small" style={{display: this.state.username === this.state.authUsername ? 'block' : 'none'}}>Edit</Button></Link>
                                 <Button size="small" onClick={this.handleBlock} style={{display: (!this.state.blocked && this.state.username !== this.state.authUsername) ? 'block' : 'none'}}>Block</Button>
                                 <Button size="small" onClick={this.handleUnBlock} style={{display: this.state.blocked ? 'block' : 'none'}}>UnBlock</Button> {/* TODO : Add edit functionality and hide the button for users that are not on their own pages */}
                             </CardActions>

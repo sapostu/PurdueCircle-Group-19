@@ -68,11 +68,11 @@ class SearchTopic extends Component {
                 width: "40vw",
                 height: "40vh",
                 }}> 
-                    <Card sx={{ maxWidth: "10%" }} style={{ transform: "translate(-50%, -0%)", width: "25vw", height: "38vh", backgroundColor: "#e0e0e0" }} square elevation={0} variant="outlined">
+                    <Card sx={{ maxWidth: "10%" }} style={{ transform: "translate(-50%, -0%)", width: "25vw", height: "16vh", backgroundColor: "#e0e0e0" }} square elevation={0} variant="outlined">
                         <CardHeader style={{ height: "1.5vh", backgroundColor: "#f5f5f5" }}>
     
                         </CardHeader>
-                        <CardContent style={{ height: "12vh", 'object-fit': 'contain'}}>
+                        <CardContent style={{ height: "4vh", 'object-fit': 'contain'}}>
                             <Typography gutterBottom variant="h5" component="div">
                                 <TextField id="filled-static" label="Enter Topic Name" defaultValue={this.state.topic} name='topic' onChange={this.handleChange}></TextField> 
                             </Typography>

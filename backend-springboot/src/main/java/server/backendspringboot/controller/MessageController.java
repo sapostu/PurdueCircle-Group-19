@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import server.backendspringboot.repository.AccountRepository;
 import server.backendspringboot.repository.MessageRepository;
+import server.backendspringboot.model.Account;
 import server.backendspringboot.model.Message;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @CrossOrigin
@@ -72,6 +76,27 @@ public class MessageController {
         msg.setReceiver_id(id2);
         msg.setSender_username(map.get("sender"));
         return messageRepository.save(msg);
+    }
+
+    @GetMapping("/getAllChats/{id}")
+    public List<String> getAllChats(@PathVariable long id) {
+        System.out.println("HEREEEEEEEEEEEEEEEEE " + id);
+        List<Long> list1 = messageRepository.getAllChats1(id);
+        List<Long> list2 = messageRepository.getAllChats2(id);
+        System.out.println(list1.toString());
+        System.out.println(list2.toString());
+        List<Long> ids = Stream.concat(list1.stream(), list2.stream()).collect(Collectors.toList());
+        String[] usernames = new String[list1.size() + list2.size()];
+
+        for (int i = 0; i < list1.size(); i++) {
+            usernames[i] = accountRepository.findById(list1.get(i).intValue()).get().getUsername();
+        }
+        for (int i = 0; i < list2.size(); i++) {
+            usernames[i + list1.size()] = accountRepository.findById(list2.get(i).intValue()).get().getUsername();
+        }
+        System.out.println("aaaaaaaaaaaa" + ids.toString());
+        usernames = Arrays.stream(usernames).distinct().toArray(String[]::new);
+        return List.of(usernames);
     }
 
 }

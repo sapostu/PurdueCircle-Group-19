@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {TextField, Paper, Button, Snackbar, SnackbarContent, Dialog, DialogActions, 
         DialogContent, DialogContentText} from '@material-ui/core';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, Link } from 'react-router-dom';
 
 import PostService from '../Services/PostService';
 import AccountService from '../Services/AccountService';
@@ -114,7 +114,7 @@ class Post extends Component {
                                     // order by date descending
                                     const comArr = this.state.comments;
                                     this.setState({commentElements: comArr.sort((a,b) => -1*a.date.localeCompare(b.date)).map(comment => (
-                                        <p key={comment.comment_id}><b>{comment.username + ' (' + comment.date.substr(0,10) +'): '}</b>{comment.text}</p>
+                                        <p key={comment.comment_id}><b><Link to={"/profile/" + comment.username}>{comment.username}</Link>{' (' + comment.date.substr(0,10) +'): '}</b>{comment.text}</p>
                                     ))});
                                 }
                             });

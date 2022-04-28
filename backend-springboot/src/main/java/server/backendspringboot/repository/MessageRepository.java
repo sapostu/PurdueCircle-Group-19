@@ -21,6 +21,11 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
             nativeQuery = true)
     List<Message> getChat(long id1, long id2);
 
+    @Query(value = "SELECT DISTINCT sender_id FROM message WHERE receiver_id=?1 AND sender_id<>?1", nativeQuery = true)
+    List<Long> getAllChats1(long id);
+
+    @Query(value = "SELECT DISTINCT receiver_id FROM message WHERE sender_id=?1 AND receiver_id<>?1", nativeQuery = true)
+    List<Long> getAllChats2(long id);
 
     /* This is the query to create message. Idk if it is need tho, just added just in case */
 

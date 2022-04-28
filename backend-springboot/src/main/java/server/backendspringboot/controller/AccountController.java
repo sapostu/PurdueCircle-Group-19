@@ -21,6 +21,7 @@ public class AccountController {
     @Autowired
     PostController pc;
 
+
     @PostMapping("/signup")
     public Account createAccount(@RequestBody Account _account) {
         //TODO: process POST request
@@ -155,6 +156,24 @@ public class AccountController {
 
         edit.setUsername(account.getUsername());
         return edit;
+    }
+
+    @Transactional
+    @GetMapping("/reqDM/{id}")
+    public Account editDMReq(@PathVariable String id) {
+        long real_id = (long) Integer.parseInt(id);
+        System.out.println(real_id);
+        Account account = accountRepository.findById((int) real_id).orElse(null);
+        if (account == null) {
+            return null;
+        }
+        if (account.getReq_following() == 0L) {
+            account.setReq_following(1);
+        } else {
+            account.setReq_following(0);
+        }
+        accountRepository.setReqDM(account.getAccount_id(), account.getReq_following()); // write to database
+        return account;
     }
 
 

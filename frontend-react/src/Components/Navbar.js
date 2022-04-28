@@ -88,6 +88,11 @@ export default function DenseAppBar() {
                       Saved
                   </Typography>
               </Link>
+              <Link to="/dms">
+                  <Typography variant="h6" color="inherit" component="div" style={{ padding: "25px"}}>
+                      Messaging
+                  </Typography>
+              </Link>
               </Toolbar>
           </AppBar>
           </Box>

@@ -128,8 +128,8 @@ class CreatePost extends Component {
                                 label="Anonymous"
                             />
                             <Button size="small" onClick={this.handleSubmit}>Submit</Button>
-                            <Button size="small"><Link to="/profile_temp" style={{ color: "inherit", "text-decoration": "none" }}>Cancel</Link></Button> {/* TODO : edit the link to profile to link to the actual profile */}
-                            <Button size="small"><Link to="/delete" style={{ color: "inherit", "text-decoration": "none" }}>Delete</Link></Button>
+                            <Link to="/profile_temp" style={{ color: "inherit", "text-decoration": "none" }}><Button size="small">Cancel</Button></Link> {/* TODO : edit the link to profile to link to the actual profile */}
+                            <Link to="/delete" style={{ color: "inherit", "text-decoration": "none" }}><Button size="small">Delete</Button></Link>
                         </CardActions>
                     </Card>
                 </div>

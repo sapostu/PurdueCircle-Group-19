@@ -32,7 +32,8 @@ class Signup extends Component {
       errorDOBFormat: false,
       errorDOBAge: false,
       errorBio: false,
-      errorNameTaken: false
+      errorNameTaken: false,
+      errorENameTaken: false
     }
 
     this.handleSignup = this.handleSignup.bind(this);
@@ -48,6 +49,7 @@ class Signup extends Component {
     this.setBioError = this.setBioError.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.setErrorNameTaken = this.setErrorNameTaken.bind(this);
+    this.setErrorENameTaken = this.setErrorENameTaken.bind(this);
   }
 
   handleChange(e) {
@@ -60,6 +62,9 @@ class Signup extends Component {
   }
   setErrorNameTaken(state) {
     this.setState({errorNameTaken: false});
+}
+setErrorENameTaken(state) {
+  this.setState({errorENameTaken: false});
 }
   setBioError(state) {
     this.setState({bioError: false});
@@ -142,10 +147,16 @@ class Signup extends Component {
 
     AccountService.createAccount(account).then( res => {
     //  this.props.history.push('/signup');
-    if (res.data != '') {
+    if (res.data != '' && res.data.account_id != -2) {
       this.setState({redir: true});
       return;
     } else {
+      console.log('here');
+      if (res.data != '' && res.data.account_id == -2) {
+        console.log("bad email");
+        this.setState({errorENameTaken: true});
+        return;
+      }
       this.setState({errorNameTaken: true});
     }
 
@@ -251,6 +262,13 @@ class Signup extends Component {
     onClose={this.setDOBAge}
     autoHideDuration={5000}>
       <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Sorry, you are not the right age to use PurdueCircle."/>
+    </Snackbar>
+    <Snackbar
+    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    open={this.state.errorENameTaken}
+    onClose={this.setErrorENameTaken}
+    autoHideDuration={5000}>
+      <SnackbarContent style={{backgroundColor: "#D32F2F"}} message="Sorry, that email is already taken."/>
     </Snackbar>
 
     {/* for signup */}

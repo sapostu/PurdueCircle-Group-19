@@ -361,7 +361,10 @@ class CredChangeScreen extends Component {
                     });
                 }
                 if (passwordBool) {
+
+                    this.state.password = CryptoJS.AES.encrypt(this.state.password, secret).toString();
                     let accountPassword = {account_id: accountId, crypt_password: this.state.password};
+
                     AccountService.updateAccountPassword(accountPassword).then(res => {
                         if (res.data !== "") {
                             // success

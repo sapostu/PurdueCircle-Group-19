@@ -124,7 +124,7 @@ class CredRequestScreen extends Component {
     render() {
         /* for navigating to different pages and rendering <CredChangeScreen/> */
         if (this.state.toProfile) {
-            return <Navigate to={"/profile_temp"}/>;
+            return <Navigate to={"/profile/"+localStorage.getItem('username')}/>;
         }
         if (this.state.toLogin) {
             return <Navigate to="/login"/>;

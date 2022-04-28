@@ -157,7 +157,7 @@ class Profile extends Component {
                             <CardActions style={{"padding-left": "0.5vw"}}>
                                 <Button size="small" onClick={this.handleUnfollow} style={{display: (this.state.followed && this.state.username !== this.state.authUsername) ? 'block' : 'none'}}>Unfollow</Button>
                                 <Button size="small" onClick={this.handleFollow} style={{display: (!this.state.followed && this.state.username !== this.state.authUsername) ? 'block' : 'none'}}>Follow</Button>
-                                <Button size="small" style={{display: this.state.username === this.state.authUsername ? 'block' : 'none'}}><Link to="/edit" style={{ color: "inherit", "text-decoration": "none" }}>Edit</Link></Button>
+                                <Link to="/edit" style={{ color: "inherit", "text-decoration": "none" }}><Button size="small" style={{display: this.state.username === this.state.authUsername ? 'block' : 'none'}}>Edit</Button></Link>
                                 <Button size="small" onClick={this.handleBlock} style={{display: (!this.state.blocked && this.state.username !== this.state.authUsername) ? 'block' : 'none'}}>Block</Button>
                                 <Button size="small" onClick={this.handleUnBlock} style={{display: this.state.blocked ? 'block' : 'none'}}>UnBlock</Button> {/* TODO : Add edit functionality and hide the button for users that are not on their own pages */}
                             </CardActions>

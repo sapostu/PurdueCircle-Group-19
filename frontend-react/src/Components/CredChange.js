@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Box, Typography, Checkbox, Button, Snackbar, SnackbarContent,
-    Dialog, DialogTitle, DialogContent, TextField, DialogActions, Divider} from '@material-ui/core';
+    Dialog, DialogTitle, DialogContent, TextField, DialogActions, Divider, Link, Paper } from '@material-ui/core';
 import { Navigate } from 'react-router-dom';
 import AccountService from '../Services/AccountService';
 import LoginService from '../Services/LoginService';
@@ -38,7 +38,9 @@ class CredRequestScreen extends Component {
             // rendering the UI for changing credentials
             toCredChange: false,
             isAuthenticated: localStorage.getItem('isAuthenticated'),
-            auth_username: localStorage.getItem('username')
+            auth_username: localStorage.getItem('username'),
+            successMessage: "",
+            successBool: false
         };
 
         this.handleCancel = this.handleCancel.bind(this);
@@ -188,7 +190,7 @@ class CredRequestScreen extends Component {
                 <Checkbox onChange={e => this.setState({password: !this.state.password})}/>
                 <Typography style={{display: "inline-block"}}>Password</Typography>
                 </div>
-                <div>
+                {/*<div>
                 <Checkbox onChange={e => this.setState({fname: !this.state.fname})}/>
                 <Typography style={{display: "inline-block"}}>First Name</Typography>
                 </div>
@@ -199,7 +201,7 @@ class CredRequestScreen extends Component {
                 <div>
                 <Checkbox onChange={e => this.setState({dob: !this.state.dob})}/>
                 <Typography style={{display: "inline-block"}}>Date of Birth</Typography>
-                </div>
+                </div>*/}
                 <Box m={1} mt={1}>
                     <Box mr={1} style={{display: "inline-block"}}>
                     <Button color="primary" size="large" variant="contained"
@@ -340,8 +342,12 @@ class CredChangeScreen extends Component {
                     AccountService.updateAccountEmail(accountEmail).then(res => {
                         if (res.data !== "") {
                             // success
+                            this.setState({ successMessage: "Email successfully changed!"});
+                            this.setState({ successBool: true, username: localStorage.getItem('username') });
                         } else {
                             // failure
+                            this.setState({ alertMsg: "Failed to change username, please try again."});
+                            this.setState({ alertBool: true });
                         }
                     });
                 }
@@ -350,6 +356,8 @@ class CredChangeScreen extends Component {
                     AccountService.updateAccountUsername(accountUsername).then(res => {
                         if (res.data !== "") {
                             // success
+                            this.setState({ successMessage: "Username successfully changed!"});
+                            this.setState({ successBool: true });
                             console.log("success");
                             localStorage.setItem('username', this.state.username);
                         } else {
@@ -368,8 +376,12 @@ class CredChangeScreen extends Component {
                     AccountService.updateAccountPassword(accountPassword).then(res => {
                         if (res.data !== "") {
                             // success
+                            this.setState({ successMessage: "Password successfully changed!"});
+                            this.setState({ successBool: true, username: localStorage.getItem('username') });
                         } else {
                             // failure
+                            this.setState({ alertMsg: "Failed to change password, please try again."});
+                            this.setState({ alertBool: true });
                         }
                     });
                 }
@@ -393,7 +405,37 @@ class CredChangeScreen extends Component {
         if (this.state.toCredRequest) {
             return <CredRequestScreen />;
         }
+        if (this.state.successBool) {
+            return (
+                <div>
+                {/* success alert/notification */}
+                <Snackbar
+                anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+                open={this.state.successBool}
+                onClose={e => this.setState({successBool: false})}
+                autoHideDuration={5000}>
+                <SnackbarContent style={{backgroundColor: "#3ea61e"}}
+                message={this.state.successMessage}/>
+                </Snackbar>
+                    <Paper elevation={8} style={{
+                        backgroundColor: "#f5f5f5",
+                        margin: "auto",
+                        padding: "20px",
+                        "text-align": "center"
+                    }} id="login_cont">
+                        <Typography>
+                            <h1>
+                                Successfully changed credentials!
+                            </h1>
+                            <h2>
+                                <a href={"/profile/" + this.state.username}><Button>Return to Profile</Button></a>
+                            </h2>
+                        </Typography>
+                    </Paper>
 
+                </div>
+            )
+        }
         return (
 
             <div>

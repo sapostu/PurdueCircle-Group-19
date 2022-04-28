@@ -29,6 +29,14 @@ public class AccountController {
         if (exists != null) {
             return null;
         }
+        Account existsEmail = accountRepository.getAccountByOnlyEmail(_account.getEmail());
+        if (existsEmail != null) {
+            Account badEmail = new Account();
+            badEmail.setAccount_id(-2);
+
+            System.out.println("null");
+            return badEmail;
+        }
       /*  try {
             _account.setCrypt_password(Security.encrypt(_account.getCrypt_password()));
         } catch (Exception e) {

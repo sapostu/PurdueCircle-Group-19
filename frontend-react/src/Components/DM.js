@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import { TextField, Button, Snackbar, SnackbarContent } from '@material-ui/core';
+import { TextField, Button, Snackbar, SnackbarContent, Paper, Typography } from '@material-ui/core';
 import AccountService from '../Services/AccountService';
 import MessageService from '../Services/MessageService';
+import BlockService from '../Services/BlockService';
 
 class DM extends Component {
 
@@ -13,36 +14,43 @@ class DM extends Component {
             theirUsername: "",
             msgElements: [],
             msgInput: "",
-            alertBool: false
+            alertBool: false,
+            isBlocked: false
         };
         this.handleSend = this.handleSend.bind(this);
     }
 
     componentDidMount() {
-        
-        AccountService.getAccountById(this.state.theirID).then(acc_res => {
-            if (acc_res.data) {
-                // get their username using their ID
-                this.setState({theirUsername: acc_res.data.username});
-
-                MessageService.getMessagesByUsernames(localStorage.getItem('username'), this.state.theirUsername).then(msg_res => {
-                    if (msg_res.data) {
-                        console.log(msg_res.data);
-                        // get all messages and put their html in msgElements
-                        for (const msg of msg_res.data) {
-                            this.setState({
-                                msgElements: [...this.state.msgElements, (
-                                    <div key={msg.msg_id} style={{marginTop: "5px"}}>
-                                        <p style={{margin: 0, padding: 0}}><b>{msg.sender_username}</b></p>
-                                        <p style={{margin: 0, padding: 0}}>{msg.msg}</p>
-                                    </div>
-                                )]
-                            });
-                        }
-                    }
-                });
+        BlockService.checkBlock({ account_id: this.state.theirID, blocked: localStorage.getItem('accountId'), blocked_username: "" }).then((response) => {
+            if (response.data) {
+                this.setState({ isBlocked: true });
             }
+            console.log(response.data);
+            AccountService.getAccountById(this.state.theirID).then(acc_res => {
+                if (acc_res.data) {
+                    // get their username using their ID
+                    this.setState({theirUsername: acc_res.data.username});
+    
+                    MessageService.getMessagesByUsernames(localStorage.getItem('username'), this.state.theirUsername).then(msg_res => {
+                        if (msg_res.data) {
+                            console.log(msg_res.data);
+                            // get all messages and put their html in msgElements
+                            for (const msg of msg_res.data) {
+                                this.setState({
+                                    msgElements: [...this.state.msgElements, (
+                                        <div key={msg.msg_id} style={{marginTop: "5px"}}>
+                                            <p style={{margin: 0, padding: 0}}><b>{msg.sender_username}</b></p>
+                                            <p style={{margin: 0, padding: 0}}>{msg.msg}</p>
+                                        </div>
+                                    )]
+                                });
+                            }
+                        }
+                    });
+                }
+            });
         });
+
 
     }
 
@@ -77,12 +85,49 @@ class DM extends Component {
     }
 
     render() {
+        if (this.state.isBlocked) {
+            return (
+                <div>
+                    <Paper elevation={8} style={{
+                        backgroundColor: "#f5f5f5",
+                        margin: "auto",
+                        padding: "20px",
+                        "text-align": "center"
+                    }} id="login_cont">
+                        <Typography>
+                            User has blocked you
+                        </Typography>
+                    </Paper>
+
+                </div>
+            )
+        }
         // redirect if not logged in
         if ( !localStorage.getItem('isAuthenticated') || !localStorage.getItem('username') ) {
             return <Navigate to={'/login'}/>
         }
         return (
             <>
+                {/* blocked error */}
+                <Snackbar
+                anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+                open={this.state.alertBool}
+                onClose={e => this.setState({alertBool: false})}
+                autoHideDuration={5000}>
+                <SnackbarContent style={{backgroundColor: "#D32F2F"}}
+                message="You are blocked by this user."/>
+                </Snackbar>
+
+                {/* not-following error */}
+                <Snackbar
+                anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+                open={this.state.alertBool}
+                onClose={e => this.setState({alertBool: false})}
+                autoHideDuration={5000}>
+                <SnackbarContent style={{backgroundColor: "#D32F2F"}}
+                message="User has set DMs to follow only."/>
+                </Snackbar>
+
                 {/* blank-message error */}
                 <Snackbar
                 anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}

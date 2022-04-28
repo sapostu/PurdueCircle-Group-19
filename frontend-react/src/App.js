@@ -27,6 +27,7 @@ import UserProvider from './UserContext';
 import DM from './Components/DM';
 import Saved from './Components/Saved';
 import BlockList from './Components/BlockList';
+import DMSearch from './Components/DMSearch';
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
             <Route path="/logout" element={<Logout />} />
             <Route path="/following" element={<Following />} />
             <Route path="/blockList" element={<BlockList />} />
+            <Route path="/dms" element={<DMSearch />} />
           </Route>
 
 

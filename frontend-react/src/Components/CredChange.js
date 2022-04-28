@@ -346,7 +346,7 @@ class CredChangeScreen extends Component {
                             this.setState({ successBool: true, username: localStorage.getItem('username') });
                         } else {
                             // failure
-                            this.setState({ alertMsg: "Failed to change username, please try again."});
+                            this.setState({ alertMsg: "That email is taken, please try again."});
                             this.setState({ alertBool: true });
                         }
                     });

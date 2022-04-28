@@ -39,7 +39,7 @@ public class Account {
     private String profile_pic;
 
     @Column(name = "req_following", columnDefinition = "INT")
-    private Long req_following;
+    private long req_following;
 
 
 
@@ -47,7 +47,7 @@ public class Account {
     }
 
     public Account(int account_id, String username, String first_name, String last_name, String email, String date_of_birth, String crypt_password, 
-            String bio, String profile_pic, Long req_following) {
+            String bio, String profile_pic, long req_following) {
 
         super();
         this.account_id = account_id;
@@ -136,11 +136,11 @@ public class Account {
         this.profile_pic = profile_pic;
     }
 
-    public Long getReq_following() {
+    public long getReq_following() {
         return req_following;
     }
 
-    public void setReq_following(Long req_following) {
+    public void setReq_following(long req_following) {
         this.req_following = req_following;
     }
 }

@@ -37,7 +37,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer>{
     @Modifying
     @Transactional
     @Query("UPDATE Account SET req_following = ?2 WHERE (account_id = ?1 )")
-    void setReqDM(long accountId, Long flag);
+    void setReqDM(int accountId, long flag);
 
     // @Query(
     //     value = "INSERT INTO account_info(username, email, crypt_password) VALUES (?1, ?2, ?3);",

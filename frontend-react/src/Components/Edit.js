@@ -111,7 +111,7 @@ class Edit extends Component {
                         </CardHeader>
                         <Grid container>
                             <Grid item xs={4}>
-                            <div style={{'height': '50px', 'width': '50px', "padding-left": '20px', "padding-top": '5px'}}>
+                            <div style={{'height': '200px', 'width': '200px', "padding-left": '20px', "padding-top": '5px'}}>
                                 <img src= {this.state.new_pic || 'https://www.w3schools.com/html/img_chania.jpg'} style={{'height': '100%', 'width': '100%', 'object-fit': 'contain'}} alt="Profile"/>
                                 </div>
     

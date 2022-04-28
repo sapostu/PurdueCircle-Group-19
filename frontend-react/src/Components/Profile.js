@@ -142,7 +142,7 @@ class Profile extends Component {
                             <CardHeader style={{ height: "1.5vh", backgroundColor: "#f5f5f5" }}>
                             </CardHeader>
 
-                            <div style={{'height': '50px', 'width': '50px', "padding-left": '20px', "padding-top": '5px'}}>
+                            <div style={{'height': '200px', 'width': '200px', "padding-left": '20px', "padding-top": '5px'}}>
                                 <img src={this.state.profile_pic} style={{'height': '100%', 'width': '100%', 'object-fit': 'contain'}} alt="Profile"/>
                             </div>
 

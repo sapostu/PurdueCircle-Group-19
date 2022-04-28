@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import EditService from '../Services/EditService';
+import AccountService from '../Services/AccountService';
 import { Typography, Button, Card, CardContent, CardActions, CardHeader, Grid, TextField, Snackbar, SnackbarContent } from '@material-ui/core';
 
 
@@ -17,13 +18,15 @@ class Edit extends Component {
             redir: false,
             new_pic: null,
             isAuthenticated: localStorage.getItem('isAuthenticated'),
-            authUsername: localStorage.getItem('username')
+            authUsername: localStorage.getItem('username'),
+            dmStatus: ""
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.setNameError = this.setNameError.bind(this);
         this.setBioError = this.setBioError.bind(this);
+        this.setDMs = this.setDMs.bind(this);
 
     }
 
@@ -35,6 +38,16 @@ class Edit extends Component {
 
     setBioError() {
         this.setState({errorBio: false});
+    }
+
+    setDMs() {
+        AccountService.setReqFollowing(localStorage.getItem('accountId')).then((response) => {
+            if (this.state.dmStatus === "Private") {
+                this.setState({ dmStatus: "Public" });
+            } else {
+                this.setState({ dmStatus: "Private" });
+            }
+        });
     }
 
     handleSubmit() {
@@ -67,6 +80,18 @@ class Edit extends Component {
         this.setState({
             [e.target.name] : e.target.value
           })
+    }
+
+    componentDidMount() {
+        AccountService.getAccountById(localStorage.getItem('accountId')).then((response) => {
+            console.log(response.data);
+            this.setState({ bio: response.data.bio });
+            if (response.data.req_following === 1) {
+                this.setState({ dmStatus: "Public" });
+            } else {
+                this.setState({ dmStatus: "Private" });
+            }
+        });
     }
 
     render() {
@@ -149,6 +174,7 @@ class Edit extends Component {
                             <Button size="small" onClick={this.handleSubmit}>Submit</Button>
                             <Button size="small"><Link to="/profile_temp" style={{ color: "inherit", "text-decoration": "none" }}>Cancel</Link></Button> {/* TODO : edit the link to profile to link to the actual profile */}
                             <Button size="small"><Link to="/delete" style={{ display: this.state.isAuthenticated ? 'block' : 'none', color: "inherit", "text-decoration": "none" }}>Delete</Link></Button>
+                            <Button size="small" onClick={this.setDMs}>Make DMs {this.state.dmStatus}</Button>
                         </CardActions>
                     </Card>
                 </div>

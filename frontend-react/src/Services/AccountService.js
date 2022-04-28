@@ -28,6 +28,9 @@ class AccountService {
         return axios.get(ACCOUNT_API_BASE_URL + "/getByUsername/" + username);
     }
 
+    setReqFollowing(user_id) {
+        return axios.get(ACCOUNT_API_BASE_URL + "/reqDM/" + user_id);
+    }
 }
 
 export default new AccountService()

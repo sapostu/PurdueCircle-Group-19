@@ -4,6 +4,7 @@ import { TextField, Button, Snackbar, SnackbarContent, Paper, Typography } from 
 import AccountService from '../Services/AccountService';
 import MessageService from '../Services/MessageService';
 import BlockService from '../Services/BlockService';
+import FollowService from '../Services/FollowService';
 
 class DM extends Component {
 
@@ -15,7 +16,8 @@ class DM extends Component {
             msgElements: [],
             msgInput: "",
             alertBool: false,
-            isBlocked: false
+            isBlocked: false,
+            isPrivate: false
         };
         this.handleSend = this.handleSend.bind(this);
     }
@@ -25,30 +27,42 @@ class DM extends Component {
             if (response.data) {
                 this.setState({ isBlocked: true });
             }
-            console.log(response.data);
-            AccountService.getAccountById(this.state.theirID).then(acc_res => {
-                if (acc_res.data) {
-                    // get their username using their ID
-                    this.setState({theirUsername: acc_res.data.username});
-    
-                    MessageService.getMessagesByUsernames(localStorage.getItem('username'), this.state.theirUsername).then(msg_res => {
-                        if (msg_res.data) {
-                            console.log(msg_res.data);
-                            // get all messages and put their html in msgElements
-                            for (const msg of msg_res.data) {
-                                this.setState({
-                                    msgElements: [...this.state.msgElements, (
-                                        <div key={msg.msg_id} style={{marginTop: "5px"}}>
-                                            <p style={{margin: 0, padding: 0}}><b>{msg.sender_username}</b></p>
-                                            <p style={{margin: 0, padding: 0}}>{msg.msg}</p>
-                                        </div>
-                                    )]
-                                });
-                            }
+            AccountService.getAccountById(this.state.theirID).then((response) => {
+                if (response.data.req_following === 1) {
+                    FollowService.isFollowing({ account_id: this.state.theirID, followed: localStorage.getItem('accountId'), followed_username: null }).then((response) => {
+                        if (!response.data) {
+                            this.setState({ isPrivate: true });
+                        } else {
+                            console.log(response.data);
+                            AccountService.getAccountById(this.state.theirID).then(acc_res => {
+                                if (acc_res.data) {
+                                    // get their username using their ID
+                                    this.setState({theirUsername: acc_res.data.username});
+                    
+                                    MessageService.getMessagesByUsernames(localStorage.getItem('username'), this.state.theirUsername).then(msg_res => {
+                                        if (msg_res.data) {
+                                            console.log(msg_res.data);
+                                            // get all messages and put their html in msgElements
+                                            for (const msg of msg_res.data) {
+                                                this.setState({
+                                                    msgElements: [...this.state.msgElements, (
+                                                        <div key={msg.msg_id} style={{marginTop: "5px"}}>
+                                                            <p style={{margin: 0, padding: 0}}><b>{msg.sender_username}</b></p>
+                                                            <p style={{margin: 0, padding: 0}}>{msg.msg}</p>
+                                                        </div>
+                                                    )]
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
                 }
+
             });
+
         });
 
 
@@ -96,6 +110,23 @@ class DM extends Component {
                     }} id="login_cont">
                         <Typography>
                             User has blocked you
+                        </Typography>
+                    </Paper>
+
+                </div>
+            )
+        }
+        if (this.state.isPrivate) {
+            return (
+                <div>
+                    <Paper elevation={8} style={{
+                        backgroundColor: "#f5f5f5",
+                        margin: "auto",
+                        padding: "20px",
+                        "text-align": "center"
+                    }} id="login_cont">
+                        <Typography>
+                            User has private DMs
                         </Typography>
                     </Paper>
 

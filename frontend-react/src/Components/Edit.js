@@ -147,7 +147,7 @@ class Edit extends Component {
                         </CardContent>
                         <CardActions style={{"padding-left": "0.5vw"}}>
                             <Button size="small" onClick={this.handleSubmit}>Submit</Button>
-                            <Button size="small"><Link to="/profile_temp" style={{ color: "inherit", "text-decoration": "none" }}>Cancel</Link></Button> {/* TODO : edit the link to profile to link to the actual profile */}
+                            <Button size="small"><Link to={"/profile/" + this.state.authUsername} style={{ color: "inherit", "text-decoration": "none" }}>Cancel</Link></Button> {/* TODO : edit the link to profile to link to the actual profile */}
                             <Button size="small"><Link to="/delete" style={{ display: this.state.isAuthenticated ? 'block' : 'none', color: "inherit", "text-decoration": "none" }}>Delete</Link></Button>
                         </CardActions>
                     </Card>

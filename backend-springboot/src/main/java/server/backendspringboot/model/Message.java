@@ -38,6 +38,13 @@ public class Message {
         this.msg = msg;
     }
 
+    public Message(String sender_username, long sender_id, long receiver_id, String msg) {
+        this.sender_username = sender_username;
+        this.sender_id = sender_id;
+        this.receiver_id = receiver_id;
+        this.msg = msg;
+    }
+
     public long getMsg_id() {
         return this.msg_id;
     }
@@ -78,7 +85,17 @@ public class Message {
         this.msg = msg;
     }
 
- 
+    public String toString() {
+        return this.msg_id + " " + this.sender_username + " " + this.sender_id + " " + this.receiver_id + " " + msg;
+    }
+
+    public Boolean equals(Message message) {
+        return (message.getMsg().equals(this.msg) && message.getMsg_id() == this.msg_id && message.getSender_username().equals(this.sender_username) && message.getSender_id() == this.sender_id && message.getReceiver_id() == this.receiver_id);
+    }
+
+    public Boolean equalsNoId(Message message) {
+        return (message.getMsg().equals(this.msg) && message.getSender_username().equals(this.sender_username) && message.getSender_id() == this.sender_id && message.getReceiver_id() == this.receiver_id);
+    }
 
 
 

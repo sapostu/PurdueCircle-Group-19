@@ -302,6 +302,7 @@ class CredChangeScreen extends Component {
         if (passwordBool && (this.state.password != this.state.secPassword)) {
             this.setState({alertMsg: "Password fields must match."});
             this.setState({alertBool: true});
+            return;
         }
         // date of birth
         if (dobBool) {

@@ -79,7 +79,7 @@ setErrorENameTaken(state) {
     this.setState({errorMatchingEmail: false});  }
   
   setEmailFormatError(state) {
-    this.setState({errorMatchingEmail: false});  }
+    this.setState({errorEmailFormat: false});  }
 
   setMatchingPasswordError(state) {
     this.setState({errorMatchingPassword: false});  }

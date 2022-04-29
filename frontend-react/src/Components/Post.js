@@ -336,7 +336,6 @@ class Post extends Component {
                      : ( /^[ \t\n]*(https?:\/\/)[\S]+[ \t\n]*$/gi.test(this.state.text) ?  <a href={this.state.text}>{this.state.text}</a>
                      : <p>{this.state.text}</p> )}
                 <div>{this.state.reactionElements}</div>
-                <div>{this.state.reactionElements}</div>
             </Paper>
             <div style={{display: this.state.isAuthenticated ? 'block' : 'none', margin: '10px'}}>
                 <TextField id="submitButton" onChange={e => this.setState({commentInput: e.target.value})} size="small" label="Your comment..." variant="filled"/>

@@ -144,7 +144,7 @@ class Timeline extends Component {
                         "text-align": "center"
                     }} id="login_cont">
                         <h1>
-                        {this.state.topic}
+                        Timeline
                         </h1>
                     </Paper>
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>

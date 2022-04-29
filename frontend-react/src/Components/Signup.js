@@ -137,12 +137,12 @@ setErrorENameTaken(state) {
       return;
     }
 
-    this.state.password = CryptoJS.AES.encrypt(this.state.password, secret).toString();
+    //this.state.password = CryptoJS.AES.encrypt(this.state.password, secret).toString();
 
     console.log("DECRUPt =" + CryptoJS.AES.decrypt(this.state.password, secret).toString(CryptoJS.enc.Utf8));
     // this.state.password = this.state.password.substring(0, 15);
 
-    let account = {username: this.state.username, email: this.state.email, crypt_password: this.state.password, bio: this.state.bio}
+    let account = {username: this.state.username, email: this.state.email, crypt_password: CryptoJS.AES.encrypt(this.state.password, secret).toString(), bio: this.state.bio}
     console.log('\n\n account =>' + JSON.stringify(account));
 
     AccountService.createAccount(account).then( res => {

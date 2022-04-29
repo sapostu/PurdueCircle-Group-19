@@ -39,7 +39,7 @@ class DM extends Component {
                                     // get their username using their ID
                                     this.setState({theirUsername: acc_res.data.username});
                     
-                                    MessageService.getMessagesByUsernames(localStorage.getItem('username'), this.state.theirUsername).then(msg_res => {
+                                    MessageService.getMessagesByUsernames(localStorage.getItem('username'), acc_res.data.username).then(msg_res => {
                                         if (msg_res.data) {
                                             console.log(msg_res.data);
                                             // get all messages and put their html in msgElements

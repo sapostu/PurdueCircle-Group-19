@@ -331,7 +331,11 @@ class Post extends Component {
                     <Button onClick={e => this.handleSave()} style={{marginLeft: '20px', backgroundColor: 'green', color: 'white',display: 'inline'}}>
                         {this.state.isSaved ? "Unsave Post" : "Save Post"}</Button>
                 </div>
-                <p>{this.state.text}</p>
+                {/* check if url or image */} 
+                {/^[ \t\n]*[\S]+(\.jpg|\.jpeg|\.png|\.gif)[ \t\n]*$/gi.test(this.state.text) ? <img style={{maxWidth: '30vw'}} src={this.state.text} />
+                     : ( /^[ \t\n]*(https?:\/\/)[\S]+[ \t\n]*$/gi.test(this.state.text) ?  <a href={this.state.text}>{this.state.text}</a>
+                     : <p>{this.state.text}</p> )}
+                <div>{this.state.reactionElements}</div>
                 <div>{this.state.reactionElements}</div>
             </Paper>
             <div style={{display: this.state.isAuthenticated ? 'block' : 'none', margin: '10px'}}>

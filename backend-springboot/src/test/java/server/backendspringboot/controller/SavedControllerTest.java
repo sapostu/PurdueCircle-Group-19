@@ -65,6 +65,7 @@ public class SavedControllerTest {
     void testDuplicate() {
         psr.save(new posts_saved(1, 2, 3));
         psr.save(new posts_saved(2, 2, 3));
+        psr.save(new posts_saved(3, 2,  4));
         assertEquals(2, psr.getDuplicates(2L, 3L).size());
     }
 }

@@ -69,6 +69,7 @@ public class MessageController {
     @PostMapping("/addByUser")
     public Message addMessageByUser(@RequestBody Map<String,String> map) {
         long id1 = accountRepository.getAccountByUsername(map.get("sender")).getAccount_id();
+        System.out.println(map.get("receiver"));
         long id2 = accountRepository.getAccountByUsername(map.get("receiver")).getAccount_id();
         Message msg = new Message();
         msg.setMsg(map.get("msg"));
